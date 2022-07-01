@@ -1,0 +1,24 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+	<ui:composition>
+		<ui:include src="/templates/site/includes/locale.xhtml" />
+		<h:form id="menuForm">
+			<p:menubar id="menubar" style="z-index:100;">
+				<p:menuitem id="macceuil" value="#{site['nav.home']}" action="welcome" rendered="#{security.access('registered', 'administrateur')}" />
+				<p:submenu id="sadmin" label="#{site['nav.admin']}" rendered="#{security.access('administrateur')}">
+					<p:menuitem id="smuserlist" value="#{access['nav.admin.access.user']}" action="user" />
+					<p:menuitem id="smgrouplist" value="#{access['nav.admin.access.group']}" action="group" ajax="false" />
+					<p:menuitem id="smconf" value="#{parame['nav.admin.param']}" action="parameter" />
+					<!-- RM_MAI_001 -->
+					<p:menuitem id="smmails" value="#{mails['mails.menu.title']}" action="mails" ajax="false" />
+				</p:submenu>
+
+				<!-- RM_LOG_001 - Accès à l'écran de consultation des logs -->
+				<p:menuitem id="mlogs" value="#{site['nav.logs']}" action="logs" rendered="#{security.access('registered', 'administrateur')}" />
+			</p:menubar>
+		</h:form>
+	</ui:composition>
+</html>

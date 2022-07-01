@@ -1,0 +1,12 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+	<ui:composition>
+		<p:column id="colum_header_origin" headerText="#{logs['fwk.logs.table.column.origin.libelle']}"
+			filterMatchMode="exact" filterOptions="#{bean.originFilterList}" filterBy="#{log.origin}"
+			sortBy="#{log.origin}" styleClass="center-content colum_header_origin">
+			#{log.origin}
+		</p:column>
+	</ui:composition>
+</html>

@@ -1,0 +1,276 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:fn="http://java.sun.com/jsp/jstl/functions" xmlns:p="http://primefaces.org/ui">
+<ui:composition template="/templates/site/site.xhtml">
+  <ui:define name="title">
+    <h:outputText value="#{customProperties['page.title.prefix']}#{customProperties['tenant.view.title']}" />
+  </ui:define>
+  <ui:define name="body-site">
+    <h2 class="center">#{customProperties['tenant.view.title']}</h2>
+    <h:form id="frmCreateTenant" prependId="false" onkeypress="return event.keyCode != 13">
+      <p:fieldset legend="#{customProperties['tenant.creation.fieldset']}">
+        <p>
+          <!-- Type d'occuapnt -->
+          <h:outputText value="#{customProperties['tenant.field.type']}" styleClass="label" />
+          <h:outputText value="#{tenantController.tenantBean.tenantDTO.typeTenant.label}" />
+        </p>
+        <p>
+          <!-- Référence occupant -->
+          <h:outputText value="#{customProperties['tenant.field.reference']}" styleClass="label" />
+          <h:outputText value="#{tenantController.tenantBean.tenantDTO.reference}" />
+        </p>
+        <p>
+          <!-- Nom -->
+          <h:outputText value="#{customProperties['tenant.field.name']}" styleClass="label" />
+          <h:outputText value="#{tenantController.tenantBean.tenantDTO.lastName}" />
+        </p>
+        <p>
+          <!-- Prénom -->
+          <h:outputText value="#{customProperties['tenant.field.firstname']}" styleClass="label" />
+          <h:outputText value="#{tenantController.tenantBean.tenantDTO.firstName}" />
+        </p>
+        <p>
+          <!-- Adresse -->
+          <h:outputText value="#{customProperties['tenant.field.adress']}" styleClass="label txtarea" />
+          <h:outputText value="#{tenantController.tenantBean.tenantDTO.address}" />
+        </p>
+        <p>
+          <!-- Code postal -->
+          <h:outputText value="#{customProperties['tenant.field.cp']}" styleClass="label" />
+          <h:outputText value="#{tenantController.tenantBean.tenantDTO.postalCode}" />
+        </p>
+        <p>
+          <!-- Ville -->
+          <h:outputText value="#{customProperties['tenant.field.city']}" styleClass="label" />
+          <h:outputText value="#{tenantController.tenantBean.tenantDTO.city}" />
+        </p>
+        <p>
+          <!-- Cadre -->
+          <h:outputText value="#{customProperties['tenant.field.managerial']}" styleClass="label" />
+          <h:outputText value="#{customProperties['confirm.yes']}" rendered="#{tenantController.tenantBean.tenantDTO.managerial != null ? tenantController.tenantBean.tenantDTO.managerial : false}" />
+          <h:outputText value="#{customProperties['confirm.no']}" rendered="#{tenantController.tenantBean.tenantDTO.managerial != null ? !tenantController.tenantBean.tenantDTO.managerial : false}" />
+        </p>
+        <p>
+          <!-- Cadre à octobre N-1 -->
+          <h:outputText value="#{customProperties['tenant.field.managerial.last.year']}" styleClass="label" />
+          <h:outputText value="#{customProperties['confirm.yes']}" rendered="#{tenantController.tenantBean.tenantDTO.managerialLastYear != null ? tenantController.tenantBean.tenantDTO.managerialLastYear : false}" />
+          <h:outputText value="#{customProperties['confirm.no']}" rendered="#{tenantController.tenantBean.tenantDTO.managerialLastYear != null ? !tenantController.tenantBean.tenantDTO.managerialLastYear : false}" />
+        </p>
+        <p>
+          <!-- Nombre de personne constituant le foyer -->
+          <h:outputText value="#{customProperties['tenant.field.household']}" styleClass="label" />
+          <h:outputText value="#{tenantController.tenantBean.tenantDTO.householdSize}" />
+        </p>
+        <p>
+          <!-- Nombre de personne constituant le foyer à octobre N-1 -->
+          <h:outputText value="#{customProperties['tenant.field.household.last.year']}" styleClass="label" />
+          <h:outputText value="#{tenantController.tenantBean.tenantDTO.householdSizeLastYear}" />
+        </p>
+        <p>
+          <!-- Salaire brut -->
+          <h:outputText value="#{customProperties['tenant.field.salary']}" styleClass="label" />
+          <h:outputText value="#{tenantController.tenantBean.tenantDTO.actualSalary}" />
+        </p>
+        <p>
+          <!-- Salaire brut à octobre N-1 -->
+          <h:outputText value="#{customProperties['tenant.field.salary.last.year']}" styleClass="label" />
+          <h:outputText value="#{tenantController.tenantBean.tenantDTO.referenceGrossSalary}" />
+        </p>
+        <p>
+          <!-- Téléphone -->
+          <h:outputText value="#{customProperties['tenant.field.phone']}" styleClass="label" />
+          <h:outputText value="#{tenantController.tenantBean.tenantDTO.phone}" styleClass="long_desc" />
+        </p>
+        <p>
+          <!-- Email -->
+          <h:outputText value="#{customProperties['tenant.field.email']}" styleClass="label" />
+          <h:outputText value="#{tenantController.tenantBean.tenantDTO.mailAddress}" styleClass="long_desc" />
+        </p>
+      </p:fieldset>
+      <p:outputPanel layout="block" styleClass="action">
+        <p:commandButton id="btnUpdate" value="#{customProperties['tenant.action.update']}" action="#{tenantController.redirectUpdateData}" rendered="#{security.access('utilisateur', 'administrateur')}" />
+        <p:commandButton id="btnDelete" value="#{customProperties['tenant.action.delete']}" onclick="confirmDelete.show()" rendered="#{security.access('administrateur') and tenantController.isRemovable()}" />
+        <p:confirmDialog widgetVar="confirmDelete" message="#{customProperties['tenant.action.delete.confirm']}">
+          <p:commandButton value="#{customProperties['confirm.yes']}" onclick="confirmDelete.hide()" action="#{tenantController.deleteData}" />
+          <p:commandButton type="button" value="#{customProperties['confirm.no']}" onclick="confirmDelete.hide()" />
+        </p:confirmDialog>
+      </p:outputPanel>
+      <p:outputPanel layout="block" id="result" styleClass="consult">
+        <h2 class="center">
+          <h:outputText value="#{customProperties['tenant.view.housing']}" />
+        </h2>
+        <p:dataTable id="resultTab" var="contract" value="#{tenantController.tenantBean.contractList}" emptyMessage="#{customProperties['no.data']}" sortBy="#{contract.housing.registerDate}" sortOrder="descending">
+          <!-- Référence -->
+          <p:column sortBy="#{contract.housing.reference}" styleClass="multi_line long_label">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['housing.field.ref']}" />
+            </f:facet>
+            <h:outputText value="#{contract.housing.reference}" />
+          </p:column>
+          <!-- Adresse -->
+          <p:column sortBy="#{contract.housing.address}">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['housing.field.adress']}" />
+            </f:facet>
+            <h:outputText value="#{contract.housing.shortAddress()}" />
+          </p:column>
+          <!-- Adresse pour l'export Excel -->
+          <p:column styleClass="dt_export_excel">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['housing.field.adress']}" />
+            </f:facet>
+            <h:outputText value="#{contract.housing.address}" />
+          </p:column>
+          <!-- Code postal -->
+          <p:column sortBy="#{contract.housing.postalCode}" styleClass="multi_line">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['housing.field.cp']}" />
+            </f:facet>
+            <h:outputText value="#{contract.housing.postalCode}" />
+          </p:column>
+          <!-- Ville -->
+          <p:column sortBy="#{contract.housing.city}">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['housing.field.city']}" />
+            </f:facet>
+            <h:outputText value="#{contract.housing.city}" />
+          </p:column>
+          <!-- Agence -->
+          <p:column sortBy="#{contract.housing.agency.name}">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['housing.field.agency']}" />
+            </f:facet>
+            <h:outputText value="#{contract.housing.agency.name}" />
+          </p:column>
+          <!-- Date d'entrée -->
+          <p:column sortBy="#{contract.housing.registerDate}" styleClass="multi_line">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['housing.field.date.in']}" />
+            </f:facet>
+            <h:outputText value="#{contract.housing.registerDate}">
+              <f:convertDateTime pattern="#{customProperties['pattern.date']}" />
+            </h:outputText>
+          </p:column>
+          <!-- Date de sortie -->
+          <p:column sortBy="#{contract.housing.sortedUnregisterDate}" styleClass="multi_line">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['housing.field.date.out']}" />
+            </f:facet>
+            <h:outputText value="#{contract.housing.unregisterDate}">
+              <f:convertDateTime pattern="#{customProperties['pattern.date']}" />
+            </h:outputText>
+          </p:column>
+          <!-- Surface réelle -->
+          <p:column sortBy="#{contract.housing.realSurfaceArea}" styleClass="multi_line">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['housing.field.real.surface']}">
+                <p:separator style="foreground-color: #FF0000" />
+              </h:outputText>
+            </f:facet>
+            <h:outputText value="#{contract.housing.realSurfaceArea}" />
+          </p:column>
+          <!-- Surface corrigée -->
+          <p:column sortBy="#{contract.housing.revisedSurfaceArea}" styleClass="multi_line">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['housing.field.fixed.surface']}" />
+            </f:facet>
+            <h:outputText value="#{contract.housing.revisedSurfaceArea}" />
+          </p:column>
+          <!-- Propriété -->
+          <p:column sortBy="#{contract.housing.property}" styleClass="multi_line">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['housing.field.property']}" />
+            </f:facet>
+            <h:outputText value="#{customProperties['confirm.yes']}" rendered="#{contract.housing.property}" />
+            <h:outputText value="#{customProperties['confirm.no']}" rendered="#{!contract.housing.property}" />
+          </p:column>
+          <!-- Jardin -->
+          <p:column sortBy="#{contract.housing.gardenAvailable}">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['housing.field.garden']}" />
+            </f:facet>
+            <h:outputText value="#{customProperties['confirm.yes']}" rendered="#{contract.housing.gardenAvailable}" />
+            <h:outputText value="#{customProperties['confirm.no']}" rendered="#{!contract.housing.gardenAvailable}" />
+          </p:column>
+          <!-- Garage -->
+          <p:column sortBy="#{contract.housing.garageAvailable}">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['housing.field.garage']}" />
+            </f:facet>
+            <h:outputText value="#{customProperties['confirm.yes']}" rendered="#{contract.housing.garageAvailable}" />
+            <h:outputText value="#{customProperties['confirm.no']}" rendered="#{!contract.housing.garageAvailable}" />
+          </p:column>
+          <!-- Statut logement -->
+          <p:column sortBy="#{contract.housing.housingStatus.label}" styleClass="multi_line">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['housing.field.status']}" />
+            </f:facet>
+            <h:outputText value="#{contract.housing.housingStatus.label}" />
+          </p:column>
+          <!-- Nombre de pièces -->
+          <p:column sortBy="#{contract.housing.roomCount}" styleClass="multi_line">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['housing.field.room.number']}" />
+            </f:facet>
+            <h:outputText value="#{contract.housing.roomCount}" />
+          </p:column>
+          <!-- Nature -->
+          <p:column sortBy="#{contract.housing.sortedHousingNature}">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['housing.field.nature']}" />
+            </f:facet>
+            <h:outputText value="#{contract.housing.housingNature.label}" />
+          </p:column>
+          <!-- Noyau dur -->
+          <p:column sortBy="#{contract.housing.core}">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['housing.field.core']}" />
+            </f:facet>
+            <h:outputText value="#{customProperties['confirm.yes']}" rendered="#{contract.housing.core}" />
+            <h:outputText value="#{customProperties['confirm.no']}" rendered="#{!contract.housing.core}" />
+          </p:column>
+          <!-- Année de construction -->
+          <p:column sortBy="#{contract.housing.sortedYear}" styleClass="multi_line long_label">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['housing.field.year']}" />
+            </f:facet>
+            <h:outputText value="#{contract.housing.year}" />
+          </p:column>
+          <!-- Gestionnaire du logement -->
+          <p:column sortBy="#{contract.housing.thirdpartyContractManager.lastName}" styleClass="multi_line long_label">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['housing.field.manager']}" />
+            </f:facet>
+            <h:outputText value="#{contract.housing.thirdpartyContractManager.lastName} #{contract.housing.thirdpartyContractManager.firstName}" />
+          </p:column>
+          <!-- Catégorie du local -->
+          <p:column sortBy="#{contract.housing.roomCategory.label}" styleClass="multi_line">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['housing.field.category']}" />
+            </f:facet>
+            <h:outputText value="#{contract.housing.roomCategory.label}" />
+          </p:column>
+          <!-- Date de debut de validité -->
+          <p:column sortBy="#{contract.startValidityDate}" styleClass="multi_line">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['contract.field.startvalidity']}" />
+            </f:facet>
+            <h:outputText value="#{contract.startValidityDate}">
+              <f:convertDateTime pattern="#{customProperties['pattern.date']}" />
+            </h:outputText>
+          </p:column>
+          <!-- Date de fin de validité -->
+          <p:column sortBy="#{contract.endValidityDate}" styleClass="multi_line">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['contract.field.endvalidity']}" />
+            </f:facet>
+            <h:outputText value="#{contract.endValidityDate}">
+              <f:convertDateTime pattern="#{customProperties['pattern.date']}" />
+            </h:outputText>
+          </p:column>
+        </p:dataTable>
+      </p:outputPanel>
+    </h:form>
+  </ui:define>
+</ui:composition>
+</html>

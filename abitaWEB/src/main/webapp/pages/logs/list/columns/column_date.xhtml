@@ -1,0 +1,15 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+	<ui:composition>
+		<p:column headerText="#{logs['fwk.logs.table.column.date.libelle']}" sortBy="#{log.date}" styleClass="center-content">
+			<h:outputText value="#{log.date}">
+				<!-- TODO -->
+				<f:convertDateTime pattern="#{logs['fwk.logs.table.column.date.format']}" />
+			</h:outputText>
+		</p:column>
+	</ui:composition>
+</html>

@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.dao.batch.entity">
+    <class name="BatchMessage" table="FWK_BATCH_MESSAGE">
+
+        <id name="id" column="BATCH_MESSAGE_ID" type="java.lang.Long" unsaved-value="null">
+			<generator class="native">
+				<param name="sequence">SEQ_BATCH_MESSAGE_ID</param>
+			</generator>
+		</id>
+
+		<property name="message" column="BATCH_MESSAGE_CONTENT" not-null="true" />
+		<property name="userLogin" column="BATCH_MESSAGE_NNI" not-null="false" />
+		<property name="level" column="BATCH_MESSAGE_LEVEL" not-null="false">
+			<type name="com.dao.common.entity.GenericEnumUserType">
+				<param name="enumClass">com.dto.batch.BatchMessageSeverityLevel</param>
+			</type>
+		</property>
+    </class>
+</hibernate-mapping>

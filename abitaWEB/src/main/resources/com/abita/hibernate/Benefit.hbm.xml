@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+<hibernate-mapping package="com.abita.dao.benefit.entity">
+  <class name="com.abita.dao.benefit.entity.SalaryLevelEntity" table="BENEFITS_LEVEL">
+    <id name="id" type="java.lang.Long" column="BLE_ID">
+      <generator class="sequence">
+        <param name="sequence">SEQ_BENEFITS_LEVEL</param>
+      </generator>
+    </id>
+    <property name="minimumThreshold" column="BLE_MINIMUM_THRESHOLD" type="java.math.BigDecimal" not-null="true" />
+    <component name="benefit" class="com.abita.dao.benefit.entity.Benefit">
+      <property name="benefitForOneRoom" column="BLE_BENEFITS_ONE_ROOM" type="java.math.BigDecimal" not-null="true" />
+      <property name="benefitForManyRooms" column="BLE_BENEFITS_MANY_ROOMS" type="java.math.BigDecimal" not-null="true" />
+    </component>
+  </class>
+
+  <sql-query name="findAllSortedBenefit">
+    <return class="com.abita.dao.benefit.entity.SalaryLevelEntity" />
+    SELECT CC.*, COUNT(*) AS NB
+    FROM COST_CENTER CC
+    LEFT OUTER JOIN THIRD_PARTY_CONTRACT TC
+    ON CC.CCE_ID = TC.CCE_ID
+    LEFT OUTER JOIN CONTRACT C
+    ON CC.CCE_ID = C.CCE_ID
+    GROUP BY CC.CCE_ID, CC.CCE_LABEL
+  </sql-query>
+
+</hibernate-mapping>

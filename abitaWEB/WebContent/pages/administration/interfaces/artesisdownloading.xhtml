@@ -1,0 +1,53 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:fn="http://java.sun.com/jsp/jstl/functions" xmlns:p="http://primefaces.org/ui">
+<ui:composition template="/templates/site/site.xhtml">
+  <ui:define name="title">
+    <h:outputText value="#{customProperties['page.title.prefix']}#{customProperties['administration.interface.artesisdownloading.title']}" />
+  </ui:define>
+  <ui:define name="body-site">
+    <h2 class="center">#{customProperties['administration.interface.artesisdownloading.title']}</h2>
+    <h:form id="frmInterfaceArtesisDownloading" prependId="false">
+      <p:fieldset legend="#{customProperties['administration.interface.artesisdownloading.fieldset.period']}">
+        <!-- Liste sélection mois -->
+        <p:selectOneMenu id="month" value="#{interfaceArtesisDownloadingController.interfaceArtesisDownloadingBean.month}" required="true" requiredMessage="#{customProperties['administration.interface.artesisdownloading.error.mandatory.month']}">
+          <f:selectItems value="#{interfaceArtesisDownloadingController.lstMonths}" var="month" itemValue="#{month.value}" itemLabel="#{month.label}" />
+        </p:selectOneMenu>
+        <p:inputText id="year" value="#{interfaceArtesisDownloadingController.interfaceArtesisDownloadingBean.year}" size="4" maxlength="4" label="#{customProperties['administration.interface.artesisdownloading.year']}" required="true" requiredMessage="#{customProperties['administration.interface.artesisdownloading.error.mandatory.year']}" />
+        <p:commandButton id="btnSearch" value="#{customProperties['administration.interface.artesisdownloading.action.search']}" actionListener="#{interfaceArtesisDownloadingController.search}" update=":messages @parent result" />
+      </p:fieldset>
+      <p:outputPanel id="result" layout="block">
+        <p:dataTable value="#{interfaceArtesisDownloadingController.interfaceArtesisDownloadingBean.lstArtesisFile}" var="artesisFile" emptyMessage="#{customProperties['no.data']}" sortBy="#{artesisFile.name}" sortOrder="descending" rendered="#{interfaceArtesisDownloadingController.interfaceArtesisDownloadingBean.lstArtesisFile != null}">
+          <f:facet name="header">
+            <h:outputText value="#{customProperties['administration.interface.artesisdownloading.datatable.title']}" />
+          </f:facet>
+          <!-- Type de fichier -->
+          <p:column headerText="#{customProperties['administration.interface.artesisdownloading.type']}">
+            <h:outputText value="#{artesisFile.type}" />
+          </p:column>
+          <!-- Nom du fichier -->
+          <p:column headerText="#{customProperties['administration.interface.artesisdownloading.name']}">
+            <h:outputText value="#{artesisFile.name}" />
+          </p:column>
+          <!-- Date de modification du fichier -->
+          <p:column headerText="#{customProperties['administration.interface.artesisdownloading.date']}">
+            <h:outputText value="#{artesisFile.lastUpdate}">
+              <f:convertDateTime pattern="#{customProperties['pattern.date']}" />
+            </h:outputText>
+          </p:column>
+          <!-- Taille du fichier -->
+          <p:column headerText="#{customProperties['administration.interface.artesisdownloading.size']}">
+            <h:outputText value="#{artesisFile.size}" />
+          </p:column>
+          <!-- Lien de téléchargement -->
+          <p:column headerText="#{customProperties['administration.interface.artesisdownloading.download']}">
+            <p:commandButton ajax="false" icon="ddl">
+              <p:fileDownload value="#{artesisFile.file}" />
+            </p:commandButton>
+          </p:column>
+        </p:dataTable>
+      </p:outputPanel>
+    </h:form>
+  </ui:define>
+</ui:composition>
+</html>

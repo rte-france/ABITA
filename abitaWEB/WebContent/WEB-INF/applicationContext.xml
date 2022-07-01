@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns="http://www.springframework.org/schema/beans"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+	<!-- fichier de configuration des accès aux pages -->
+	<import resource="classpath:access-config.xml"></import>
+
+	<import resource="classpath:action-logs.xml" />
+
+	<!-- Importation du fichier specificApplicationContext.xml qui doit se trouver
+		dans src/main/resources/conf ou src/main/resources/conf_localhost, donc dans
+		le classpath=> "classpath:xxx" -->
+	<import resource="classpath:specificApplicationContext.xml" />
+
+	<!-- Data Base & AOP Configuration -->
+	<import resource="dataBaseConfiguration.xml" />
+
+	<!-- Import pour la gestion des Batch -->
+	<import resource="applicationContext-scheduledServices.xml" />
+
+	<!-- Access Service -->
+	<bean id="accessServiceFacade" class="com.services.access.impl.AccessServiceFacadeImpl">
+		<property name="authenticatorService" ref="authenticatorService" />
+		<property name="userService" ref="userService" />
+	</bean>
+
+	<bean id="userDAO" class="com.dao.user.impl.UserDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="themeDAO" class="com.dao.theme.impl.ThemeDAOImpl">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="batchDAO" class="com.dao.batch.impl.BatchDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+	<!-- Parameter Service -->
+	<bean id="parameterService" class="com.services.paramservice.impl.ParameterServiceImpl">
+		<property name="domainDAO" ref="domainDAO" />
+		<property name="mapper" ref="dozerMapper" />
+	</bean>
+	<bean id="domainDAO" class="com.dao.domain.impl.DomainDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+	<!-- Batch Service -->
+	<bean id="batchService" class="com.services.batchservice.impl.BatchServiceImpl">
+		<property name="batchDAO" ref="batchDAO" />
+		<property name="mapper" ref="dozerMapper" />
+	</bean>
+
+    <!-- Mail Service -->
+    <bean id="mailService" class="com.services.mailservice.impl.MailServiceImpl"
+          p:parameterService-ref="parameterService"
+          p:mailReportingService-ref="mailReportingService"/>
+
+    <bean id="mailReportingService" class="com.services.mailreporting.impl.MailReportingServiceImpl"
+          p:mapper-ref="dozerMapper"
+          p:mailReportingDao-ref="mailReportingDao"/>
+
+    <bean id="mailReportingDao" class="com.dao.mailreporting.impl.MailReportingDAOImpl"
+          p:sessionFactory-ref="sessionFactory" />
+
+
+	<bean id="security" class="com.web.login.impl.SecurityController">
+        <property name="accessConfigService" ref="accessConfigService" />
+    </bean>
+
+	<bean id="fabriqueSettings"
+		class="com.services.amchartsservice.impl.factories.SettingsAMChartsFactory" />
+
+	<bean id="monteurSettings"
+		class="com.services.amchartsservice.impl.builders.SettingsAMChartsBuilder">
+		<property name="factory" ref="fabriqueSettings" />
+	</bean>
+
+	<bean id="fabriqueData"
+		class="com.services.amchartsservice.impl.factories.DataAMChartsFactory" />
+
+	<bean id="monteurBarOrLineData"
+		class="com.services.amchartsservice.impl.builders.BarOrLineDataAMChartsBuilder">
+		<property name="factory" ref="fabriqueData" />
+	</bean>
+
+	<bean id="monteurPieData"
+		class="com.services.amchartsservice.impl.builders.PieDataAMChartsBuilder">
+		<property name="factory" ref="fabriqueData" />
+	</bean>
+
+	<bean id="monteurRadarData"
+		class="com.services.amchartsservice.impl.builders.RadarDataAMChartsBuilder">
+		<property name="factory" ref="fabriqueData" />
+	</bean>
+
+	<bean id="monteurXYData"
+		class="com.services.amchartsservice.impl.builders.XYDataAMChartsBuilder">
+		<property name="factory" ref="fabriqueData" />
+	</bean>
+
+  <bean id="dozerMapper" class="org.dozer.DozerBeanMapper">
+    <property name="mappingFiles">
+      <list>
+        <value>com/dozerMapping.xml</value>
+        <value>entityDTOMapping.xml</value>
+      </list>
+    </property>
+  </bean>
+
+	<bean id="accessConfigService" class="com.services.accessconfig.impl.AccessConfigServiceImpl"
+		p:accessConfig-ref="accessConfig" />
+
+	<bean id="securityFilter" class="com.web.login.filters.SecurityFilter">
+		<property name="accessConfigService" ref="accessConfigService" />
+		<property name="userService" ref="userService" />
+	</bean>
+
+	<bean id="userService" class="com.services.user.impl.UserServiceImpl">
+		<property name="userDao" ref="userDAO" />
+		<property name="mapper" ref="dozerMapper" />
+		<property name="themeService" ref="themeService" />
+	</bean>
+
+	<bean id="themeService" class="com.services.theme.impl.ThemeServiceImpl">
+		<property name="themeDao" ref="themeDAO" />
+		<property name="mapper" ref="dozerMapper" />
+	</bean>
+</beans>

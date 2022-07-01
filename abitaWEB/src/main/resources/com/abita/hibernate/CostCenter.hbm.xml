@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+<hibernate-mapping package="com.abita.dao.costcenter.entity">
+  <class name="com.abita.dao.costcenter.entity.CostCenterEntity" table="COST_CENTER">
+    <id name="id" type="java.lang.Long" column="CCE_ID">
+      <generator class="sequence">
+        <param name="sequence">SEQ_COST_CENTER</param>
+      </generator>
+    </id>
+    <property name="label" column="CCE_LABEL" type="java.lang.String" />
+  </class>
+
+  <sql-query name="findAllCostCenter">
+    <return alias="CC" class="com.abita.dao.costcenter.entity.CostCenterEntity" />
+    <return-scalar column="NB" type="integer" />
+    SELECT CC.*, COUNT(TC.CCE_ID) + COUNT(C.CCE_ID) AS NB
+    FROM COST_CENTER CC
+    LEFT OUTER JOIN THIRD_PARTY_CONTRACT TC
+    ON CC.CCE_ID = TC.CCE_ID
+    LEFT OUTER JOIN CONTRACT C
+    ON CC.CCE_ID = C.CCE_ID
+    GROUP BY CC.CCE_ID, CC.CCE_LABEL
+  </sql-query>
+
+</hibernate-mapping>

@@ -1,0 +1,371 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.springframework.org/schema/beans" xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+  <bean id="accessConfig" class="com.dto.AccessConfigDTO">
+    <property name="pages">
+      <list>
+        <bean class="com.dto.AccessConfigPageDTO">
+          <description>Accès global</description>
+          <property name="name" value="pages.welcome.*" />
+          <property name="groups">
+            <list>
+              <value>registered</value>
+            </list>
+          </property>
+        </bean>
+        <bean class="com.dto.AccessConfigPageDTO">
+          <description>Accès global</description>
+          <property name="name" value="pages.logs.*" />
+          <property name="groups">
+            <list>
+              <value>registered</value>
+            </list>
+          </property>
+        </bean>
+        <bean class="com.dto.AccessConfigPageDTO">
+          <description>Accès aux pages de configuration</description>
+          <property name="name" value="pages.access.*" />
+          <property name="groups">
+            <list>
+              <value>administrateur</value>
+            </list>
+          </property>
+        </bean>
+        <bean class="com.dto.AccessConfigPageDTO">
+          <description>Accès aux pages de configuration</description>
+          <property name="name" value="pages.param.*" />
+          <property name="groups">
+            <list>
+              <value>administrateur</value>
+            </list>
+          </property>
+        </bean>
+        <bean class="com.dto.AccessConfigPageDTO">
+          <description>Accès aux pages de configuration</description>
+          <property name="name" value="pages.loadedlibs.*" />
+          <property name="groups">
+            <list>
+              <value>administrateur</value>
+            </list>
+          </property>
+        </bean>
+        <bean class="com.dto.AccessConfigPageDTO">
+          <description>Accès aux pages de configuration</description>
+          <property name="name" value="pages.mails.*" />
+          <property name="groups">
+            <list>
+              <value>administrateur</value>
+            </list>
+          </property>
+        </bean>
+
+        <bean class="com.dto.AccessConfigPageDTO">
+          <description>Accès Création Tiers</description>
+          <property name="name" value="pages.thirdparty.creation" />
+          <property name="groups">
+            <list>
+              <value>utilisateur</value>
+              <value>administrateur</value>
+            </list>
+          </property>
+        </bean>
+
+        <bean class="com.dto.AccessConfigPageDTO">
+          <description>Accès Recherche Tiers</description>
+          <property name="name" value="pages.thirdparty.search" />
+          <property name="groups">
+            <list>
+              <value>consultation</value>
+              <value>utilisateur</value>
+              <value>administrateur</value>
+            </list>
+          </property>
+        </bean>
+
+        <bean class="com.dto.AccessConfigPageDTO">
+          <description>Accès Consultation Tiers</description>
+          <property name="name" value="pages.thirdparty.consultation" />
+          <property name="groups">
+            <list>
+              <value>consultation</value>
+              <value>utilisateur</value>
+              <value>administrateur</value>
+            </list>
+          </property>
+        </bean>
+
+        <bean class="com.dto.AccessConfigPageDTO">
+          <description>Accès Modification Tiers</description>
+          <property name="name" value="pages.thirdparty.modification" />
+          <property name="groups">
+            <list>
+              <value>utilisateur</value>
+              <value>administrateur</value>
+            </list>
+          </property>
+        </bean>
+
+        <bean class="com.dto.AccessConfigPageDTO">
+          <description>Accès Creation Logement</description>
+          <property name="name" value="pages.housing.creation" />
+          <property name="groups">
+            <list>
+              <value>utilisateur</value>
+              <value>administrateur</value>
+            </list>
+          </property>
+        </bean>
+
+        <bean class="com.dto.AccessConfigPageDTO">
+          <description>Accès Recherche Logement</description>
+          <property name="name" value="pages.housing.search" />
+          <property name="groups">
+            <list>
+              <value>consultation</value>
+              <value>utilisateur</value>
+              <value>administrateur</value>
+            </list>
+          </property>
+        </bean>
+
+        <bean class="com.dto.AccessConfigPageDTO">
+          <description>Accès Consultation Logement</description>
+          <property name="name" value="pages.housing.consultation" />
+          <property name="groups">
+            <list>
+              <value>consultation</value>
+              <value>utilisateur</value>
+              <value>administrateur</value>
+            </list>
+          </property>
+        </bean>
+
+        <bean class="com.dto.AccessConfigPageDTO">
+          <description>Accès Modification Logement</description>
+          <property name="name" value="pages.housing.modification" />
+          <property name="groups">
+            <list>
+              <value>utilisateur</value>
+              <value>administrateur</value>
+            </list>
+          </property>
+        </bean>
+
+        <bean class="com.dto.AccessConfigPageDTO">
+          <description>Accès Création Occupant</description>
+          <property name="name" value="pages.tenant.creation" />
+          <property name="groups">
+            <list>
+              <value>utilisateur</value>
+              <value>administrateur</value>
+            </list>
+          </property>
+        </bean>
+
+        <bean class="com.dto.AccessConfigPageDTO">
+          <description>Accès Recherche Occupant</description>
+          <property name="name" value="pages.tenant.search" />
+          <property name="groups">
+            <list>
+              <value>consultation</value>
+              <value>utilisateur</value>
+              <value>administrateur</value>
+            </list>
+          </property>
+        </bean>
+
+        <bean class="com.dto.AccessConfigPageDTO">
+          <description>Accès Consultation Occupant</description>
+          <property name="name" value="pages.tenant.consultation" />
+          <property name="groups">
+            <list>
+              <value>consultation</value>
+              <value>utilisateur</value>
+              <value>administrateur</value>
+            </list>
+          </property>
+        </bean>
+
+        <bean class="com.dto.AccessConfigPageDTO">
+          <description>Accès Modification Occupant</description>
+          <property name="name" value="pages.tenant.modification" />
+          <property name="groups">
+            <list>
+              <value>utilisateur</value>
+              <value>administrateur</value>
+            </list>
+          </property>
+        </bean>
+
+        <bean class="com.dto.AccessConfigPageDTO">
+          <description>Accès Creation Contrat Tiers</description>
+          <property name="name" value="pages.thirdpartycontract.creation" />
+          <property name="groups">
+            <list>
+              <value>utilisateur</value>
+              <value>administrateur</value>
+            </list>
+          </property>
+        </bean>
+
+        <bean class="com.dto.AccessConfigPageDTO">
+          <description>Accès Recherche Contrat Tiers</description>
+          <property name="name" value="pages.thirdpartycontract.search" />
+          <property name="groups">
+            <list>
+              <value>consultation</value>
+              <value>utilisateur</value>
+              <value>administrateur</value>
+            </list>
+          </property>
+        </bean>
+
+        <bean class="com.dto.AccessConfigPageDTO">
+          <description>Accès Consultation Contrat Tiers</description>
+          <property name="name" value="pages.thirdpartycontract.consultation" />
+          <property name="groups">
+            <list>
+              <value>consultation</value>
+              <value>utilisateur</value>
+              <value>administrateur</value>
+            </list>
+          </property>
+        </bean>
+
+        <bean class="com.dto.AccessConfigPageDTO">
+          <description>Accès Modification Contrat Tiers</description>
+          <property name="name" value="pages.thirdpartycontract.modification" />
+          <property name="groups">
+            <list>
+              <value>utilisateur</value>
+              <value>administrateur</value>
+            </list>
+          </property>
+        </bean>
+
+        <bean class="com.dto.AccessConfigPageDTO">
+          <description>Accès Création Contrat Occupant</description>
+          <property name="name" value="pages.contract.creation" />
+          <property name="groups">
+            <list>
+              <value>utilisateur</value>
+              <value>administrateur</value>
+            </list>
+          </property>
+        </bean>
+
+        <bean class="com.dto.AccessConfigPageDTO">
+          <description>Accès Recherche Contrat Occupant</description>
+          <property name="name" value="pages.contract.search" />
+          <property name="groups">
+            <list>
+              <value>consultation</value>
+              <value>utilisateur</value>
+              <value>administrateur</value>
+            </list>
+          </property>
+        </bean>
+
+        <bean class="com.dto.AccessConfigPageDTO">
+          <description>Accès Consultation Contrat Occupant</description>
+          <property name="name" value="pages.contract.consultation" />
+          <property name="groups">
+            <list>
+              <value>consultation</value>
+              <value>utilisateur</value>
+              <value>administrateur</value>
+            </list>
+          </property>
+        </bean>
+
+        <bean class="com.dto.AccessConfigPageDTO">
+          <description>Accès Modification Contrat Occupant</description>
+          <property name="name" value="pages.contract.modification" />
+          <property name="groups">
+            <list>
+              <value>utilisateur</value>
+              <value>administrateur</value>
+            </list>
+          </property>
+        </bean>
+
+        <bean class="com.dto.AccessConfigPageDTO">
+          <description>Accès Administration referentielle</description>
+          <property name="name" value="pages.administration.referentiel.*" />
+          <property name="groups">
+            <list>
+              <value>administrateur</value>
+            </list>
+          </property>
+        </bean>
+
+        <bean class="com.dto.AccessConfigPageDTO">
+          <description>Accès Administration Archives</description>
+          <property name="name" value="pages.administration.archive.*" />
+          <property name="groups">
+            <list>
+              <value>consultation</value>
+              <value>utilisateur</value>
+              <value>administrateur</value>
+            </list>
+          </property>
+        </bean>
+
+        <bean class="com.dto.AccessConfigPageDTO">
+          <description>Accès Administration des crons</description>
+          <property name="name" value="pages.administration.interfaces.detailcron" />
+          <property name="groups">
+            <list>
+              <value>consultation</value>
+              <value>utilisateur</value>
+              <value>administrateur</value>
+            </list>
+          </property>
+        </bean>
+
+        <bean class="com.dto.AccessConfigPageDTO">
+          <description>Accès Administration du téchargement des décomptes de loyer</description>
+          <property name="name" value="pages.administration.interfaces.pdfquittancement" />
+          <property name="groups">
+            <list>
+              <value>consultation</value>
+              <value>utilisateur</value>
+              <value>administrateur</value>
+            </list>
+          </property>
+        </bean>
+
+        <bean class="com.dto.AccessConfigPageDTO">
+          <description>Accès Administration de l'insertion manuelle des données agents</description>
+          <property name="name" value="pages.administration.interfaces.artesis" />
+          <property name="groups">
+            <list>
+              <value>administrateur</value>
+            </list>
+          </property>
+        </bean>
+
+        <bean class="com.dto.AccessConfigPageDTO">
+          <description>Accès Administration du téléchargement des fichiers ARTESIS</description>
+          <property name="name" value="pages.administration.interfaces.artesisdownloading" />
+          <property name="groups">
+            <list>
+              <value>administrateur</value>
+            </list>
+          </property>
+        </bean>
+
+        <bean class="com.dto.AccessConfigPageDTO">
+          <description>Accès Administration du téléchargement des pièces GCP</description>
+          <property name="name" value="pages.administration.interfaces.gcpdownloading" />
+          <property name="groups">
+            <list>
+              <value>administrateur</value>
+            </list>
+          </property>
+        </bean>
+      </list>
+    </property>
+  </bean>
+</beans>

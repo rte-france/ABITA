@@ -1,0 +1,73 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:fn="http://java.sun.com/jsp/jstl/functions" xmlns:p="http://primefaces.org/ui">
+<ui:composition template="/templates/site/site.xhtml">
+  <ui:define name="title">
+    <h:outputText value="#{customProperties['page.title.prefix']}#{customProperties['thirdparty.view.title']}" />
+  </ui:define>
+  <ui:define name="body-site">
+    <h2 class="center">#{customProperties['thirdparty.view.title']}</h2>
+    <h:form id="frmViewThirdParty" prependId="false" onkeypress="return event.keyCode != 13">
+      <p:fieldset legend="#{customProperties['thirdparty.creation.fieldset']}">
+        <p>
+          <h:outputText value="#{customProperties['thirdparty.field.ref']}" styleClass="label" />
+          <h:outputText value="#{thirdPartyController.thirdPartyBean.thirdPartyDTO.id}" styleClass="long_desc" />
+        </p>
+        <p>
+          <!-- Référence GCP -->
+          <h:outputText value="#{customProperties['thirdparty.field.refgcp']}" styleClass="label" />
+          <h:outputText value="#{thirdPartyController.thirdPartyBean.thirdPartyDTO.gcpReference}" styleClass="long_desc" />
+        </p>
+        <p>
+          <!-- Nom -->
+          <h:outputText value="#{customProperties['thirdparty.field.name']}" styleClass="label" />
+          <h:outputText value="#{thirdPartyController.thirdPartyBean.thirdPartyDTO.name}" styleClass="long_desc" />
+        </p>
+        <p>
+          <!-- Adresse -->
+          <h:outputText value="#{customProperties['thirdparty.field.adress']}" styleClass="label txtarea" />
+          <h:outputText value="#{thirdPartyController.thirdPartyBean.thirdPartyDTO.address}" styleClass="long_desc" />
+        </p>
+        <p>
+          <!-- Code postal -->
+          <h:outputText value="#{customProperties['thirdparty.field.cp']}" styleClass="label" />
+          <h:outputText value="#{thirdPartyController.thirdPartyBean.thirdPartyDTO.postalCode}" styleClass="long_desc" />
+        </p>
+        <p>
+          <!-- Ville -->
+          <h:outputText value="#{customProperties['thirdparty.field.city']}" styleClass="label" />
+          <h:outputText value="#{thirdPartyController.thirdPartyBean.thirdPartyDTO.city}" styleClass="long_desc" />
+        </p>
+        <p>
+          <!-- Téléphone -->
+          <h:outputText value="#{customProperties['thirdparty.field.phone']}" styleClass="label" />
+          <h:outputText value="#{thirdPartyController.thirdPartyBean.thirdPartyDTO.phone}" styleClass="long_desc" />
+        </p>
+        <p>
+          <!-- Email -->
+          <h:outputText value="#{customProperties['thirdparty.field.email']}" styleClass="label" />
+          <h:outputText value="#{thirdPartyController.thirdPartyBean.thirdPartyDTO.mailAddress}" styleClass="long_desc" />
+        </p>
+        <p>
+          <!-- Nom du bénéficiaire -->
+          <h:outputText value="#{customProperties['thirdparty.field.beneficiary.name']}" styleClass="label" />
+          <h:outputText value="#{thirdPartyController.thirdPartyBean.thirdPartyDTO.beneficiaryName}" styleClass="long_desc" />
+        </p>
+        <p>
+          <!-- Adresse du bénéficiaire -->
+          <h:outputText value="#{customProperties['thirdparty.field.beneficiary.address']}" styleClass="label txtarea" />
+          <h:outputText value="#{thirdPartyController.thirdPartyBean.thirdPartyDTO.beneficiaryAddress}" styleClass="long_desc" />
+        </p>
+      </p:fieldset>
+      <p:outputPanel layout="block" styleClass="action">
+        <p:commandButton id="btnUpdate" value="#{customProperties['thirdparty.action.update']}" action="#{thirdPartyController.redirectUpdateData}" rendered="#{security.access('utilisateur', 'administrateur')}" />
+        <p:commandButton id="btnDelete" value="#{customProperties['thirdparty.action.delete']}" onclick="confirmDelete.show();" rendered="#{security.access('administrateur') and thirdPartyController.isRemovable()}" />
+        <p:confirmDialog widgetVar="confirmDelete" message="#{customProperties['thirdparty.action.delete.confirm']}">
+          <p:commandButton value="#{customProperties['confirm.yes']}" onclick="confirmDelete.hide()" action="#{thirdPartyController.deleteData}" />
+          <p:commandButton id="confirmNoButton" type="button" value="#{customProperties['confirm.no']}" onclick="confirmDelete.hide()" />
+        </p:confirmDialog>
+      </p:outputPanel>
+    </h:form>
+  </ui:define>
+</ui:composition>
+</html>

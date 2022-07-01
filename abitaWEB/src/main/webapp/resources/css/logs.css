@@ -1,0 +1,97 @@
+@CHARSET "ISO-8859-1";
+
+/* Styles pour la consultation des logs */
+
+/* Enlève la bordure au p:panelGrid utilisé par défaut pour les filtres */
+.ui-panelgrid.no-border tr.ui-widget-content[role="row"] {
+	border: none;
+}
+.ui-panelgrid.no-border td[role="gridcell"] {
+	border: none;
+}
+
+/*
+	Centrage du bouton contenu dans la dernière ligne du p:panelGrid
+	Centrage avec "text-align: center" car les boutons sont générés sous forme de <button />
+*/
+.ui-panelgrid,.ui-datatable td[role="gridcell"].center-content {
+	text-align: center;
+}
+.ui-panelgrid.centered {
+	margin: 0 auto;
+}
+
+.ui-datatable tr.ui-widget-content[role="row"][aria-selected="false"].log-success td[role="gridcell"] {
+	background-color: #BBE2BB;
+}
+.ui-datatable tr.ui-widget-content[role="row"][aria-selected="false"].log-success.ui-state-hover td[role="gridcell"] {
+	background-color: inherit;
+}
+
+.ui-datatable tr.ui-widget-content[role="row"][aria-selected="false"].log-failure td[role="gridcell"] {
+	background-color: #F5A9A9;
+}
+.ui-datatable tr.ui-widget-content[role="row"][aria-selected="false"].log-failure.ui-state-hover td[role="gridcell"] {
+	background-color: inherit;
+}
+
+.ui-datatable tr.ui-widget-content[role="row"][aria-selected="false"].log-undefined td[role="gridcell"] {
+	background-color: #D4D4D4;
+}
+.ui-datatable tr.ui-widget-content[role="row"][aria-selected="false"].log-undefined.ui-state-hover td[role="gridcell"] {
+	background-color: inherit;
+}
+
+.ui-datatable tr.ui-widget-content[role="row"][aria-selected="false"].log-unstable td[role="gridcell"] {
+	background-color: #FFF18E;
+}
+.ui-datatable tr.ui-widget-content[role="row"][aria-selected="false"].log-unstable.ui-state-hover td[role="gridcell"] {
+	background-color: inherit;
+}
+
+#logsList\:list tbody.ui-datatable-data-empty td {
+	text-align: center;
+	font-size: 1.5em;
+	font-weight: bold;
+}
+
+#dialogForm\:table tbody.ui-datatable-data-empty td {
+	text-align: center;
+	font-size: 1.5em;
+	font-weight: bold;
+}
+
+.ui-datatable tr.ui-widget-content[role="row"].log-message-info td[role="gridcell"] {
+	background-color: #FFF3B2;
+}
+.ui-datatable tr.ui-widget-content[role="row"].log-message-info:hover td[role="gridcell"] {
+	background-color: inherit;
+}
+.ui-datatable tr.ui-widget-content[role="row"].log-message-warning td[role="gridcell"] {
+	background-color: #FFD491;
+}
+.ui-datatable tr.ui-widget-content[role="row"].log-message-warning:hover td[role="gridcell"] {
+	background-color: inherit;
+}
+.ui-datatable tr.ui-widget-content[role="row"].log-message-error td[role="gridcell"] {
+	background-color: #FFA0A8;
+}
+.ui-datatable tr.ui-widget-content[role="row"].log-message-error:hover td[role="gridcell"] {
+	background-color: inherit;
+}
+
+/* espace entre la table et le bord de l'écran */
+.ui-datatable.padded {
+	padding-left: 20px;
+	padding-right: 20px;
+}
+
+#logsList\:table\:colum_header_origin select.ui-column-filter {
+	width: 70%;
+	min-width: 150px;
+}
+
+#logsList\:table\:colum_header_title input.ui-column-filter {
+	width: 70%;
+	min-width: 150px;
+}

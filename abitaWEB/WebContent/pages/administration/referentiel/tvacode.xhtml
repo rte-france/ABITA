@@ -1,0 +1,71 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:fn="http://java.sun.com/jsp/jstl/functions" xmlns:p="http://primefaces.org/ui">
+<ui:composition template="/templates/site/site.xhtml">
+  <ui:define name="title">
+    <h:outputText value="#{customProperties['page.title.prefix']}#{customProperties['administration.referentiel.tvacode.title']}" />
+  </ui:define>
+  <ui:define name="body-site">
+    <h2 class="center">#{customProperties['administration.referentiel.tvacode.title']}</h2>
+    <h:form id="frmRefTvaCode" prependId="false" onkeypress="return event.keyCode != 13">
+      <p:outputPanel layout="block" id="tvaCodeListing">
+        <!-- Permet de désactiver l'action par défaut de la touche "Entrée" (Mantis 35) -->
+        <!-- Voir issue : https://code.google.com/p/primefaces/issues/detail?id=4204 -->
+        <p:commandButton style="display: none;" process="@none" update="@none" ajax="true" />
+        <p:dataTable id="tvaCodeDt" var="tvaCodeRow" value="#{tvaCodeController.tvaCodeBean.lstTvaCode}" editable="true" emptyMessage="#{customProperties['no.data']}" sortBy="#{tvaCodeRow.code}" paginator="true" paginatorAlwaysVisible="false" paginatorPosition="bottom" rows="10" rowsPerPageTemplate="15, 20, 25" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+          <!-- Titre du tableau -->
+          <f:facet name="header">
+            <h:outputText value="#{customProperties['administration.referentiel.tvacode.datatable.title']}" />
+          </f:facet>
+          <!-- Code -->
+          <p:column headerText="#{customProperties['administration.referentiel.tvacode.data.code']}">
+            <h:outputText value="#{tvaCodeRow.code}" />
+          </p:column>
+          <!-- Libellé -->
+          <p:column headerText="#{customProperties['administration.referentiel.tvacode.data.label']}">
+            <p:cellEditor>
+              <f:facet name="output">
+                <h:outputText value="#{tvaCodeRow.label}" />
+              </f:facet>
+              <f:facet name="input">
+                <p:inputText value="#{tvaCodeRow.label}" maxlength="250" required="true" requiredMessage="#{customProperties['administration.referentiel.tvacode.error.label']}" />
+              </f:facet>
+            </p:cellEditor>
+          </p:column>
+          <!-- Actions -->
+          <p:column headerText="#{customProperties['administration.referentiel.tvacode.column.action']}" styleClass="action_column">
+            <p:rowEditor id="btnModify" />
+          </p:column>
+        </p:dataTable>
+      </p:outputPanel>
+      <p:fieldset legend="#{customProperties['administration.referentiel.tvacode.fieldset']}">
+        <p class="info_required">
+          Les champs suivis de <span class="mandatory">*</span> sont obligatoires.
+        </p>
+        <p>
+          <!-- Code -->
+          <h:outputLabel for="code" value="#{customProperties['administration.referentiel.tvacode.data.code']}" styleClass="label">
+            <span class="mandatory">*</span>
+          </h:outputLabel>
+          <p:inputText id="code" value="#{tvaCodeController.tvaCodeBean.tvaCode.code}" maxlength="2" label="#{customProperties['administration.referentiel.tvacode.data.code']}" required="true" requiredMessage="#{customProperties['administration.referentiel.tvacode.error.code']}" />
+        </p>
+        <p>
+          <!-- Libellé -->
+          <h:outputLabel for="label" value="#{customProperties['administration.referentiel.tvacode.data.label']}" styleClass="label">
+            <span class="mandatory">*</span>
+          </h:outputLabel>
+          <p:inputText id="label" value="#{tvaCodeController.tvaCodeBean.tvaCode.label}" maxlength="250" required="true" requiredMessage="#{customProperties['administration.referentiel.tvacode.error.label']}" />
+        </p>
+        <p>
+          <!-- Bouton Ajouter -->
+          <p:commandButton id="btnAdd" value="#{customProperties['administration.referentiel.tvacode.action.add']}" actionListener="#{tvaCodeController.addTvaCodeToList}" update=":messages code label tvaCodeListing" />
+        </p>
+      </p:fieldset>
+      <p:outputPanel layout="block" styleClass="action">
+        <p:commandButton id="btnValidate" value="#{customProperties['common.action.save']}" actionListener="#{tvaCodeController.saveData}" immediate="true" update=":messages" />
+        <p:commandButton id="btnCancel" value="#{customProperties['common.action.cancel']}" action="welcome" immediate="true" />
+      </p:outputPanel>
+    </h:form>
+  </ui:define>
+</ui:composition>
+</html>

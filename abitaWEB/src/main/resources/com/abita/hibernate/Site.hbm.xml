@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+<hibernate-mapping package="com.abita.dao.site.entity">
+  <class name="com.abita.dao.site.entity.SiteEntity" table="SITE">
+    <id name="id" type="java.lang.Long" column="SIT_ID">
+      <generator class="sequence">
+        <param name="sequence">SEQ_SITE</param>
+      </generator>
+    </id>
+    <property name="name" column="SIT_NAME" type="java.lang.String"/>
+    <many-to-one name="agency" class="com.abita.dao.agency.entity.AgencyEntity" column="AGC_ID"/>
+  </class>
+
+  <sql-query name="findAllSites">
+    <return alias="SIT" class="com.abita.dao.site.entity.SiteEntity"/>
+    <return-scalar column="NBHOU" type="integer"/>
+    SELECT SIT.*, COUNT(HOU.SIT_ID) AS NBHOU
+    FROM SITE SIT
+    LEFT OUTER JOIN
+    HOUSING HOU
+    ON HOU.SIT_ID = SIT.SIT_ID
+    GROUP BY SIT.SIT_ID,
+    SIT.SIT_NAME,
+    SIT.AGC_ID
+  </sql-query>
+
+  <query name="findSitesByAgency">
+    <![CDATA[ select sit from SiteEntity sit where sit.agency = :idAgency ]]>
+  </query>
+
+</hibernate-mapping>

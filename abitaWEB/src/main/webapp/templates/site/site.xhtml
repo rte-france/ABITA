@@ -1,0 +1,90 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui">
+	<h:head>
+		<title><ui:insert name="title">
+				<h:outputText value="#{siteViewController.siteName}" />
+			</ui:insert> <ui:insert name="title-site"></ui:insert></title>
+	
+		<h:outputStylesheet library="css" name="styles.css" />
+		
+		<!-- Inclusion du fichier javascript pour la gestion des indicateurs -->
+		<h:outputScript library="javascript" name="specificApplication.js" />
+		<h:outputScript library="javascript" name="fwkAudit.js" />
+		<h:outputScript library="javascript" name="localeFR.js" />
+		<h:outputScript library="javascript" name="frameworkUI.js" />
+		<h:outputScript library="javascript" name="detect-ie10.js" />
+		<h:outputScript library="javascript" name="pf.widget.fileupload.js" />
+		
+		<meta http-equiv="expires" content="0" />
+		<meta http-equiv="cache-control" content="no-cache" />
+		<meta http-equiv="pragma" content="no-cache" />
+	</h:head>
+	
+	<h:body style="height:100%;">
+		<div id="container">
+		
+			<div id="header" class="fondRTE">
+				<ui:insert name="header">
+					<ui:include src="/templates/site/includes/header.xhtml" />
+				</ui:insert>
+			</div>
+	
+			<div id="mainmenu">
+				<ui:insert name="menu">
+					<ui:include src="/templates/site/includes/menu.xhtml" />
+				</ui:insert>
+			</div>
+	
+			<div id="wrap">
+				<p:messages id="messages" />
+				<ui:insert name="body-site">
+				</ui:insert>
+				<p:ajaxStatus>
+					<f:facet name="start">
+						<p:graphicImage value="#{resource['images:wait.gif']}" width="30px" />
+					</f:facet>
+					<f:facet name="error">
+	            		<h:outputText value="#{site['site.global.error']}" />
+			        </f:facet>
+					<f:facet name="complete">
+						<h:outputText value="" />
+	 				</f:facet>
+				</p:ajaxStatus>
+			</div>
+	
+			<div class="clearingdiv">&nbsp;</div>
+			<c:if test="#{layoutViewController.ajaxConsoleEnabled}">
+				<div id="ajax console">
+					<div
+						style="border: 1px solid darkblue; padding: 5px; overflow: auto; font-size: 9px; height: 150px; width: 500px;"
+						id="logConsole" />
+				</div>
+			</c:if>
+			<h:form>
+				<!--  Si un utilisateur est loggé, on met en place idleMonitor permettant de gérer le timeout -->
+				<c:if test="#{!security.logoutStatus and siteViewController.timeout!=0 }">
+			
+					<p:idleMonitor timeout="#{siteViewController.timeout}"  >
+						<p:ajax event="idle" listener="#{siteViewController.timeoutListener}" oncomplete="idleDialog.show()" />
+					</p:idleMonitor>
+					<p:dialog header="#{access['disconnected.title']}" resizable="false"  
+					            widgetVar="idleDialog" modal="true" width="400" >  
+					   <h:panelGrid id="idlePanelGrid" columns="1">
+					    	<h:outputText value="#{access['disconnected']}" /> 
+					    
+					    	<p:commandButton value="#{access['disconnected.button']}" onclick="window.location.reload();" 
+					    		oncomplete="idleDialog.hide()" />
+					    	
+					    </h:panelGrid>
+					    <p:ajax event="close" oncomplete="window.location.reload();" />
+					</p:dialog>  
+				</c:if>
+			</h:form>
+		</div>
+	</h:body>
+</html>

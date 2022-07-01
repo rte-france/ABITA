@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.dao.actionlogs.entity.ActionLogMessage" table="FWK_ACTION_LOG_MESSAGE">
+		<id column="ALM_ID" type="java.lang.Long" name="id" unsaved-value="null">
+			<generator class="sequence">
+				<param name="sequence">SEQ_ALM_ID</param>
+			</generator>
+		</id>
+
+		<property name="date" type="java.sql.Timestamp">
+			<column name="ALM_DATE" />
+		</property>
+
+		<property name="message" type="java.lang.String">
+			<column name="ALM_MESSAGE" length="255" />
+		</property>
+
+		<property name="severity" type="java.lang.String">
+			<column name="ALM_SEVERITY" />
+		</property>
+	</class>
+</hibernate-mapping>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+<hibernate-mapping package="com.abita.dao.historybenefits.entity">
+  <class name="com.abita.dao.historybenefits.entity.HistoryBenefitsEntity" table="HISTORY_BENEFITS">
+    <id name="id" type="java.lang.Long" column="HBE_ID">
+      <generator class="sequence">
+        <param name="sequence">SEQ_HISTORY_BENEFITS</param>
+      </generator>
+    </id>
+    <property name="benefitsId" column="BLE_ID" type="java.lang.Long" />
+    <property name="month" column="HBE_MONTH" type="java.lang.Integer" />
+    <property name="year" column="HBE_YEAR" type="java.lang.Integer" />
+    <property name="minimumThreshold" column="HBE_MINIMUM_THRESHOLD" type="java.math.BigDecimal" />
+    <property name="benefitForOneRoom" column="HBE_BENEFITS_ONE_ROOM" type="java.math.BigDecimal" />
+    <property name="benefitForManyRooms" column="HBE_BENEFITS_MANY_ROOMS" type="java.math.BigDecimal" />
+    <property name="temp" column="HBE_TEMP" type="java.lang.Boolean" />
+  </class>
+
+  <query name="deleteOldBenefits">DELETE FROM HistoryBenefitsEntity hbe WHERE hbe.month &lt; :month AND hbe.year &lt;= :year OR hbe.year &lt; :year OR hbe.temp is true</query>
+
+  <query name="findHistoryBenefits">SELECT hbe FROM HistoryBenefitsEntity hbe WHERE hbe.month = :month AND hbe.year= :year</query>
+
+</hibernate-mapping>

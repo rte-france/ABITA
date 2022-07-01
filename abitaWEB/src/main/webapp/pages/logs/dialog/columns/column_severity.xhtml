@@ -1,0 +1,11 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+	<ui:composition>
+		<p:column headerText="#{logs['fwk.logs.dialog.table.column.severity']}" sortFunction="#{controller.onSeverityColumnSort(message.severity)}"
+			filterBy="#{message.severity}" filterMatchMode="exact" filterOptions="#{bean.severityFilterList}">
+			#{controller.getSeverityLabel(message.severity)}
+		</p:column>
+	</ui:composition>
+</html>

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p" xmlns:util="http://www.springframework.org/schema/util" xmlns:batch="http://www.springframework.org/schema/batch" xmlns="http://www.springframework.org/schema/beans" xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx" xmlns:context="http://www.springframework.org/schema/context" xmlns:task="http://www.springframework.org/schema/task"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+						http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch-3.0.xsd
+      					http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+      					http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
+      					http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+      					http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+
+  <!-- RUNNER -->
+  <bean id="aggregateAndSendRunner" class="com.abita.services.batch.RunScheduledBatch">
+    <property name="label" value="${gcp.aggregateandsent.name}" />
+    <property name="jobLauncher" ref="jobLauncher" />
+    <property name="job" ref="aggregateAndSendJob" />
+  </bean>
+
+  <batch:job id="aggregateAndSendJob">
+    <batch:step id="ass_1" parent="stepAggregation"></batch:step>
+  </batch:job>
+
+  <batch:step id="stepAggregation">
+    <batch:tasklet>
+      <batch:chunk reader="GCPAggregateReader" writer="GCPAggregateWriter" chunk-completion-policy="completionPolicy" />
+    </batch:tasklet>
+  </batch:step>
+
+  <bean id="GCPAggregateReader" class="com.abita.dao.batch.gcp.reader.GCPAggregateReader" scope="step">
+    <property name="parameterService" ref="parameterService" />
+    <property name="delegate">
+      <bean class="org.springframework.batch.item.file.MultiResourceItemReader">
+        <property name="delegate">
+          <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+            <property name="lineMapper">
+              <bean class="org.springframework.batch.item.file.mapping.PassThroughLineMapper" />
+            </property>
+            <property name="encoding" value="${batch.encoding}" />
+          </bean>
+        </property>
+      </bean>
+    </property>
+    <property name="filenameKey">
+      <util:constant static-field="com.abita.dao.batch.constant.BatchConstants.BATCH_GCP_TEMP_PATH" />
+    </property>
+    <property name="jobInstanceId" value="#{jobParameters['dateId']}" />
+  </bean>
+
+  <bean id="GCPAggregateWriter" class="com.abita.dao.batch.gcp.writer.GCPAggregateWriter" scope="step">
+    <property name="parameterService" ref="parameterService" />
+    <property name="filePart" value="${gcp.yl_zn.filepart}" />
+    <property name="delegate">
+      <bean class="org.springframework.batch.item.file.FlatFileItemWriter">
+        <property name="lineAggregator">
+          <bean class="org.springframework.batch.item.file.transform.PassThroughLineAggregator" />
+        </property>
+        <property name="encoding" value="${batch.encoding}" />
+      </bean>
+    </property>
+    <property name="filenameKey">
+      <util:constant static-field="com.abita.dao.batch.constant.BatchConstants.BATCH_GCP_TEMP_FILE_NAME" />
+    </property>
+  </bean>
+
+</beans>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.springframework.org/schema/beans" xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx" xmlns:context="http://www.springframework.org/schema/context" xmlns:task="http://www.springframework.org/schema/task" xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+      					http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+      					http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+      					http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+      					http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.0.xsd">
+
+  <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+    <property name="triggers">
+      <list>
+        <ref bean="startupSimpleTrigger" />
+      </list>
+    </property>
+  </bean>
+
+  <!-- replace SimpleTriggerBean by SimpleTriggerFactoryBean -->
+  <bean id="startupSimpleTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerFactoryBean">
+    <property name="jobDetail" ref="initSchedulerJobDetail" />
+    <property name="startDelay" value="60000" /><!-- 1 min. -->
+    <property name="repeatCount" value="0" />
+  </bean>
+
+  <bean id="initSchedulerJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+    <property name="targetObject" ref="initSchedulerTask" />
+    <property name="targetMethod" value="process" />
+    <property name="concurrent" value="false" />
+  </bean>
+
+  <bean id="initSchedulerTask" class="com.abita.services.jobs.task.impl.InitDynamicSchedulerTaskImpl">
+    <property name="detailCronService" ref="detailCronService" />
+  </bean>
+
+  <!-- Configuration du schéduler -->
+  <task:scheduler id="myScheduler" pool-size="10" />
+
+  <!-- Configuration des taches à exécuter -->
+  <task:scheduled-tasks scheduler="myScheduler">
+    <task:scheduled ref="updateServiceFacade" method="updateData" cron="0 5 0 1 * ?" />
+    <task:scheduled ref="updateServiceFacade" method="updateCalculatedAmountContractData" cron="0 10 0 1 * ?" />
+    <task:scheduled ref="detailCronService" method="updateAutomaticForANewMonth" cron="0 15 0 1 * ?" />
+  </task:scheduled-tasks>
+
+</beans>

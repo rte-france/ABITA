@@ -1,0 +1,1 @@
+-- Premier script d'exemple, laissé vide

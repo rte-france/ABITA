@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p" xmlns:util="http://www.springframework.org/schema/util" xmlns:batch="http://www.springframework.org/schema/batch" xmlns="http://www.springframework.org/schema/beans" xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx" xmlns:context="http://www.springframework.org/schema/context" xmlns:task="http://www.springframework.org/schema/task"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+						http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch-3.0.xsd
+      					http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+      					http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
+      					http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+      					http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+
+  <!-- RUNNER -->
+  <bean id="gcpReadAndSendRunner" class="com.abita.services.batch.RunScheduledBatch">
+    <property name="label" value="${gcp.readandsend.name}" />
+    <property name="jobLauncher" ref="jobLauncher" />
+    <property name="job" ref="readAndSendJob" />
+  </bean>
+
+  <batch:job id="readAndSendJob">
+    <batch:step id="ras_1" next="ras_2">
+      <batch:tasklet>
+        <batch:chunk reader="ylZnReadAndSendReader" writer="ylZnReadAndSendWriter" chunk-completion-policy="completionPolicy" />
+      </batch:tasklet>
+    </batch:step>
+    <batch:step id="ras_2" next="ras_3">
+      <batch:tasklet>
+        <batch:chunk reader="ncReadAndSendReader" writer="ncReadAndSendWriter" chunk-completion-policy="completionPolicy" />
+      </batch:tasklet>
+    </batch:step>
+    <batch:step id="ras_3">
+      <batch:tasklet>
+        <batch:chunk reader="ntReadAndSendReader" writer="ntReadAndSendWriter" chunk-completion-policy="completionPolicy" />
+      </batch:tasklet>
+    </batch:step>
+  </batch:job>
+
+  <bean class="com.abita.dao.batch.gcp.reader.GCPYlZnFlatFileReader" id="ylZnReadAndSendReader" scope="step">
+    <property name="filenameKey">
+      <util:constant static-field="com.abita.dao.batch.constant.BatchConstants.BATCH_GCP_ARCHIVE_PATH" />
+    </property>
+    <property name="parameterService" ref="parameterService" />
+    <property name="lineMapper" ref="ylZnLineMapper" />
+    <property name="lineTokenizer" ref="gcpFlatFileTokenizer" />
+    <property name="encoding" value="${batch.encoding}" />
+  </bean>
+
+  <bean class="com.abita.dao.batch.gcp.writer.GCPYlZnReadAndSendWriter" id="ylZnReadAndSendWriter">
+    <property name="historyReportingService" ref="historyReportingService" />
+  </bean>
+
+  <bean class="com.abita.dao.batch.gcp.reader.GCPNcFlatFileReader" id="ncReadAndSendReader" scope="step">
+    <property name="filenameKey">
+      <util:constant static-field="com.abita.dao.batch.constant.BatchConstants.BATCH_GCP_ARCHIVE_PATH" />
+    </property>
+    <property name="parameterService" ref="parameterService" />
+    <property name="lineMapper" ref="ncLineMapper" />
+    <property name="lineTokenizer" ref="gcpFlatFileTokenizer" />
+    <property name="encoding" value="${batch.encoding}" />
+  </bean>
+
+  <bean class="com.abita.dao.batch.gcp.writer.GCPNcReadAndSendWriter" id="ncReadAndSendWriter">
+    <property name="historyReportingService" ref="historyReportingService" />
+  </bean>
+
+  <bean class="com.abita.dao.batch.gcp.reader.GCPNtFlatFileReader" id="ntReadAndSendReader" scope="step">
+    <property name="filenameKey">
+      <util:constant static-field="com.abita.dao.batch.constant.BatchConstants.BATCH_GCP_ARCHIVE_PATH" />
+    </property>
+    <property name="parameterService" ref="parameterService" />
+    <property name="lineMapper" ref="ntLineMapper" />
+    <property name="lineTokenizer" ref="gcpFlatFileTokenizer" />
+    <property name="encoding" value="${batch.encoding}" />
+  </bean>
+
+  <bean class="com.abita.dao.batch.gcp.writer.GCPNtReadAndSendWriter" id="ntReadAndSendWriter">
+    <property name="historyReportingService" ref="historyReportingService" />
+  </bean>
+
+  <bean id="ylZnReadAndSendFieldSetMapper" class="com.abita.dao.batch.gcp.fieldsetmapper.YlZnReadAndSendFieldSetMapper" />
+
+  <bean id="ncReadAndSendFieldSetMapper" class="com.abita.dao.batch.gcp.fieldsetmapper.NcReadAndSendFieldSetMapper" />
+
+  <bean id="ntReadAndSendFieldSetMapper" class="com.abita.dao.batch.gcp.fieldsetmapper.NtReadAndSendFieldSetMapper" />
+
+  <bean id="gcpFlatFileTokenizer" class="org.springframework.batch.item.file.transform.PatternMatchingCompositeLineTokenizer">
+    <property name="tokenizers">
+      <map>
+        <entry key="1*" value-ref="gcpHeaderLineTokenizer" />
+        <entry key="2*" value-ref="gcpDetailsLineTokenizer" />
+      </map>
+    </property>
+  </bean>
+
+  <bean id="gcpHeaderLineTokenizer" class="org.springframework.batch.item.file.transform.FixedLengthTokenizer">
+    <property name="names" value="${gcp.header.names}" />
+    <property name="columns" value="${gcp.header.columns}" />
+  </bean>
+
+  <bean id="gcpDetailsLineTokenizer" class="org.springframework.batch.item.file.transform.FixedLengthTokenizer">
+    <property name="names" value="${gcp.details.names}" />
+    <property name="columns" value="${gcp.details.columns}" />
+  </bean>
+
+  <bean id="ylZnLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+    <property name="lineTokenizer" ref="gcpFlatFileTokenizer" />
+    <property name="fieldSetMapper" ref="ylZnReadAndSendFieldSetMapper" />
+  </bean>
+
+  <bean id="ncLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+    <property name="lineTokenizer" ref="gcpFlatFileTokenizer" />
+    <property name="fieldSetMapper" ref="ncReadAndSendFieldSetMapper" />
+  </bean>
+
+  <bean id="ntLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+    <property name="lineTokenizer" ref="gcpFlatFileTokenizer" />
+    <property name="fieldSetMapper" ref="ntReadAndSendFieldSetMapper" />
+  </bean>
+
+
+
+</beans>

@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns="http://www.springframework.org/schema/beans" xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx" xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+      					http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+      					http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+      					http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+  <!-- - - - - - - - - - - - - -->
+  <!-- Services -->
+  <!-- - - - - - - - - - - - - -->
+  <bean id="extendedUserService" class="com.abita.services.extendeduser.impl.ExtendedUserServiceImpl">
+    <property name="mapper" ref="dozerMapper" />
+    <property name="extendedUserDAO" ref="extendedUserDAO" />
+  </bean>
+
+  <bean id="abstractArchivesService" abstract="true">
+    <property name="parameterService" ref="parameterService" />
+  </bean>
+
+  <bean id="archivesThirdPartyService" class="com.abita.services.jobs.archives.impl.ArchivesThirdPartyService" parent="abstractArchivesService">
+    <property name="thirdPartyDAO" ref="thirdPartyDAO" />
+  </bean>
+
+  <bean id="archivesHousingService" class="com.abita.services.jobs.archives.impl.ArchivesHousingService" parent="abstractArchivesService">
+    <property name="housingDAO" ref="housingDAO" />
+  </bean>
+
+  <bean id="archivesThirdPartyContractService" class="com.abita.services.jobs.archives.impl.ArchivesThirdPartyContractService" parent="abstractArchivesService">
+    <property name="thirdPartyContractDAO" ref="thirdPartyContractDAO" />
+  </bean>
+
+  <bean id="archivesTenantService" class="com.abita.services.jobs.archives.impl.ArchivesTenantService" parent="abstractArchivesService">
+    <property name="tenantDAO" ref="tenantDAO" />
+  </bean>
+
+  <bean id="archivesContractService" class="com.abita.services.jobs.archives.impl.ArchivesContractService" parent="abstractArchivesService">
+    <property name="contractDAO" ref="contractDAO" />
+  </bean>
+
+  <bean id="costcenterService" class="com.abita.services.costcenter.impl.CostCenterServiceImpl">
+    <property name="mapper" ref="dozerMapper" />
+    <property name="costcenterDAO" ref="costcenterDAO" />
+  </bean>
+
+  <bean id="accountingCodeService" class="com.abita.services.accountingcode.impl.AccountingCodeServiceImpl">
+    <property name="mapper" ref="dozerMapper" />
+    <property name="accountingCodeDAO" ref="accountingCodeDAO" />
+  </bean>
+
+  <bean id="fieldOfActivityService" class="com.abita.services.fieldofactivity.impl.FieldOfActivityServiceImpl">
+    <property name="mapper" ref="dozerMapper" />
+    <property name="fieldOfActivityDAO" ref="fieldOfActivityDAO" />
+  </bean>
+
+  <bean id="benefitService" class="com.abita.services.benefit.impl.BenefitServiceImpl">
+    <property name="mapper" ref="dozerMapper" />
+    <property name="benefitDAO" ref="benefitDAO" />
+  </bean>
+
+  <bean id="housingNatureService" class="com.abita.services.housingnature.impl.HousingNatureServiceImpl">
+    <property name="mapper" ref="dozerMapper" />
+    <property name="housingNatureDAO" ref="housingNatureDAO" />
+  </bean>
+
+  <bean id="sanitationService" class="com.abita.services.sanitation.impl.SanitationServiceImpl">
+    <property name="mapper" ref="dozerMapper" />
+    <property name="sanitationDAO" ref="sanitationDAO" />
+  </bean>
+
+  <bean id="airconditionerService" class="com.abita.services.airconditioner.impl.AirconditionerServiceImpl">
+    <property name="mapper" ref="dozerMapper" />
+    <property name="airconditionerDAO" ref="airconditionerDAO" />
+  </bean>
+
+  <bean id="heatingTypeService" class="com.abita.services.heatingtype.impl.HeatingTypeServiceImpl">
+    <property name="mapper" ref="dozerMapper" />
+    <property name="heatingTypeDAO" ref="heatingTypeDAO" />
+  </bean>
+
+  <bean id="roomCategoryService" class="com.abita.services.roomcategory.impl.RoomCategoryServiceImpl">
+    <property name="mapper" ref="dozerMapper" />
+    <property name="roomCategoryDAO" ref="roomCategoryDAO" />
+  </bean>
+
+  <bean id="thirdPartyService" class="com.abita.services.thirdparty.impl.ThirdPartyServiceImpl">
+    <property name="mapper" ref="dozerMapper" />
+    <property name="thirdPartyDAO" ref="thirdPartyDAO" />
+  </bean>
+
+  <bean id="housingServiceFacade" class="com.abita.services.housing.impl.HousingServiceFacadeImpl">
+    <property name="mapper" ref="dozerMapper" />
+    <property name="housingDAO" ref="housingDAO" />
+    <property name="historyHousingService" ref="historyHousingService" />
+    <property name="contractServiceFacade" ref="contractServiceFacade" />
+  </bean>
+
+  <bean id="paymentCycleService" class="com.abita.services.paymentcycle.impl.PaymentCycleServiceImpl">
+    <property name="mapper" ref="dozerMapper" />
+    <property name="paymentCycleDAO" ref="paymentCycleDAO" />
+  </bean>
+
+  <bean id="thirdPartyTerminationService" class="com.abita.services.thirdpartytermination.impl.ThirdPartyTerminationServiceImpl">
+    <property name="mapper" ref="dozerMapper" />
+    <property name="thirdPartyTerminationDAO" ref="thirdPartyTerminationDAO" />
+  </bean>
+
+  <bean id="thirdPartyContractServiceFacade" class="com.abita.services.thirdpartycontract.impl.ThirdPartyContractServiceFacadeImpl">
+    <property name="mapper" ref="dozerMapper" />
+    <property name="thirdPartyContractDAO" ref="thirdPartyContractDAO" />
+    <property name="ylZnAccountingDocNumberService" ref="ylZnAccountingDocNumberService" />
+    <property name="housingServiceFacade" ref="housingServiceFacade" />
+    <property name="detailCronService" ref="detailCronService" />
+    <property name="revisionThirdPartyContractService" ref="revisionThirdPartyContractService" />
+  </bean>
+
+  <bean id="revisionThirdPartyContractService" class="com.abita.services.revisionthirdpartycontract.impl.RevisionThirdPartyContractServiceImpl">
+    <property name="mapper" ref="dozerMapper" />
+    <property name="revisionThirdPartyContractDAO" ref="revisionThirdPartyContractDAO" />
+  </bean>
+
+  <bean id="typeTenantService" class="com.abita.services.typetenant.impl.TypeTenantServiceImpl">
+    <property name="mapper" ref="dozerMapper" />
+    <property name="typeTenantDAO" ref="typeTenantDAO" />
+  </bean>
+
+  <bean id="tenantServiceFacade" class="com.abita.services.tenant.impl.TenantServiceFacadeImpl">
+    <property name="mapper" ref="dozerMapper" />
+    <property name="tenantDAO" ref="tenantDAO" />
+    <property name="historyTenantService" ref="historyTenantService" />
+  </bean>
+
+  <bean id="terminationService" class="com.abita.services.termination.impl.TerminationServiceImpl">
+    <property name="mapper" ref="dozerMapper" />
+    <property name="terminationDAO" ref="terminationDAO" />
+  </bean>
+
+  <bean id="fieldService" class="com.abita.services.field.impl.FieldServiceImpl">
+    <property name="mapper" ref="dozerMapper" />
+    <property name="fieldDAO" ref="fieldDAO" />
+  </bean>
+
+  <bean id="paymentMethodService" class="com.abita.services.paymentmethod.impl.PaymentMethodServiceImpl">
+    <property name="mapper" ref="dozerMapper" />
+    <property name="paymentMethodDAO" ref="paymentMethodDAO" />
+  </bean>
+
+  <bean id="rentTypologyService" class="com.abita.services.renttypology.impl.RentTypologyServiceImpl">
+    <property name="mapper" ref="dozerMapper" />
+    <property name="rentTypologyDAO" ref="rentTypologyDAO" />
+  </bean>
+
+  <bean id="contractServiceFacade" class="com.abita.services.contract.impl.ContractServiceFacadeImpl">
+    <property name="mapper" ref="dozerMapper" />
+    <property name="contractCalculationsServiceFacade" ref="contractCalculationsServiceFacade" />
+    <property name="historyContractServiceFacade" ref="historyContractServiceFacade" />
+    <property name="contractDAO" ref="contractDAO" />
+    <property name="detailCronService" ref="detailCronService" />
+    <property name="historyAmountService" ref="historyAmountService" />
+    <property name="ncNtAccountingDocNumberService" ref="ncNtAccountingDocNumberService" />
+  </bean>
+
+  <bean id="contractCalculationsServiceFacade" class="com.abita.services.contract.impl.ContractCalculationsServiceFacadeImpl">
+    <property name="mapper" ref="dozerMapper" />
+    <property name="historyContractServiceFacade" ref="historyContractServiceFacade" />
+  </bean>
+
+  <bean id="tvaCodeService" class="com.abita.services.tvacode.impl.TvaCodeServiceImpl">
+    <property name="mapper" ref="dozerMapper" />
+    <property name="tvaCodeDAO" ref="tvaCodeDAO" />
+  </bean>
+
+  <bean id="historyAmountService" class="com.abita.services.historyamount.impl.HistoryAmountServiceImpl">
+    <property name="mapper" ref="dozerMapper" />
+    <property name="historyAmountDAO" ref="historyAmountDAO" />
+  </bean>
+
+  <bean id="historyContractServiceFacade" class="com.abita.services.historycontract.impl.HistoryContractServiceFacadeImpl">
+    <property name="mapper" ref="dozerMapper" />
+    <property name="historyContractDAO" ref="historyContractDAO" />
+    <property name="contractServiceFacade" ref="contractServiceFacade" />
+    <property name="historyHousingService" ref="historyHousingService" />
+    <property name="historyTenantService" ref="historyTenantService" />
+    <property name="historyBenefitsService" ref="historyBenefitsService" />
+    <property name="detailCronService" ref="detailCronService" />
+  </bean>
+
+  <bean id="historyHousingService" class="com.abita.services.historyhousing.impl.HistoryHousingServiceImpl">
+    <property name="mapper" ref="dozerMapper" />
+    <property name="historyHousingDAO" ref="historyHousingDAO" />
+  </bean>
+
+  <bean id="historyTenantService" class="com.abita.services.historytenant.impl.HistoryTenantServiceImpl">
+    <property name="mapper" ref="dozerMapper" />
+    <property name="historyTenantDAO" ref="historyTenantDAO" />
+  </bean>
+
+  <bean id="historyBenefitsService" class="com.abita.services.historybenefits.impl.HistoryBenefitsServiceImpl">
+    <property name="mapper" ref="dozerMapper" />
+    <property name="historyBenefitsDAO" ref="historyBenefitsDAO" />
+  </bean>
+
+  <bean id="historyReportingService" class="com.abita.services.historyreporting.impl.HistoryReportingServiceImpl">
+    <property name="mapper" ref="dozerMapper" />
+    <property name="historyReportingDAO" ref="historyReportingDAO" />
+  </bean>
+
+  <bean id="reportingServiceFacade" class="com.abita.services.jobs.reporting.impl.ReportingServiceFacadeImpl">
+    <property name="mailService" ref="mailService" />
+    <property name="parameterService" ref="parameterService" />
+    <property name="historyReportingService" ref="historyReportingService" />
+  </bean>
+
+  <bean id="detailCronService" class="com.abita.services.detailcron.impl.DetailCronServiceImpl">
+    <property name="mapper" ref="dozerMapper" />
+    <property name="detailCronDAO" ref="detailCronDAO" />
+    <property name="ylRunner" ref="YLZNRunner" />
+    <property name="thirdPartyTreatmentsRunner" ref="thirdPartyTreatmentsRunner" />
+    <property name="ncRunner" ref="NCRunner" />
+    <property name="ntRunner" ref="NTRunner" />
+    <property name="nniRunner" ref="NNIRunner" />
+    <property name="agentDataRunner" ref="agentDataRunner" />
+    <property name="retainedSalaryAndQuittancementRunner" ref="retainedSalaryAndQuittancementRunner" />
+    <property name="benefitsRunner" ref="benefitsRunner" />
+    <property name="tenantTreatmentsRunner" ref="tenantTreatmentsRunner" />
+    <property name="deleteOldDatasRunner" ref="deleteOldDatasRunner" />
+    <property name="historizeNewContractsInProgressRunner" ref="historizeNewContractsInProgressRunner" />
+    <property name="updateContractDataRetroactivityRunner" ref="updateContractDataRetroactivityRunner" />
+    <property name="historizeContractRunner" ref="historizeContractRunner" />
+    <property name="historizeHousingRunner" ref="historizeHousingRunner" />
+    <property name="historizeTenantRunner" ref="historizeTenantRunner" />
+    <property name="historizeBenefitsRunner" ref="historizeBenefitsRunner" />
+  </bean>
+
+  <bean id="revaluationRentsService" class="com.abita.services.revaluationrents.impl.RevaluationRentsServiceImpl">
+    <property name="mapper" ref="dozerMapper" />
+    <property name="revaluationRentsDAO" ref="revaluationRentsDAO" />
+  </bean>
+
+  <bean id="agencyService" class="com.abita.services.agency.impl.AgencyServiceImpl">
+    <property name="mapper" ref="dozerMapper" />
+    <property name="extendedUserService" ref="extendedUserService" />
+    <property name="agencyDAO" ref="agencyDAO" />
+  </bean>
+
+  <bean id="siteService" class="com.abita.services.site.impl.SiteServiceImpl">
+    <property name="mapper" ref="dozerMapper" />
+    <property name="siteDAO" ref="siteDAO" />
+  </bean>
+
+  <bean id="gcpThirdPartyServiceFacade" class="com.abita.services.jobs.gcp.impl.GcpThirdPartyServiceFacadeImpl">
+    <property name="accountingCodeService" ref="accountingCodeService" />
+    <property name="thirdPartyContractServiceFacade" ref="thirdPartyContractServiceFacade" />
+    <property name="ylZnAccountingDocNumberService" ref="ylZnAccountingDocNumberService" />
+    <property name="revisionThirdPartyContractService" ref="revisionThirdPartyContractService" />
+  </bean>
+
+  <bean id="gcpTenantServiceFacade" class="com.abita.services.jobs.gcp.impl.GcpTenantServiceFacadeImpl">
+    <property name="accountingCodeService" ref="accountingCodeService" />
+    <property name="thirdPartyContractServiceFacade" ref="thirdPartyContractServiceFacade" />
+    <property name="historyAmountService" ref="historyAmountService" />
+    <property name="contractServiceFacade" ref="contractServiceFacade" />
+    <property name="historyContractServiceFacade" ref="historyContractServiceFacade" />
+    <property name="ncNtAccountingDocNumberService" ref="ncNtAccountingDocNumberService" />
+  </bean>
+
+  <bean id="artesisServiceFacade" class="com.abita.services.jobs.artesis.impl.ArtesisServiceFacadeImpl">
+    <property name="contractServiceFacade" ref="contractServiceFacade" />
+    <property name="historyContractServiceFacade" ref="historyContractServiceFacade" />
+    <property name="historyAmountService" ref="historyAmountService" />
+  </bean>
+
+  <bean id="updateServiceFacade" class="com.abita.services.jobs.update.impl.UpdateServiceFacadeImpl">
+    <property name="contractServiceFacade" ref="contractServiceFacade" />
+    <property name="thirdPartyContractServiceFacade" ref="thirdPartyContractServiceFacade" />
+    <property name="tenantServiceFacade" ref="tenantServiceFacade" />
+    <property name="parameterService" ref="parameterService" />
+  </bean>
+
+  <bean id="quittancementServiceFacade" class="com.abita.services.jobs.quittancement.impl.QuittancementServiceFacadeImpl">
+    <property name="contractServiceFacade" ref="contractServiceFacade" />
+    <property name="parameterService" ref="parameterService" />
+    <property name="historyAmountService" ref="historyAmountService" />
+    <property name="historyContractServiceFacade" ref="historyContractServiceFacade" />
+  </bean>
+
+  <bean id="ylZnAccountingDocNumberService" class="com.abita.services.ylznaccountingdocnumber.impl.YlZnAccountingDocNumberServiceImpl">
+    <property name="mapper" ref="dozerMapper" />
+    <property name="ylZnAccountingDocNumberDAO" ref="ylZnAccountingDocNumberDAO" />
+  </bean>
+
+  <bean id="ncNtAccountingDocNumberService" class="com.abita.services.ncntaccountingdocnumber.impl.NcNtAccountingDocNumberServiceImpl">
+    <property name="mapper" ref="dozerMapper" />
+    <property name="ncNtAccountingDocNumberDAO" ref="ncNtAccountingDocNumberDAO" />
+  </bean>
+
+</beans>

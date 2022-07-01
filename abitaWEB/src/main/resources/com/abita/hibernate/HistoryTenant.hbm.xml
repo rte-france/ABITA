@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.abita.dao.historytenant.entity">
+  <class name="com.abita.dao.historytenant.entity.HistoryTenantEntity" table="HISTORY_TENANT">
+    <id name="id" type="java.lang.Long" column="HTE_ID">
+      <generator class="sequence">
+        <param name="sequence">SEQ_HISTORY_TENANT</param>
+      </generator>
+    </id>
+    <property name="tenantId" column="TEN_ID" type="java.lang.Long" />
+    <property name="month" column="HTE_MONTH" type="java.lang.Integer" />
+    <property name="year" column="HTE_YEAR" type="java.lang.Integer" />
+    <property name="reference" column="HTE_REFERENCE" type="java.lang.String" />
+    <property name="managerial" column="HTE_MANAGERIAL_EMP" type="java.lang.Boolean" />
+    <property name="typeTenantHeaderLabel" column="HTE_TTE_NT_HEADER_LABEL" type="java.lang.String" />
+    <property name="actualSalary" column="HTE_ACTUAL_SALARY" type="java.math.BigDecimal" />
+    <property name="referenceGrossSalary" column="HTE_REFERENCE_GROSS_SALARY" type="java.math.BigDecimal" />
+    <property name="temp" column="HTE_TEMP" type="java.lang.Boolean" />
+  </class>
+
+  <query name="deleteHistoryTenant">
+    	<![CDATA[ delete HistoryTenantEntity h where h.tenantId = :idTenant ]]>
+  </query>
+
+  <query name="deleteOldTenants">DELETE FROM HistoryTenantEntity hte WHERE hte.month
+    &lt; :month AND hte.year &lt;= :year OR hte.year &lt; :year OR
+    hte.temp is true
+  </query>
+
+  <query name="findHistoryTenantByPrimaryKeys">SELECT hte FROM HistoryTenantEntity hte WHERE
+    hte.tenantId = :id AND hte.month = :month AND hte.year= :year
+  </query>
+
+  <query name="findLatestHistoryTenantByPrimaryKeys">SELECT hte FROM HistoryTenantEntity hte WHERE
+    hte.tenantId = :id ORDER BY hte.id
+  </query>
+
+  <query name="findTemporariesTenant">SELECT hte FROM HistoryTenantEntity hte WHERE
+    hte.tenantId = :id AND hte.temp IS TRUE
+  </query>
+
+</hibernate-mapping>

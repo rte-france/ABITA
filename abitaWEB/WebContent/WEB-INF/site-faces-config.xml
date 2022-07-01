@@ -1,0 +1,93 @@
+<?xml version="1.0"?>
+<faces-config xmlns="http://java.sun.com/xml/ns/javaee"
+   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
+      http://java.sun.com/xml/ns/javaee/web-facesconfig_2_0.xsd"
+   version="2.0">
+
+	<managed-bean>
+	  <description>
+		  Gestionnaire des informations du template site
+	  </description>
+	  <managed-bean-name>siteViewController</managed-bean-name>
+	  <managed-bean-class>com.web.site.impl.SiteViewController</managed-bean-class>
+	  <managed-bean-scope>request</managed-bean-scope>
+	  <managed-property>
+	   	<property-name>parameterService</property-name>
+	   	<property-class>com.services.paramservice.ParameterService</property-class>
+	   	<value>#{parameterService}</value>
+	 </managed-property>
+	 <managed-property>
+	   	<property-name>userService</property-name>
+	   	<value>#{userService}</value>
+	 </managed-property>
+	 <managed-property>
+	   	<property-name>themeService</property-name>
+	   	<property-class>com.services.theme.IThemeService</property-class>
+	   	<value>#{themeService}</value>
+	 </managed-property>
+	 <managed-property>
+	   	<property-name>themeUserBean</property-name>
+	   	<value>#{themeUserBean}</value>
+	 </managed-property>
+	</managed-bean>
+	<managed-bean>
+	  <description>
+		  Gestionnaire de local
+	  </description>
+	  <managed-bean-name>localeViewController</managed-bean-name>
+	  <managed-bean-class>com.web.site.impl.LocaleViewController</managed-bean-class>
+	  <managed-bean-scope>request</managed-bean-scope>
+	  <managed-property>
+	   	<property-name>parameterService</property-name>
+	   	<property-class>com.services.paramservice.ParameterService</property-class>
+	   	<value>#{parameterService}</value>
+	 </managed-property>
+	</managed-bean>
+
+	<!-- ==================================================================== -->
+	<!-- BEANS -->
+	<!-- ==================================================================== -->
+	<managed-bean>
+		<description>
+			paramater managed bean
+		</description>
+		<managed-bean-name>parameter</managed-bean-name>
+		<managed-bean-class>com.web.configuration.impl.ParameterManagedBean</managed-bean-class>
+		<managed-bean-scope>request</managed-bean-scope>
+		<managed-property>
+		   	<property-name>parameterService</property-name>
+		   	<property-class>com.services.paramservice.ParameterService</property-class>
+		   	<value>#{parameterService}</value>
+		</managed-property>
+	</managed-bean>
+	<managed-bean>
+		<description>Bean used to manage deposits import</description>
+		<display-name>themeUserBean</display-name>
+		<managed-bean-name>themeUserBean</managed-bean-name>
+		<managed-bean-class>com.web.site.data.ThemeUserBean</managed-bean-class>
+		<managed-bean-scope>session</managed-bean-scope>
+	</managed-bean>
+
+	<navigation-rule>
+	<from-view-id>*</from-view-id>
+	<navigation-case>
+		<from-outcome>main</from-outcome>
+		 <to-view-id>/pages/welcome/welcome.xhtml</to-view-id>
+	</navigation-case>
+	</navigation-rule>
+	 <navigation-rule>
+
+        <from-view-id>/pages/param/parameter.xhtml</from-view-id>
+		<navigation-case>
+            <from-outcome>save</from-outcome>
+            <to-view-id>/pages/param/parameter.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>cancel</from-outcome>
+            <to-view-id>/pages/welcome/welcome.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+
+ </faces-config>

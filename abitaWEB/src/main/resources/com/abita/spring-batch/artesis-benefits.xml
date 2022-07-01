@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p" xmlns:util="http://www.springframework.org/schema/util" xmlns:batch="http://www.springframework.org/schema/batch" xmlns="http://www.springframework.org/schema/beans" xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx" xmlns:context="http://www.springframework.org/schema/context" xmlns:task="http://www.springframework.org/schema/task"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+						http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch-3.0.xsd
+      					http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+      					http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
+      					http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+      					http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+
+  <!-- RUNNER -->
+  <bean id="benefitsRunner" class="com.abita.services.batch.RunScheduledBatch">
+    <property name="label" value="${artesis.benefits.name}" />
+    <property name="jobLauncher" ref="jobLauncher" />
+    <property name="job" ref="benefitsJob" />
+  </bean>
+
+  <batch:job id="benefitsJob">
+    <batch:step id="bj_1" next="processArchivingBenefits">
+      <batch:tasklet>
+        <batch:chunk reader="benefitsReader" writer="benefitsWriter" chunk-completion-policy="completionPolicy" />
+      </batch:tasklet>
+      <batch:listeners>
+        <batch:listener ref="promotionListener" />
+      </batch:listeners>
+    </batch:step>
+    <batch:step id="processArchivingBenefits" next="processMovingBenefits">
+      <batch:tasklet ref="copyArtesisFileFromTempToArchive" />
+    </batch:step>
+    <batch:step id="processMovingBenefits">
+      <batch:tasklet ref="moveArtesisFileFromTempToOutbound" />
+    </batch:step>
+  </batch:job>
+
+  <bean class="com.abita.dao.batch.artesis.reader.BenefitsReader" id="benefitsReader">
+    <property name="artesisServiceFacade" ref="artesisServiceFacade" />
+  </bean>
+
+  <bean class="com.abita.dao.batch.artesis.writer.FlatFileWriter" id="benefitsWriter" init-method="afterPropertiesSet">
+    <property name="fieldExtractor" ref="benefitExtractor" />
+    <property name="parameterService" ref="parameterService" />
+    <property name="format" value="${artesis.benefit.format}" />
+    <property name="filePart" value="${artesis.benefits.filepart}" />
+    <property name="filenameKey">
+      <util:constant static-field="com.abita.dao.batch.constant.BatchConstants.BATCH_ARTESIS_TEMP_FILE_NAME" />
+    </property>
+    <property name="encoding" value="${batch.encoding}" />
+  </bean>
+
+  <bean class="com.abita.dao.batch.artesis.extractor.BenefitExtractor" name="benefitExtractor" />
+
+</beans>

@@ -1,0 +1,23 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+        >
+
+	<ui:composition template="/templates/logs/logs.xhtml">
+		<ui:define name="body-site">
+			<h:outputScript name="logs.js" library="javascript" target="head" />
+
+			<ui:param name="bean" value="#{actionLogController.actionLogsBean}" />
+			<ui:param name="controller" value="#{actionLogController}" />
+
+			<h:outputStylesheet name="logs.css" library="css" />
+			<!-- RM_LOG_003 - Consultation des informations du log sélectionné -->
+			<ui:include src="/pages/logs/dialog/dialog.xhtml" />
+
+			<!-- RM_LOG_002 - Zone de filtrage -->
+			<ui:include src="/pages/logs/filters/filters.xhtml" />
+
+			<ui:include src="/pages/logs/list/list.xhtml" />
+		</ui:define>
+	</ui:composition>
+</html>

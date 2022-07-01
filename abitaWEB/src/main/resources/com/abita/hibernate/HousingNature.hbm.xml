@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+<hibernate-mapping package="com.abita.dao.housingnature.entity">
+  <class name="com.abita.dao.housingnature.entity.HousingNatureEntity" table="HOUSING_NATURE">
+    <id name="id" type="java.lang.Long" column="HNA_ID">
+      <generator class="sequence">
+        <param name="sequence">SEQ_HOUSING_NATURE</param>
+      </generator>
+    </id>
+    <property name="label" column="HNA_LABEL" type="java.lang.String" />
+    <property name="natureOfLocal" column="HNA_NATURE_OF_LOCAL" type="java.lang.String" />
+  </class>
+</hibernate-mapping>

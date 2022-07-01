@@ -1,0 +1,25 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+	<!-- RM_LOG_003 - Consultation des informations du log sélectionné -->
+	<ui:composition>
+		<p:dialog id="dialogMessages" appendToBody="true" header="#{logs['fwk.logs.dialog.title']}" widgetVar="dialogLogMessages"
+			width="600" minWidth="600">
+			<h:form id="dialogForm">
+				<p:dataTable id="table" value="#{bean.logMessages}" var="message" emptyMessage="#{logs['fwk.logs.dialog.table.empty']}"
+					rowStyleClass="#{controller.getMessageRowCssClass(message.severity)}" widgetVar="wdgLogDialogList"
+					paginator="true" paginatorAlwaysVisible="true" paginatorPosition="bottom" sortBy="#{message.date}"
+					rowsPerPageTemplate="#{logs['fwk.logs.dialog.table.rowsPerPage']}">
+					<p:ajax event="filter" process="@this" oncomplete="updateFilteredState(dialogLogMessages)" />
+					<ui:include src="columns.xhtml" />
+				</p:dataTable>
+			</h:form>
+
+			<h:panelGroup styleClass="logs-button-bar" layout="block">
+				<p:commandButton type="button" value="#{logs['fwk.logs.dialog.button.close']}" onclick="dialogLogMessages.hide();" />
+			</h:panelGroup>
+		</p:dialog>
+	</ui:composition>
+</html>

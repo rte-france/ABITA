@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+<hibernate-mapping package="com.abita.dao.extendeduser.entity">
+  <joined-subclass name="com.abita.dao.extendeduser.entity.ExtendedUser" extends="com.dao.user.entity.User" table="USER_EXTENSION">
+    <key column="USR_ID" />
+    <property name="isThirdPartyContractManager" column="UEX_IS_MANAGER" type="yes_no" not-null="true" />
+    <set name="agencies" table="ATTRIBUTE">
+      <key column="USR_ID" />
+      <many-to-many column="AGC_ID" class="com.abita.dao.agency.entity.AgencyEntity" />
+    </set>
+  </joined-subclass>
+
+  <query name="findUsersThirdPartyContractManager">
+		<![CDATA[FROM ExtendedUser ex WHERE ex.isThirdPartyContractManager = 'Y']]>
+  </query>
+
+  <sql-query name="findAllThirdPartyContractManager">
+    <return alias="EU" class="com.abita.dao.extendeduser.entity.ExtendedUser" />
+    <return-scalar column="NB" type="integer" />
+    SELECT *
+    FROM
+    (SELECT *
+    FROM FWK_USER
+    JOIN USER_EXTENSION USING (USR_ID)
+    WHERE UEX_IS_MANAGER = 'Y' ) EU
+    JOIN (
+    SELECT EU.USR_ID, COUNT(HOU_ID)
+    NB
+    FROM USER_EXTENSION EU
+    LEFT JOIN HOUSING H ON H.USR_ID = EU.USR_ID
+    GROUP BY EU.USR_ID) INFO ON INFO.USR_ID = EU.USR_ID
+  </sql-query>
+
+  <query name="findExtendedUserById">
+		<![CDATA[FROM ExtendedUser ex WHERE ex.id = :id]]>
+  </query>
+</hibernate-mapping>

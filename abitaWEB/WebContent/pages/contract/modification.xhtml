@@ -1,0 +1,329 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:fn="http://java.sun.com/jsp/jstl/functions" xmlns:p="http://primefaces.org/ui" xmlns:abita="http://abita.com/facelets">
+<ui:composition template="/templates/site/site.xhtml">
+  <ui:define name="title">
+    <h:outputText value="#{customProperties['page.title.prefix']}#{customProperties['contract.update.title']}" />
+  </ui:define>
+  <ui:define name="body-site">
+    <h2 class="center">#{customProperties['contract.update.title']}</h2>
+    <h:form id="frmUpdateContract" prependId="false">
+      <f:event type="preRenderView" listener="#{contractController.isBetweenGenerationsErrorMessage}" />
+      <p:fieldset legend="#{customProperties['contract.update.fieldset']}">
+        <p class="info_required">
+          Les champs suivis de <span class="mandatory">*</span> sont obligatoires.
+        </p>
+        <p>
+          <!-- Ref Contrat Occupant  -->
+          <h:outputText value="#{customProperties['contract.field.refcontract']}" styleClass="label" />
+          <h:outputText value="#{contractController.contractBean.contractInputDTO.contractReference}" styleClass="long_desc" />
+        </p>
+        <p>
+          <!-- Ref Occupant  -->
+          <h:outputText value="#{customProperties['contract.field.tenant.reference']}" styleClass="label" />
+          <h:outputText value="#{contractController.contractBean.contractInputDTO.tenant}" converter="abita.converter.tenantdto" binding="#{tenant}" styleClass="long_desc" />
+        </p>
+        <p>
+          <!-- Ref Logement  -->
+          <h:outputText value="#{customProperties['contract.field.refhousing']}" styleClass="label" />
+          <h:outputText value="#{contractController.contractBean.contractInputDTO.housing}" converter="abita.converter.housingdto" binding="#{housing}" styleClass="long_desc" />
+        </p>
+        <div class="ddl">
+          <!-- Domaine d'activité -->
+          <h:outputLabel for="field" value="#{customProperties['contract.field.field']}" styleClass="label">
+            <span class="mandatory">*</span>
+          </h:outputLabel>
+          <p:selectOneMenu id="field" value="#{contractController.contractBean.contractInputDTO.fieldOfActivity}" converter="abita.converter.dto" styleClass="dropdownlist">
+            <f:attribute name="converter-values" value="#{contractController.allFieldOfActivity}" />
+            <f:validator validatorId="sameAgencyValidator" for="field" />
+            <f:attribute name="housing" value="#{housing}" />
+            <f:attribute name="summaryMessage" value="#{customProperties['contract.error.different.agency']}" />
+            <f:selectItem itemLabel="#{msg['dropdownlist.empty']}" value="#{null}" />
+            <f:selectItems value="#{contractController.allFieldOfActivity}" var="fieldItem" itemLabel="#{fieldItem.label} #{fieldItem.gmr}" />
+          </p:selectOneMenu>
+        </div>
+        <div class="ddl">
+          <!-- Centre coût -->
+          <h:outputLabel for="costCenter" value="#{customProperties['contract.field.costcenter']}" styleClass="label">
+            <span class="mandatory">*</span>
+          </h:outputLabel>
+          <p:selectOneMenu id="costCenter" value="#{contractController.contractBean.contractInputDTO.costCenter}" converter="abita.converter.dto" styleClass="dropdownlist">
+            <f:attribute name="converter-values" value="#{contractController.allCostCenter}" />
+            <f:selectItem itemLabel="#{msg['dropdownlist.empty']}" value="#{null}" />
+            <f:selectItems value="#{contractController.allCostCenter}" var="costCenterItem" itemLabel="#{costCenterItem.label}" />
+          </p:selectOneMenu>
+        </div>
+        <div class="ddl">
+          <!-- Typologie de loyer -->
+          <h:outputLabel for="rentTypology" value="#{customProperties['contract.field.renttypology']}" styleClass="label">
+            <span class="mandatory">*</span>
+          </h:outputLabel>
+          <p:selectOneMenu id="rentTypology" value="#{contractController.contractBean.contractInputDTO.rentTypology}" converter="abita.converter.dto" styleClass="dropdownlist">
+            <f:attribute name="converter-values" value="#{contractController.allRentTypology}" />
+            <f:selectItem itemLabel="#{msg['dropdownlist.empty']}" value="#{null}" />
+            <f:selectItems value="#{contractController.allRentTypology}" var="rentTypologyItem" itemLabel="#{rentTypologyItem.label}" />
+          </p:selectOneMenu>
+        </div>
+        <div class="ddl">
+          <!-- Mode de paiement  -->
+          <h:outputLabel for="paymentMethod" value="#{customProperties['contract.field.paymentmethod']}" styleClass="label">
+            <span class="mandatory">*</span>
+          </h:outputLabel>
+          <p:selectOneMenu id="paymentMethod" value="#{contractController.contractBean.contractInputDTO.paymentMethod}" converter="abita.converter.dto" styleClass="dropdownlist">
+            <f:attribute name="converter-values" value="#{contractController.allPaymentMethod}" />
+            <f:selectItem itemLabel="#{msg['dropdownlist.empty']}" value="#{null}" />
+            <f:selectItems value="#{contractController.allPaymentMethod}" var="paymentMethodItem" itemLabel="#{paymentMethodItem.label}" />
+          </p:selectOneMenu>
+        </div>
+        <div class="ddl">
+          <!-- Contrat signé -->
+          <h:outputLabel for="signature" value="#{customProperties['contract.field.signature']}" styleClass="label" />
+          <p:selectOneRadio id="signature" value="#{contractController.contractBean.contractInputDTO.signature}" styleClass="radio">
+            <f:selectItem itemLabel="#{customProperties['confirm.yes']}" itemValue="#{true}" />
+            <f:selectItem itemLabel="#{customProperties['confirm.no']}" itemValue="#{false}" />
+          </p:selectOneRadio>
+        </div>
+        <p>
+          <!-- Date de début de validité -->
+          <h:outputLabel for="startValidityDate" value="#{customProperties['contract.field.startvalidity']}" styleClass="label">
+            <span class="mandatory">*</span>
+          </h:outputLabel>
+          <p:calendar id="startValidityDate" value="#{contractController.contractBean.contractInputDTO.startValidityDate}" locale="fr" pattern="#{customProperties['pattern.date']}" navigator="true" maxlength="10" label="#{customProperties['contract.field.startvalidity']}" disabled="#{contractController.isStartValidityDateAlreadyPast()}">
+            <f:validator binding="#{specificContractStartValidityValidator}" for="startValidityDate" />
+            <f:attribute name="housing" value="#{housing}" />
+            <f:attribute name="tenant" value="#{tenant}" />
+            <f:attribute name="idContrat" value="#{contractController.contractBean.contractDTO.id}" />
+            <f:attribute name="endDate" value="#{endDate}" />
+            <f:attribute name="tenantMessage" value="#{customProperties['contract.creation.error.validity.tenant']}" />
+            <f:attribute name="housingMessage" value="#{customProperties['contract.creation.error.validity.housing']}" />
+            <f:attribute name="summaryMessage" value="#{customProperties['contract.creation.error.validity.startvalidity.before.registration']}" />
+            <abita:beforeDateValidator boundComponentId="endValidityDate" summaryMessage="#{customProperties['contract.error.date.out.before.date.in']}" />
+          </p:calendar>
+          <p:calendar id="hiddenStartValidityDate" styleClass="hide" value="#{contractController.contractBean.contractInputDTO.startValidityDate}" locale="fr" pattern="#{customProperties['pattern.date']}" navigator="true" maxlength="10" label="#{customProperties['contract.field.startvalidity']}" rendered="#{contractController.isStartValidityDateAlreadyPast()}">
+            <abita:beforeDateValidator boundComponentId="endValidityDate" summaryMessage="#{customProperties['contract.error.date.out.before.date.in']}" />
+            <abita:beforeDateValidator boundComponentId="insuranceCertificateEndDate" summaryMessage="#{customProperties['contract.error.validity.insuranceCertificateEndDate.before.startvalidity']}" />
+          </p:calendar>
+        </p>
+        <p>
+          <!-- Date de fin de validité -->
+          <h:outputLabel for="endValidityDate" value="#{customProperties['contract.field.endvalidity']}" styleClass="label"></h:outputLabel>
+          <p:calendar id="endValidityDate" value="#{contractController.contractBean.contractInputDTO.endValidityDate}" locale="fr" pattern="#{customProperties['pattern.date']}" navigator="true" maxlength="10" label="#{customProperties['contract.field.endvalidity']}" onblur="resetButtonPressed()" binding="#{endDate}" disabled="#{contractController.contractBean.contractInputDTO.closedContract}" >
+            <p:ajax event="change" update="terminationLabel" listener="#{contractController.isEmpty}" process="@this" />
+            <p:ajax event="dateSelect" update="terminationLabel" listener="#{contractController.isEmpty}" process="@this" />
+            <f:validator binding="#{specificContractEndValidityValidator}" for="endValidityDate" />
+            <f:attribute name="housing" value="#{housing}" />
+            <f:attribute name="buttonPressed" value="#{buttonPressed}" />
+            <f:attribute name="summaryMessage" value="#{customProperties['contract.creation.error.validity.endvalidity.after.registration']}" />
+          </p:calendar>
+        </p>
+        <div class="ddl">
+          <!-- Motif de résiliation-->
+          <h:outputLabel id="terminationLabel" for="termination" value="#{customProperties['contract.field.termination']}" styleClass="label">
+            <h:outputText value=" *" styleClass="mandatory" rendered="#{contractController.checkTerminationMandatory()}" />
+          </h:outputLabel>
+          <p:selectOneMenu id="termination" value="#{contractController.contractBean.contractInputDTO.termination}" converter="abita.converter.dto" styleClass="dropdownlist" required="#{contractController.checkTerminationMandatory()}" requiredMessage="#{customProperties['contract.creation.error.mandatory.termination']}">
+            <f:attribute name="converter-values" value="#{contractController.allTermination}" />
+            <f:selectItem itemLabel="#{msg['dropdownlist.empty']}" value="#{null}" />
+            <f:selectItems value="#{contractController.allTermination}" var="terminationItem" itemLabel="#{terminationItem.label}" />
+          </p:selectOneMenu>
+        </div>
+        <p>
+          <!-- Surface corrigée  -->
+          <h:outputLabel for="revisedSurfaceArea" value="#{customProperties['contract.field.fixedsurface']}" styleClass="label" />
+          <p:inputText id="revisedSurfaceArea" value="#{customProperties['contract.label.common']}" label="#{customProperties['contract.field.fixedsurface']}" disabled="true" />
+        </p>
+        <p>
+          <!-- Loyer surface corrigée  -->
+          <h:outputLabel for="revisedSurfaceAreaRent" value="#{customProperties['contract.field.rentfixedsurface']}" styleClass="label" />
+          <p:inputText id="revisedSurfaceAreaRent" value="#{customProperties['contract.label.common']}" label="#{customProperties['contract.field.rentfixedsurface']}" disabled="true" />
+        </p>
+        <p>
+          <!-- Nombre d'occupants  -->
+          <h:outputLabel for="householdSize" value="#{customProperties['contract.field.household']}" styleClass="label">
+            <span class="mandatory">*</span>
+          </h:outputLabel>
+          <p:inputText id="householdSize" value="#{contractController.contractBean.contractInputDTO.householdSize}" label="#{customProperties['contract.field.household']}" maxlength="10" />
+        </p>
+        <p>
+          <!-- Coefficient n/N  -->
+          <h:outputLabel for="nNCoef" value="#{customProperties['contract.field.coefficiant']}" styleClass="label" />
+          <p:inputText id="nNCoef" value="#{customProperties['contract.label.common']}" label="#{customProperties['contract.field.coefficiant']}" disabled="true" />
+        </p>
+        <p>
+          <!-- Abattement de précarité  -->
+          <h:outputLabel for="shortTermContractDiscount" value="#{customProperties['contract.field.reducingvulnerability']}" styleClass="label" />
+          <p:inputText id="shortTermContractDiscount" value="#{customProperties['contract.label.common']}" label="#{customProperties['contract.field.reducingvulnerability']}" disabled="true" />
+        </p>
+        <p>
+          <!-- Loyer marché  -->
+          <h:outputLabel for="marketRentPrice" value="#{customProperties['contract.field.marketrentprice']}" styleClass="label"></h:outputLabel>
+          <p:inputText id="marketRentPrice" value="#{contractController.contractBean.contractInputDTO.marketRentPriceAsString}" maxlength="10" label="#{customProperties['contract.field.marketrentprice']}" onmouseover="buttonPressedHidden">
+          </p:inputText>
+        </p>
+        <p>
+          <!-- Loyer plafond  -->
+          <h:outputLabel for="rentPriceLimit" value="#{customProperties['contract.field.rentpricelimit']}" styleClass="label"></h:outputLabel>
+          <p:inputText id="rentPriceLimit" value="#{contractController.contractBean.contractInputDTO.rentPriceLimitAsString}" maxlength="10" label="#{customProperties['contract.field.rentpricelimit']}">
+          </p:inputText>
+        </p>
+        <p>
+          <!-- Loyer écrêté  -->
+          <h:outputLabel for="lopRent" value="#{customProperties['contract.field.cappedrent']}" styleClass="label" />
+          <p:inputText id="lopRent" value="#{customProperties['contract.label.common']}" label="#{customProperties['contract.field.cappedrent']}" disabled="true" />
+        </p>
+        <p>
+          <!-- Loyer net agent  -->
+          <h:outputLabel for="netAgentRent" value="#{customProperties['contract.field.netrent']}" styleClass="label" />
+          <p:inputText id="netAgentRent" value="#{customProperties['contract.label.common']}" label="#{customProperties['contract.field.netrent']}" disabled="true" />
+        </p>
+        <p>
+          <!-- Loyer garage  -->
+          <h:outputLabel for="garageRent" value="#{customProperties['contract.field.garagerent']}" styleClass="label"></h:outputLabel>
+          <p:inputText id="garageRent" value="#{contractController.contractBean.contractInputDTO.garageRentAsString}" maxlength="10" label="#{customProperties['contract.field.garagerent']}">
+          </p:inputText>
+        </p>
+        <p>
+          <!-- Loyer jardin  -->
+          <h:outputLabel for="gardenRent" value="#{customProperties['contract.field.gardenrent']}" styleClass="label"></h:outputLabel>
+          <p:inputText id="gardenRent" value="#{contractController.contractBean.contractInputDTO.gardenRentAsString}" maxlength="10" label="#{customProperties['contract.field.gardenrent']}">
+          </p:inputText>
+        </p>
+        <p>
+          <!-- Surloyer  -->
+          <h:outputLabel for="extraRent" value="#{customProperties['contract.field.extrarent']}" styleClass="label"></h:outputLabel>
+          <p:inputText id="extraRent" value="#{contractController.contractBean.contractInputDTO.extraRentAsString}" maxlength="10" label="#{customProperties['contract.field.extrarent']}">
+          </p:inputText>
+        </p>
+        <p>
+          <!-- Charges prévisionnelles  -->
+          <h:outputLabel for="expectedChargeCost" value="#{customProperties['contract.field.expectedchargecost']}" styleClass="label"></h:outputLabel>
+          <p:inputText id="expectedChargeCost" value="#{contractController.contractBean.contractInputDTO.expectedChargeCostAsString}" maxlength="10" label="#{customProperties['contract.field.expectedchargecost']}">
+          </p:inputText>
+        </p>
+        <p>
+          <!-- Facturation de la consommation d’eau  -->
+          <h:outputLabel for="waterInvoicing" value="#{customProperties['contract.field.waterinvoicing']}" styleClass="label" />
+          <p:inputText id="waterInvoicing" value="#{contractController.contractBean.contractInputDTO.waterInvoicingAsString}" maxlength="10" label="#{customProperties['contract.field.waterinvoicing']}" />
+        </p>
+        <p>
+          <!-- Facturation des ordures ménagères  -->
+          <h:outputLabel for="garbageInvoicing" value="#{customProperties['contract.field.garbageinvoicing']}" styleClass="label" />
+          <p:inputText id="garbageInvoicing" value="#{contractController.contractBean.contractInputDTO.garbageInvoicingAsString}" maxlength="10" label="#{customProperties['contract.field.garbageinvoicing']}" />
+        </p>
+        <p>
+          <!-- Remboursement assurance  -->
+          <h:outputLabel for="insuranceReimbursement" value="#{customProperties['contract.field.insurancereimbursement']}" styleClass="label" />
+          <p:inputText id="insuranceReimbursement" value="#{contractController.contractBean.contractInputDTO.insuranceReimbursementAsString}" maxlength="10" label="#{customProperties['contract.field.insurancereimbursement']}" />
+        </p>
+        <p>
+          <!-- Date limite de validité de l'attestation d'assurance -->
+          <h:outputLabel for="insuranceCertificateEndDate" value="#{customProperties['contract.field.insurancecertificateenddate']}" styleClass="label" />
+          <p:calendar id="insuranceCertificateEndDate" value="#{contractController.contractBean.contractInputDTO.insuranceCertificateEndDate}" locale="fr" pattern="#{customProperties['pattern.date']}" navigator="true" maxlength="10" >
+          </p:calendar>
+        </p>
+        <p>
+          <!-- Remboursement taxe habitation  -->
+          <h:outputLabel for="housingTaxReimbursement" value="#{customProperties['contract.field.housingtaxreimbursement']}" styleClass="label" />
+          <p:inputText id="housingTaxReimbursement" value="#{contractController.contractBean.contractInputDTO.housingTaxReimbursementAsString}" maxlength="10" label="#{customProperties['contract.field.housingtaxreimbursement']}" />
+        </p>
+        <p>
+          <!-- Remboursement taxe ordures ménagères  -->
+          <h:outputLabel for="garbageReimbursement" value="#{customProperties['contract.field.garbagereimbursement']}" styleClass="label" />
+          <p:inputText id="garbageReimbursement" value="#{contractController.contractBean.contractInputDTO.garbageReimbursementAsString}" maxlength="10" label="#{customProperties['contract.field.garbagereimbursement']}" />
+        </p>
+        <p>
+          <!-- Apurement annuel des charges  -->
+          <h:outputLabel for="annualClearanceCharges" value="#{customProperties['contract.field.annualclearancecharges']}" styleClass="label" />
+          <p:inputText id="annualClearanceCharges" value="#{contractController.contractBean.contractInputDTO.annualClearanceChargesAsString}" maxlength="10" label="#{customProperties['contract.field.annualclearancecharges']}" />
+        </p>
+        <p>
+          <!-- Autres charges locatives (texte)  -->
+          <h:outputLabel for="otherInvoicingLabel" value="#{customProperties['contract.field.otherinvoicinglabel']}" styleClass="label" />
+          <p:inputText id="otherInvoicingLabel" value="#{contractController.contractBean.contractInputDTO.otherInvoicingLabel}" maxlength="25" label="#{customProperties['contract.field.otherinvoicinglabel']}" />
+        </p>
+        <p>
+          <!-- Autres charges locatives (montant)  -->
+          <h:outputLabel for="otherInvoicingAmount" value="#{customProperties['contract.field.otherinvoicingamount']}" styleClass="label" />
+          <p:inputText id="otherInvoicingAmount" value="#{contractController.contractBean.contractInputDTO.otherInvoicingAmountAsString}" label="#{customProperties['contract.field.otherinvoicingamount']}" />
+        </p>
+        <p>
+          <!-- Loyer prélevé  -->
+          <h:outputLabel for="withdrawnRent" value="#{customProperties['contract.field.withdrawnrent']}" styleClass="label" />
+          <p:inputText id="withdrawnRent" value="#{customProperties['contract.label.common']}" label="#{customProperties['contract.field.withdrawnrent']}" disabled="true" />
+        </p>
+        <p>
+          <!-- Loyer prélevé cumulé sur l'année  -->
+          <h:outputLabel for="addedWithdrawnRent" value="#{customProperties['contract.field.addedwithdrawnrent']}" styleClass="label">
+            <span class="mandatory">*</span>
+          </h:outputLabel>
+          <p:inputText id="addedWithdrawnRent" value="#{contractController.contractBean.contractInputDTO.plainTempAddedWithdrawnRent}" maxlength="10" label="#{customProperties['contract.field.addedwithdrawnrent']}" disabled="true">
+            <f:convertNumber maxFractionDigits="2" minFractionDigits="2" locale="en_US" groupingUsed="false" />
+          </p:inputText>
+        </p>
+        <div class="ddl">
+          <!-- Pécule de fin d'occupation -->
+          <h:outputLabel for="terminationSavings" value="#{customProperties['contract.field.terminationsavings']}" styleClass="label">
+            <span class="mandatory">*</span>
+          </h:outputLabel>
+          <p:selectOneRadio id="terminationSavings" value="#{contractController.contractBean.contractInputDTO.terminationSavings}" styleClass="radio">
+            <f:selectItem itemLabel="#{customProperties['confirm.yes']}" itemValue="#{true}" />
+            <f:selectItem itemLabel="#{customProperties['confirm.no']}" itemValue="#{false}" />
+          </p:selectOneRadio>
+        </div>
+        <p>
+          <!--Montant du pécule de fin d'occupation -->
+          <h:outputLabel for="terminationSavingAmount" value="#{customProperties['contract.field.terminationsavingamount']}" styleClass="label" />
+          <p:inputText id="terminationSavingAmount" value="#{customProperties['contract.label.common']}" label="#{customProperties['contract.field.terminationsavingamount']}" disabled="true" />
+        </p>
+        <div class="ddl">
+          <!-- Règlement du pécule de fin d'occupation -->
+          <h:outputLabel for="terminationSavingsPayment" value="#{customProperties['contract.field.terminationsavingspayment']}" styleClass="label">
+            <span class="mandatory">*</span>
+          </h:outputLabel>
+          <p:selectOneRadio id="terminationSavingsPayment" value="#{contractController.contractBean.contractInputDTO.terminationSavingsPayment}" styleClass="radio" style="vertical-align: bottom;">
+            <f:selectItem itemLabel="#{customProperties['confirm.yes']}" itemValue="#{true}" />
+            <f:selectItem itemLabel="#{customProperties['confirm.no']}" itemValue="#{false}" />
+            <p:ajax update="terminationSavingsPaymentDateDiv" event="change" global="false" process="terminationSavingsPayment" listener="#{contractController.clearTerminationSavingsPaymentDate}" />
+          </p:selectOneRadio>
+          <p:outputPanel id="terminationSavingsPaymentDateDiv" >
+            <h:outputLabel for="terminationSavingsPaymentDate"
+                           value="#{customProperties['contract.field.terminationsavingspaymentdate']}"
+                           rendered="#{contractController.contractBean.contractInputDTO.terminationSavingsPayment}"
+                           styleClass="label short-label">
+              <span class="mandatory">*</span>
+            </h:outputLabel>
+            <p:calendar id="terminationSavingsPaymentDate"
+                        value="#{contractController.contractBean.contractInputDTO.terminationSavingsPaymentDate}"
+                        rendered="#{contractController.contractBean.contractInputDTO.terminationSavingsPayment}"
+                        locale="fr"
+                        pattern="#{customProperties['pattern.date']}"
+                        navigator="true"
+                        maxlength="10"
+                        styleClass="short-input">
+              </p:calendar>
+          </p:outputPanel>
+        </div>
+        <p>
+          <!--Avantage en nature -->
+          <h:outputLabel for="benefit" value="#{customProperties['contract.field.benefit']}" styleClass="label" />
+          <p:inputText id="benefit" value="#{customProperties['contract.label.common']}" label="#{customProperties['contract.field.benefit']}" disabled="true" />
+        </p>
+        <p>
+          <!-- Montant de la valeur locative foncière -->
+          <h:outputLabel for="realEstateRentalValue" value="#{customProperties['contract.field.realestaterentalvalue']}" styleClass="label">
+            <span class="mandatory">*</span>
+          </h:outputLabel>
+          <p:inputText id="realEstateRentalValue" value="#{contractController.contractBean.contractInputDTO.realEstateRentalValue}" maxlength="10" label="#{customProperties['contract.field.realestaterentalvalue']}">
+          </p:inputText>
+        </p>
+      </p:fieldset>
+      <h:inputHidden id="buttonPressedHidden" value="0" />
+      <h:inputHidden id="checkId" value=" " />
+      <p:outputPanel layout="block" styleClass="action">
+        <p:commandButton id="btnValidate" value="#{customProperties['contract.action.save']}" validateClient="true" action="#{contractController.saveOrUpdateData}" update=":messages @form" onclick="checkButtonPressed()" disabled="#{contractController.isBetweenGenerations()}" />
+        <p:commandButton id="btnCancel" value="#{customProperties['common.action.cancel']}" action="#{contractController.cancel}" immediate="true" />
+      </p:outputPanel>
+    </h:form>
+  </ui:define>
+</ui:composition>
+</html>

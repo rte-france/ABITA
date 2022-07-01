@@ -1,0 +1,70 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:fn="http://java.sun.com/jsp/jstl/functions" xmlns:p="http://primefaces.org/ui">
+<ui:composition template="/templates/site/site.xhtml">
+  <ui:define name="title">
+    <h:outputText value="#{customProperties['page.title.prefix']}#{customProperties['administration.referentiel.costcenter.title']}" />
+  </ui:define>
+  <ui:define name="body-site">
+    <h2 class="center">#{customProperties['administration.referentiel.costcenter.title']}</h2>
+    <h:form id="frmRefCostCenter" prependId="false" onkeypress="return event.keyCode != 13">
+      <p:outputPanel layout="block" id="costcenterListing">
+        <!-- Permet de désactiver l'action par défaut de la touche "Entrée" (Mantis 35) -->
+        <!-- Voir issue : https://code.google.com/p/primefaces/issues/detail?id=4204 -->
+        <p:commandButton style="display: none;" process="@none" update="@none" ajax="true" />
+        <p:dataTable id="costcenterdtble" var="costcenter" value="#{costcenterController.costcenterBean.lstCostCenter}" editable="true" emptyMessage="#{customProperties['no.data']}" sortBy="#{costcenter.label.toUpperCase()}" paginator="true" paginatorAlwaysVisible="false" paginatorPosition="bottom" rows="10" rowsPerPageTemplate="15, 20, 25" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+          <p:ajax event="rowEdit" listener="#{costcenterController.onEdit}" update=":messages" />
+          <!-- Titre du tableau -->
+          <f:facet name="header">
+            <h:outputText value="#{customProperties['administration.referentiel.costcenter.datatable.title']}" />
+          </f:facet>
+          <!-- Libellé -->
+          <p:column headerText="#{customProperties['administration.referentiel.costcenter.column.label']}">
+            <p:cellEditor>
+              <f:facet name="output">
+                <h:outputText value="#{costcenter.label}" />
+              </f:facet>
+              <f:facet name="input">
+                <p:inputText value="#{costcenter.label}" maxlength="50" required="true" requiredMessage="#{customProperties['administration.referentiel.costcenter.error.label']}" />
+              </f:facet>
+            </p:cellEditor>
+          </p:column>
+          <!-- Actions -->
+          <p:column headerText="#{customProperties['administration.referentiel.costcenter.column.action']}" styleClass="action_column">
+            <p:rowEditor id="btnModify" />
+            <!-- 				            <p:tooltip for="btnModify" value="#{customProperties['administration.referentiel.costcenter.action.modify']}" showEffect="fade" hideEffect="fade" /> -->
+            <!-- Bouton suppression -->
+            <p:commandButton id="btnDelete" type="button" rendered="#{costcenter.removable}" onclick="confirmDelete_#{costcenter.id}.show()" icon="ui-icon-trash" styleClass="btn" />
+            <p:tooltip for="btnDelete" value="#{customProperties['administration.referentiel.costcenter.action.delete']}" showEffect="fade" hideEffect="fade" />
+            <!-- Confirmation suppression -->
+            <p:confirmDialog widgetVar="confirmDelete_#{costcenter.id}" message="#{customProperties['administration.referentiel.costcenter.action.delete.confirm']}">
+              <p:commandButton value="#{customProperties['confirm.yes']}" update=":messages :frmRefCostCenter:costcenterListing" process=":frmRefCostCenter:costcenterListing" onclick="confirmDelete_#{costcenter.id}.hide()">
+                <p:collector value="#{costcenter}" removeFrom="#{costcenterController.costcenterBean.lstCostCenter}" />
+              </p:commandButton>
+              <p:commandButton type="button" value="#{customProperties['confirm.no']}" onclick="confirmDelete_#{costcenter.id}.hide()" />
+            </p:confirmDialog>
+          </p:column>
+        </p:dataTable>
+      </p:outputPanel>
+      <p:fieldset legend="#{customProperties['administration.referentiel.costcenter.fieldset']}">
+        <p class="info_required">
+          Les champs suivis de <span class="mandatory">*</span> sont obligatoires.
+        </p>
+        <p>
+          <!-- Libellé -->
+          <h:outputLabel for="label" value="#{customProperties['administration.referentiel.costcenter.field.label']}" styleClass="label">
+            <span class="mandatory">*</span>
+          </h:outputLabel>
+          <p:inputText id="label" value="#{costcenterController.costcenterBean.costcenter}" maxlength="50" required="true" requiredMessage="#{customProperties['administration.referentiel.costcenter.error.label']}" />
+        </p>
+        <!-- Bouton Ajouter -->
+        <p:commandButton id="btnAdd" value="#{customProperties['administration.referentiel.costcenter.action.add']}" actionListener="#{costcenterController.addCostCenterToList}" update=":messages label costcenterListing" />
+      </p:fieldset>
+      <p:outputPanel layout="block" styleClass="action">
+        <p:commandButton id="btnValidate" value="#{customProperties['administration.referentiel.costcenter.action.save']}" actionListener="#{costcenterController.saveData}" immediate="true" update=":messages" />
+        <p:commandButton id="btnCancel" value="#{customProperties['administration.referentiel.costcenter.action.cancel']}" action="welcome" immediate="true" />
+      </p:outputPanel>
+    </h:form>
+  </ui:define>
+</ui:composition>
+</html>

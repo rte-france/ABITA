@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<weblogic-application>
+    <library-ref>
+        <library-name>jsf</library-name>
+        <specification-version>2.0</specification-version>
+        <implementation-version>1.0.0.0_2-0-2</implementation-version>
+        <exact-match>false</exact-match>
+    </library-ref>
+
+	<prefer-application-packages>
+    	<package-name>org.apache.commons.lang.*</package-name>
+	</prefer-application-packages>
+</weblogic-application>

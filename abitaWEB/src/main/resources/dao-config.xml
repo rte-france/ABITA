@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.springframework.org/schema/beans" xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx" xmlns:context="http://www.springframework.org/schema/context" xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+      					http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+      					http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+      					http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+
+  <!-- - - - - - - - - - - -->
+  <!-- DAOs -->
+  <!-- - - - - - - - - - - -->
+  <bean id="extendedUserDAO" class="com.abita.dao.extendeduser.impl.ExtendedUserDAOImpl">
+    <property name="sessionFactory" ref="sessionFactory" />
+  </bean>
+
+  <bean id="costcenterDAO" class="com.abita.dao.costcenter.impl.CostCenterDAOImpl">
+    <property name="sessionFactory" ref="sessionFactory" />
+  </bean>
+
+  <bean id="accountingCodeDAO" class="com.abita.dao.accountingcode.impl.AccountingCodeDAOImpl">
+    <property name="sessionFactory" ref="sessionFactory" />
+  </bean>
+
+  <bean id="fieldOfActivityDAO" class="com.abita.dao.fieldofactivity.impl.FieldOfActivityDAOImpl">
+    <property name="sessionFactory" ref="sessionFactory" />
+  </bean>
+
+  <bean id="benefitDAO" class="com.abita.dao.benefit.impl.BenefitDAOImpl">
+    <property name="sessionFactory" ref="sessionFactory" />
+  </bean>
+
+  <bean id="housingNatureDAO" class="com.abita.dao.housingnature.impl.HousingNatureDAOImpl">
+    <property name="sessionFactory" ref="sessionFactory" />
+  </bean>
+
+  <bean id="sanitationDAO" class="com.abita.dao.sanitation.impl.SanitationDAOImpl">
+    <property name="sessionFactory" ref="sessionFactory" />
+  </bean>
+
+  <bean id="heatingTypeDAO" class="com.abita.dao.heatingtype.impl.HeatingTypeDAOImpl">
+    <property name="sessionFactory" ref="sessionFactory" />
+  </bean>
+
+  <bean id="airconditionerDAO" class="com.abita.dao.airconditioner.impl.AirconditionerDAOImpl">
+    <property name="sessionFactory" ref="sessionFactory" />
+  </bean>
+
+  <bean id="roomCategoryDAO" class="com.abita.dao.roomcategory.impl.RoomCategoryDAOImpl">
+    <property name="sessionFactory" ref="sessionFactory" />
+  </bean>
+
+  <bean id="thirdPartyDAO" class="com.abita.dao.thirdparty.impl.ThirdPartyDAOImpl">
+    <property name="sessionFactory" ref="sessionFactory" />
+  </bean>
+
+  <bean id="housingDAO" class="com.abita.dao.housing.impl.HousingDAOImpl">
+    <property name="sessionFactory" ref="sessionFactory" />
+  </bean>
+
+  <bean id="paymentCycleDAO" class="com.abita.dao.paymentcycle.impl.PaymentCycleDAOImpl">
+    <property name="sessionFactory" ref="sessionFactory" />
+  </bean>
+
+  <bean id="thirdPartyTerminationDAO" class="com.abita.dao.thirdpartytermination.impl.ThirdPartyTerminationDAOImpl">
+    <property name="sessionFactory" ref="sessionFactory" />
+  </bean>
+
+  <bean id="thirdPartyContractDAO" class="com.abita.dao.thirdpartycontract.impl.ThirdPartyContractDAOImpl">
+    <property name="sessionFactory" ref="sessionFactory" />
+  </bean>
+
+  <bean id="revisionThirdPartyContractDAO" class="com.abita.dao.revisionthirdpartycontract.impl.RevisionThirdPartyContractDAOImpl">
+    <property name="sessionFactory" ref="sessionFactory" />
+  </bean>
+
+  <bean id="typeTenantDAO" class="com.abita.dao.typetenant.impl.TypeTenantDAOImpl">
+    <property name="sessionFactory" ref="sessionFactory" />
+  </bean>
+
+  <bean id="tenantDAO" class="com.abita.dao.tenant.impl.TenantDAOImpl">
+    <property name="sessionFactory" ref="sessionFactory" />
+  </bean>
+
+  <bean id="terminationDAO" class="com.abita.dao.termination.impl.TerminationDAOImpl">
+    <property name="sessionFactory" ref="sessionFactory" />
+  </bean>
+
+  <bean id="fieldDAO" class="com.abita.dao.field.impl.FieldDAOImpl">
+    <property name="sessionFactory" ref="sessionFactory" />
+  </bean>
+
+  <bean id="rentTypologyDAO" class="com.abita.dao.renttypology.impl.RentTypologyDAOImpl">
+    <property name="sessionFactory" ref="sessionFactory" />
+  </bean>
+
+  <bean id="paymentMethodDAO" class="com.abita.dao.paymentmethod.impl.PaymentMethodDAOImpl">
+    <property name="sessionFactory" ref="sessionFactory" />
+  </bean>
+
+  <bean id="contractDAO" class="com.abita.dao.contract.impl.ContractDAOImpl">
+    <property name="sessionFactory" ref="sessionFactory" />
+  </bean>
+
+  <bean id="tvaCodeDAO" class="com.abita.dao.tvacode.impl.TvaCodeDAOImpl">
+    <property name="sessionFactory" ref="sessionFactory" />
+  </bean>
+
+  <bean id="detailCronDAO" class="com.abita.dao.detailcron.impl.DetailCronDAOImpl">
+    <property name="sessionFactory" ref="sessionFactory" />
+  </bean>
+
+  <bean id="ylZnAccountingDocNumberDAO" class="com.abita.dao.ylznaccountingdocnumber.impl.YlZnAccountingDocNumberDAOImpl">
+    <property name="sessionFactory" ref="sessionFactory" />
+  </bean>
+
+  <bean id="ncNtAccountingDocNumberDAO" class="com.abita.dao.ncntaccountingdocnumber.impl.NcNtAccountingDocNumberDAOImpl">
+    <property name="sessionFactory" ref="sessionFactory" />
+  </bean>
+
+  <bean id="revaluationRentsDAO" class="com.abita.dao.revaluationrents.impl.RevaluationRentsDAOImpl">
+    <property name="sessionFactory" ref="sessionFactory" />
+  </bean>
+
+  <bean id="agencyDAO" class="com.abita.dao.agency.impl.AgencyDAOImpl">
+    <property name="sessionFactory" ref="sessionFactory" />
+  </bean>
+
+  <bean id="siteDAO" class="com.abita.dao.site.impl.SiteDAOImpl">
+    <property name="sessionFactory" ref="sessionFactory" />
+  </bean>
+
+  <bean id="historyTenantDAO" class="com.abita.dao.historytenant.impl.HistoryTenantDAOImpl">
+    <property name="dataSource" ref="dataSource" />
+    <property name="sessionFactory" ref="sessionFactory" />
+  </bean>
+
+  <bean id="historyHousingDAO" class="com.abita.dao.historyhousing.impl.HistoryHousingDAOImpl">
+    <property name="dataSource" ref="dataSource" />
+    <property name="sessionFactory" ref="sessionFactory" />
+  </bean>
+
+  <bean id="historyBenefitsDAO" class="com.abita.dao.historybenefits.impl.HistoryBenefitsDAOImpl">
+    <property name="dataSource" ref="dataSource" />
+    <property name="sessionFactory" ref="sessionFactory" />
+  </bean>
+
+  <bean id="historyContractDAO" class="com.abita.dao.historycontract.impl.HistoryContractDAOImpl">
+    <property name="dataSource" ref="dataSource" />
+    <property name="sessionFactory" ref="sessionFactory" />
+  </bean>
+
+  <bean id="historyAmountDAO" class="com.abita.dao.historyamount.impl.HistoryAmountDAOImpl">
+    <property name="sessionFactory" ref="sessionFactory" />
+  </bean>
+
+  <bean id="historyReportingDAO" class="com.abita.dao.historyreporting.impl.HistoryReportingDAOImpl">
+    <property name="sessionFactory" ref="sessionFactory" />
+  </bean>
+</beans>

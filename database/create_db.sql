@@ -1,0 +1,16 @@
+@updates/all.sql
+@fix/done/V01.00.00-lot4_to_lot5.sql
+@fix/pending/V01.00.00-lot5_fixes.sql
+@fix/pending/V01.00.00-lot6.sql
+@fix/pending/v01.00.00-lot6_fixes01.sql
+@fix/pending/v01.00.00-lot6_fixes02.sql
+@fix/pending/V01.00.00_to_V01.01.00-v00.sql
+@fix/pending/V01.01.00_to_V01.02.00.sql
+@fix/pending/V01.02.01_to_V01.03.00.sql
+@fix/pending/V01.03.00_to_V01.04.00.sql
+@fix/pending/V02.00.00_to_V02.01.00.sql
+@fix/pending/DROP_USELESS_TABLES_V02.00.00.sql
+@fix/pending/V02.02.00_to_V02.03.00/install.sql
+@fix/pending/V03.00.00_to_V03.01.00/install.sql
+@fix/pending/V02.03.00_to_V02.04.00.sql
+@ABITA_V02.05.00/install.sql

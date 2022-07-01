@@ -1,0 +1,320 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:fn="http://java.sun.com/jsp/jstl/functions" xmlns:p="http://primefaces.org/ui">
+<ui:composition template="/templates/site/site.xhtml">
+  <ui:define name="title">
+    <h:outputText value="#{customProperties['page.title.prefix']}#{customProperties['thirdpartycontract.view.title']}" />
+  </ui:define>
+  <ui:define name="body-site">
+    <h2 class="center">#{customProperties['thirdpartycontract.view.title']}</h2>
+    <h:form id="frmViewThirdParty" prependId="false" onkeypress="return event.keyCode != 13">
+      <p:fieldset legend="#{customProperties['thirdpartycontract.creation.fieldset']}">
+        <p>
+          <!-- Référence contrat -->
+          <h:outputText value="#{customProperties['thirdpartycontract.field.refthirdpartycontract']}" styleClass="label" />
+          <h:outputText value="#{thirdPartyContractController.thirdPartyContractBean.thirdPartyContractDTO.reference}" />
+        </p>
+        <p>
+          <!-- Tiers -->
+          <h:outputText value="#{customProperties['thirdpartycontract.field.refthirdparty']}" styleClass="label" />
+          <h:outputText value="#{thirdPartyContractController.thirdPartyContractBean.thirdPartyContractDTO.thirdParty.id}" />
+        </p>
+        <p>
+          <!-- Logement -->
+          <h:outputText value="#{customProperties['thirdpartycontract.field.refhousing']}" styleClass="label" />
+          <h:outputText value="#{thirdPartyContractController.thirdPartyContractBean.thirdPartyContractDTO.housing.reference}" />
+        </p>
+        <p>
+          <!-- Domaine d'activité -->
+          <h:outputText value="#{customProperties['thirdpartycontract.field.fieldofactivity']}" styleClass="label" />
+          <h:outputText value="#{thirdPartyContractController.thirdPartyContractBean.thirdPartyContractDTO.fieldOfActivity.label} #{thirdPartyContractController.thirdPartyContractBean.thirdPartyContractDTO.fieldOfActivity.gmr}" />
+        </p>
+        <p>
+          <!-- Agence -->
+          <h:outputText value="#{customProperties['housing.field.agency']}" styleClass="label" />
+          <h:outputText value="#{thirdPartyContractController.thirdPartyContractBean.thirdPartyContractDTO.agencyDisplay.name}" />
+        </p>
+        <p>
+          <!-- Centre coût -->
+          <h:outputText value="#{customProperties['thirdpartycontract.field.costcenter']}" styleClass="label" />
+          <h:outputText value="#{thirdPartyContractController.thirdPartyContractBean.thirdPartyContractDTO.costCenter.label}" />
+        </p>
+        <p>
+          <!-- Durée du contrat -->
+          <h:outputText value="#{customProperties['thirdpartycontract.field.contractperiod']}" styleClass="label" />
+          <h:outputText value="#{thirdPartyContractController.thirdPartyContractBean.thirdPartyContractDTO.contractPeriod}" />
+        </p>
+        <p>
+          <!-- Durée du préavis -->
+          <h:outputText value="#{customProperties['thirdpartycontract.field.noticeperiod']}" styleClass="label" />
+          <h:outputText value="#{thirdPartyContractController.thirdPartyContractBean.thirdPartyContractDTO.noticePeriod}" />
+        </p>
+        <p>
+          <!-- Date de début de validité -->
+          <h:outputText value="#{customProperties['thirdpartycontract.field.startvalidity']}" styleClass="label" />
+          <h:outputText value="#{thirdPartyContractController.thirdPartyContractBean.thirdPartyContractDTO.startValidity}">
+            <f:convertDateTime pattern="#{customProperties['pattern.date']}" />
+          </h:outputText>
+        </p>
+        <p>
+          <!-- Date de début de paiement fournisseur -->
+          <h:outputText value="#{customProperties['thirdpartycontract.field.startsupplierpaymentdate']}" styleClass="label" />
+          <h:outputText value="#{thirdPartyContractController.thirdPartyContractBean.thirdPartyContractDTO.startSupplierPaymentDate}">
+            <f:convertDateTime pattern="#{customProperties['pattern.date']}" />
+          </h:outputText>
+        </p>
+        <p>
+          <!-- Montant du loyer mensuel -->
+          <h:outputText value="#{customProperties['thirdpartycontract.field.rentamount']}" styleClass="label" />
+          <h:outputText value="#{thirdPartyContractController.thirdPartyContractBean.thirdPartyContractDTO.rentAmount}" styleClass="value" />
+          <!-- Dernière revision du loyer mensuel -->
+          <h:outputText value="#{customProperties['thirdpartycontract.field.lastrevisedrentdate']}" styleClass="sublabel-info" rendered="#{thirdPartyContractController.thirdPartyContractBean.thirdPartyContractDTO.lastRevisedRent != null}" />
+          <h:outputText value="#{thirdPartyContractController.thirdPartyContractBean.thirdPartyContractDTO.lastRevisedRent}">
+            <f:convertDateTime pattern="#{customProperties['pattern.date']}" />
+          </h:outputText>
+        </p>
+        <p>
+          <!-- Montant de la revision du loyer mensuel -->
+          <h:outputText value="#{customProperties['thirdpartycontract.field.revisedrentamount']}" styleClass="label" />
+          <h:outputText value="#{thirdPartyContractController.thirdPartyContractBean.thirdPartyContractDTO.revisedRentAmount}" styleClass="value" />
+          <!-- Date d'effet de la revision du loyer mensuel -->
+          <h:outputText value="#{customProperties['thirdpartycontract.field.revisedrentdate']}" styleClass="sublabel" rendered="#{thirdPartyContractController.thirdPartyContractBean.thirdPartyContractDTO.revisedRentDate != null}" />
+          <h:outputText value="#{thirdPartyContractController.thirdPartyContractBean.thirdPartyContractDTO.revisedRentDate}">
+            <f:convertDateTime pattern="#{customProperties['pattern.date']}" />
+          </h:outputText>
+        </p>
+        <p>
+          <!-- Montant des charges prévisionnelles mensuelles -->
+          <h:outputText value="#{customProperties['thirdpartycontract.field.expectedchargecost']}" styleClass="label" />
+          <h:outputText value="#{thirdPartyContractController.thirdPartyContractBean.thirdPartyContractDTO.expectedChargeCost}" styleClass="value" />
+          <!-- Dernière revision des charges prévisionnelles mensuelles -->
+          <h:outputText value="#{customProperties['thirdpartycontract.field.lastrevisedexpectedchargecostdate']}" styleClass="sublabel-info" rendered="#{thirdPartyContractController.thirdPartyContractBean.thirdPartyContractDTO.lastRevisedExpectedChargeCost != null}" />
+          <h:outputText value="#{thirdPartyContractController.thirdPartyContractBean.thirdPartyContractDTO.lastRevisedExpectedChargeCost}">
+            <f:convertDateTime pattern="#{customProperties['pattern.date']}" />
+          </h:outputText>
+        </p>
+        <p>
+          <!-- Montant de la revision des charges prévisionnelles mensuelles -->
+          <h:outputText value="#{customProperties['thirdpartycontract.field.revisedexpectedchargecostamount']}" styleClass="label" />
+          <h:outputText value="#{thirdPartyContractController.thirdPartyContractBean.thirdPartyContractDTO.revisedExpectedChargeCostAmount}" styleClass="value" />
+          <!-- Date d'effet de la revision des charges prévisionnelles mensuelles -->
+          <h:outputText value="#{customProperties['thirdpartycontract.field.revisedexpectedchargecostdate']}" styleClass="sublabel" rendered="#{thirdPartyContractController.thirdPartyContractBean.thirdPartyContractDTO.revisedExpectedChargeCostDate != null}" />
+          <h:outputText value="#{thirdPartyContractController.thirdPartyContractBean.thirdPartyContractDTO.revisedExpectedChargeCostDate}">
+            <f:convertDateTime pattern="#{customProperties['pattern.date']}" />
+          </h:outputText>
+        </p>
+        <p>
+          <!-- Loyer à payer  -->
+          <h:outputText value="#{customProperties['thirdpartycontract.field.renttocharge']}" styleClass="label" />
+          <h:outputText value="#{thirdPartyContractController.thirdPartyContractBean.thirdPartyContractDTO.rentToCharge}" />
+        </p>
+        <p>
+          <!-- Montant du dépot de garantie -->
+          <h:outputText value="#{customProperties['thirdpartycontract.field.guaranteeddepositamount']}" styleClass="label" />
+          <h:outputText value="#{thirdPartyContractController.thirdPartyContractBean.thirdPartyContractDTO.guaranteedDepositAmount}" />
+        </p>
+        <p>
+          <!-- Montant des frais d'agence -->
+          <h:outputText value="#{customProperties['thirdpartycontract.field.realestateagencyfee']}" styleClass="label" />
+          <h:outputText value="#{thirdPartyContractController.thirdPartyContractBean.thirdPartyContractDTO.realEstateAgencyFee}" />
+        </p>
+        <p>
+          <!-- Périodicité du paiement -->
+          <h:outputText value="#{customProperties['thirdpartycontract.field.paymentcycle']}" styleClass="label" />
+          <h:outputText value="#{thirdPartyContractController.thirdPartyContractBean.thirdPartyContractDTO.paymentCycle.label}" />
+        </p>
+        <p:outputPanel rendered="#{thirdPartyContractController.thirdPartyContractBean.thirdPartyContractDTO.expiryDate != null}">
+          <p>
+            <!-- Terme échu / échoir -->
+            <h:outputText value="#{customProperties['thirdpartycontract.field.term']}" styleClass="label" />
+            <h:outputText value="#{customProperties['thirdpartycontract.field.expirydate']}" rendered="#{thirdPartyContractController.thirdPartyContractBean.thirdPartyContractDTO.expiryDate}" />
+            <h:outputText value="#{customProperties['thirdpartycontract.field.falldue']}" rendered="#{!thirdPartyContractController.thirdPartyContractBean.thirdPartyContractDTO.expiryDate}" />
+          </p>
+        </p:outputPanel>
+        <p>
+          <!-- Charge ponctuelle -->
+          <h:outputLabel value="#{customProperties['thirdpartycontract.field.sporadicallyinvoicing']}" styleClass="label" />
+          <h:outputText value="#{thirdPartyContractController.thirdPartyContractBean.thirdPartyContractDTO.sporadicallyInvoicing}" />
+        </p>
+        <p>
+          <!-- Date de résiliation du contrat -->
+          <h:outputText value="#{customProperties['thirdpartycontract.field.cancellationdate']}" styleClass="label" />
+          <h:outputText value="#{thirdPartyContractController.thirdPartyContractBean.thirdPartyContractDTO.cancellationDate}">
+            <f:convertDateTime pattern="#{customProperties['pattern.date']}" />
+          </h:outputText>
+        </p>
+        <p>
+          <!-- Motif de résiliation-->
+          <h:outputText value="#{customProperties['thirdpartycontract.field.thirdpartytermination']}" styleClass="label" />
+          <h:outputText value="#{thirdPartyContractController.thirdPartyContractBean.thirdPartyContractDTO.thirdPartyTermination.label}" />
+        </p>
+        <p>
+          <!-- Remboursement du dépot de garantie -->
+          <h:outputText value="#{customProperties['thirdpartycontract.field.guaranteeddepositrefund']}" styleClass="label" />
+          <h:outputText value="#{customProperties['confirm.yes']}" rendered="#{thirdPartyContractController.thirdPartyContractBean.thirdPartyContractDTO.guaranteedDepositRefund}" />
+          <h:outputText value="#{customProperties['confirm.no']}" rendered="#{!thirdPartyContractController.thirdPartyContractBean.thirdPartyContractDTO.guaranteedDepositRefund}" />
+        </p>
+      </p:fieldset>
+      <p:outputPanel layout="block" styleClass="action">
+        <p:commandButton id="btnUpdate" value="#{customProperties['common.action.update']}" action="#{thirdPartyContractController.redirectUpdateData}" rendered="#{security.access('utilisateur', 'administrateur')}" />
+        <p:commandButton id="btnDelete" value="#{customProperties['thirdpartycontract.action.delete']}" onclick="confirmDelete.show()" rendered="#{security.access('administrateur')}" />
+        <p:confirmDialog widgetVar="confirmDelete" message="#{customProperties['thirdpartycontract.action.delete.confirm']}">
+          <p:commandButton value="#{customProperties['confirm.yes']}" onclick="confirmDelete.hide()" action="#{thirdPartyContractController.deleteData}" />
+          <p:commandButton type="button" value="#{customProperties['confirm.no']}" onclick="confirmDelete.hide()" />
+        </p:confirmDialog>
+      </p:outputPanel>
+      <p:fieldset legend="#{customProperties['thirdparty.creation.fieldset']}">
+        <p>
+          <h:outputText value="#{customProperties['thirdparty.field.ref']}" styleClass="label" />
+          <h:outputText value="#{thirdPartyContractController.thirdPartyContractBean.thirdPartyContractDTO.thirdParty.id}" styleClass="long_desc" />
+        </p>
+        <p>
+          <!-- Référence GCP -->
+          <h:outputText value="#{customProperties['thirdparty.field.refgcp']}" styleClass="label" />
+          <h:outputText value="#{thirdPartyContractController.thirdPartyContractBean.thirdPartyContractDTO.thirdParty.gcpReference}" styleClass="long_desc" />
+        </p>
+        <p>
+          <!-- Nom -->
+          <h:outputText value="#{customProperties['thirdparty.field.name']}" styleClass="label" />
+          <h:outputText value="#{thirdPartyContractController.thirdPartyContractBean.thirdPartyContractDTO.thirdParty.name}" styleClass="long_desc" />
+        </p>
+        <p>
+          <!-- Adresse -->
+          <h:outputText value="#{customProperties['thirdparty.field.adress']}" styleClass="label txtarea" />
+          <h:outputText value="#{thirdPartyContractController.thirdPartyContractBean.thirdPartyContractDTO.thirdParty.address}" styleClass="long_desc" />
+        </p>
+        <p>
+          <!-- Code postal -->
+          <h:outputText value="#{customProperties['thirdparty.field.cp']}" styleClass="label" />
+          <h:outputText value="#{thirdPartyContractController.thirdPartyContractBean.thirdPartyContractDTO.thirdParty.postalCode}" styleClass="long_desc" />
+        </p>
+        <p>
+          <!-- Ville -->
+          <h:outputText value="#{customProperties['thirdparty.field.city']}" styleClass="label" />
+          <h:outputText value="#{thirdPartyContractController.thirdPartyContractBean.thirdPartyContractDTO.thirdParty.city}" styleClass="long_desc" />
+        </p>
+        <p>
+          <!-- Téléphone -->
+          <h:outputText value="#{customProperties['thirdparty.field.phone']}" styleClass="label" />
+          <h:outputText value="#{thirdPartyContractController.thirdPartyContractBean.thirdPartyContractDTO.thirdParty.phone}" styleClass="long_desc" />
+        </p>
+        <p>
+          <!-- Email -->
+          <h:outputText value="#{customProperties['thirdparty.field.email']}" styleClass="label" />
+          <h:outputText value="#{thirdPartyContractController.thirdPartyContractBean.thirdPartyContractDTO.thirdParty.mailAddress}" styleClass="long_desc" />
+        </p>
+        <p>
+          <!-- Nom du bénéficiaire -->
+          <h:outputText value="#{customProperties['thirdparty.field.beneficiary.name']}" styleClass="label" />
+          <h:outputText value="#{thirdPartyContractController.thirdPartyContractBean.thirdPartyContractDTO.thirdParty.beneficiaryName}" styleClass="long_desc" />
+        </p>
+        <p>
+          <!-- Adresse du bénéficiaire -->
+          <h:outputText value="#{customProperties['thirdparty.field.beneficiary.address']}" styleClass="label txtarea" />
+          <h:outputText value="#{thirdPartyContractController.thirdPartyContractBean.thirdPartyContractDTO.thirdParty.beneficiaryAddress}" styleClass="long_desc" />
+        </p>
+      </p:fieldset>
+      <p:fieldset legend="#{customProperties['housing.creation.fieldset']}">
+        <p>
+          <!-- Référence -->
+          <h:outputText value="#{customProperties['housing.field.ref']}" styleClass="label" />
+          <h:outputText value="#{thirdPartyContractController.thirdPartyContractBean.thirdPartyContractDTO.housing.reference}" styleClass="long_desc" />
+        </p>
+        <p>
+          <!-- Adresse -->
+          <h:outputText value="#{customProperties['housing.field.adress']}" styleClass="label txtarea" />
+          <h:outputText value="#{thirdPartyContractController.thirdPartyContractBean.thirdPartyContractDTO.housing.address}" styleClass="long_desc" />
+        </p>
+        <p>
+          <!-- Code postal -->
+          <h:outputText value="#{customProperties['housing.field.cp']}" styleClass="label" />
+          <h:outputText value="#{thirdPartyContractController.thirdPartyContractBean.thirdPartyContractDTO.housing.postalCode}" styleClass="long_desc" />
+        </p>
+        <p>
+          <!-- Ville -->
+          <h:outputText value="#{customProperties['housing.field.city']}" styleClass="label" />
+          <h:outputText value="#{thirdPartyContractController.thirdPartyContractBean.thirdPartyContractDTO.housing.city}" styleClass="long_desc" />
+        </p>
+        <p>
+          <!-- Date d'entrée -->
+          <h:outputText value="#{customProperties['housing.field.date.in']}" styleClass="label" />
+          <h:outputText value="#{thirdPartyContractController.thirdPartyContractBean.thirdPartyContractDTO.housing.registerDate}" styleClass="long_desc">
+            <f:convertDateTime pattern="#{customProperties['pattern.date']}" />
+          </h:outputText>
+        </p>
+        <p>
+          <!-- Date de sortie -->
+          <h:outputText value="#{customProperties['housing.field.date.out']}" styleClass="label" />
+          <h:outputText value="#{thirdPartyContractController.thirdPartyContractBean.thirdPartyContractDTO.housing.unregisterDate}" styleClass="long_desc">
+            <f:convertDateTime pattern="#{customProperties['pattern.date']}" />
+          </h:outputText>
+        </p>
+        <p>
+          <!-- Surface réelle -->
+          <h:outputText value="#{customProperties['housing.field.real.surface']}" styleClass="label" />
+          <h:outputText value="#{thirdPartyContractController.thirdPartyContractBean.thirdPartyContractDTO.housing.realSurfaceArea}" styleClass="long_desc" />
+        </p>
+        <p>
+          <!-- Surface corrigée -->
+          <h:outputText value="#{customProperties['housing.field.fixed.surface']}" styleClass="label" />
+          <h:outputText value="#{thirdPartyContractController.thirdPartyContractBean.thirdPartyContractDTO.housing.revisedSurfaceArea}" styleClass="long_desc" />
+        </p>
+        <p>
+          <!-- Propriété -->
+          <h:outputText value="#{customProperties['housing.field.property']}" styleClass="label" />
+          <h:outputText value="#{customProperties['confirm.yes']}" rendered="#{thirdPartyContractController.thirdPartyContractBean.thirdPartyContractDTO.housing.property}" styleClass="long_desc" />
+          <h:outputText value="#{customProperties['confirm.no']}" rendered="#{!thirdPartyContractController.thirdPartyContractBean.thirdPartyContractDTO.housing.property}" styleClass="long_desc" />
+        </p>
+        <p>
+          <!-- Jardin -->
+          <h:outputText value="#{customProperties['housing.field.garden']}" styleClass="label" />
+          <h:outputText value="#{customProperties['confirm.yes']}" rendered="#{thirdPartyContractController.thirdPartyContractBean.thirdPartyContractDTO.housing.gardenAvailable}" styleClass="long_desc" />
+          <h:outputText value="#{customProperties['confirm.no']}" rendered="#{!thirdPartyContractController.thirdPartyContractBean.thirdPartyContractDTO.housing.gardenAvailable}" styleClass="long_desc" />
+        </p>
+        <p>
+          <!-- Garage -->
+          <h:outputText value="#{customProperties['housing.field.garage']}" styleClass="label" />
+          <h:outputText value="#{customProperties['confirm.yes']}" rendered="#{thirdPartyContractController.thirdPartyContractBean.thirdPartyContractDTO.housing.garageAvailable}" styleClass="long_desc" />
+          <h:outputText value="#{customProperties['confirm.no']}" rendered="#{!thirdPartyContractController.thirdPartyContractBean.thirdPartyContractDTO.housing.garageAvailable}" styleClass="long_desc" />
+        </p>
+        <p>
+          <!-- Statut logement -->
+          <h:outputText value="#{customProperties['housing.field.status']}" styleClass="label" />
+          <h:outputText value="#{thirdPartyContractController.thirdPartyContractBean.thirdPartyContractDTO.housing.housingStatus.label}" styleClass="long_desc" />
+        </p>
+        <p>
+          <!-- Nombre de pièces -->
+          <h:outputText value="#{customProperties['housing.field.room.number']}" styleClass="label" />
+          <h:outputText value="#{thirdPartyContractController.thirdPartyContractBean.thirdPartyContractDTO.housing.roomCount}" styleClass="long_desc" />
+        </p>
+        <p>
+          <!-- Nature -->
+          <h:outputText value="#{customProperties['housing.field.nature']}" styleClass="label" />
+          <h:outputText value="#{thirdPartyContractController.thirdPartyContractBean.thirdPartyContractDTO.housing.housingNature.label}" styleClass="long_desc" />
+        </p>
+        <p>
+          <!-- Noyau dur -->
+          <h:outputText value="#{customProperties['housing.field.core']}" styleClass="label" />
+          <h:outputText value="#{customProperties['confirm.yes']}" rendered="#{thirdPartyContractController.thirdPartyContractBean.thirdPartyContractDTO.housing.core}" styleClass="long_desc" />
+          <h:outputText value="#{customProperties['confirm.no']}" rendered="#{!thirdPartyContractController.thirdPartyContractBean.thirdPartyContractDTO.housing.core}" styleClass="long_desc" />
+        </p>
+        <p>
+          <!-- Année de contruction -->
+          <h:outputText value="#{customProperties['housing.field.year']}" styleClass="label" />
+          <h:outputText value="#{thirdPartyContractController.thirdPartyContractBean.thirdPartyContractDTO.housing.year}" styleClass="long_desc" />
+        </p>
+        <p>
+          <!-- Gestionnaire du logement -->
+          <h:outputText value="#{customProperties['housing.field.manager']}" styleClass="label" />
+          <h:outputText value="#{thirdPartyContractController.thirdPartyContractBean.thirdPartyContractDTO.housing.thirdpartyContractManager.lastName} #{thirdPartyContractController.thirdPartyContractBean.thirdPartyContractDTO.housing.thirdpartyContractManager.firstName}" styleClass="long_desc" />
+        </p>
+        <p>
+          <!-- Catégorie du local -->
+          <h:outputText value="#{customProperties['housing.field.category']}" styleClass="label" />
+          <h:outputText value="#{thirdPartyContractController.thirdPartyContractBean.thirdPartyContractDTO.housing.roomCategory.label}" styleClass="long_desc" />
+        </p>
+      </p:fieldset>
+    </h:form>
+  </ui:define>
+</ui:composition>
+</html>

@@ -1,0 +1,94 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+<ui:composition template="/templates/site/site.xhtml">
+  <ui:define name="title">
+    <h:outputText value="#{customProperties['page.title.prefix']}#{customProperties['administration.referentiel.site.title']}" />
+  </ui:define>
+  <ui:define name="body-site">
+    <h2 class="center">#{customProperties['administration.referentiel.site.title']}</h2>
+    <h:form id="frmRefSite" prependId="false" onkeypress="return event.keyCode != 13">
+      <p:outputPanel layout="block" id="siteListing">
+        <p:commandButton style="display: none;" process="@none" update="@none" ajax="true" />
+        <p:dataTable id="sitedtble" var="currentSite" value="#{siteController.siteBean.sites}" editable="true" emptyMessage="#{customProperties['no.data']}" sortBy="#{currentSite.name.toUpperCase()}" paginator="true" paginatorAlwaysVisible="false" paginatorPosition="bottom" rows="10" rowsPerPageTemplate="15, 20, 25" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+          <p:ajax event="rowEdit" listener="#{siteController.onEdit}" update=":messages" />
+          <!-- Titre du tableau -->
+          <f:facet name="header">
+            <h:outputText value="#{customProperties['administration.referentiel.site.datatable.title']}" />
+          </f:facet>
+          <!-- Libellé -->
+          <p:column headerText="#{customProperties['administration.referentiel.site.column.label']}">
+            <p:cellEditor>
+              <f:facet name="output">
+                <h:outputText value="#{currentSite.name}" />
+              </f:facet>
+              <f:facet name="input">
+                <p:inputText value="#{currentSite.name}" maxlength="50" required="true" requiredMessage="#{customProperties['administration.referentiel.site.error.label']}" />
+              </f:facet>
+            </p:cellEditor>
+          </p:column>
+          <p:column headerText="#{customProperties['administration.referentiel.site.column.agency']}">
+            <p:cellEditor>
+              <f:facet name="output">
+                <h:outputText value="#{currentSite.agency.name}" />
+              </f:facet>
+              <f:facet name="input">
+                <p:selectOneMenu id="siteAgency" value="#{currentSite.agency}" converter="abita.converter.dto" styleClass="dropdownlist">
+                  <f:attribute name="converter-values" value="#{siteController.siteBean.agencies}" />
+                  <f:selectItem itemLabel="#{msg['dropdownlist.empty']}" value="#{null}" />
+                  <f:selectItems value="#{siteController.siteBean.agencies}" var="siteAgency" itemLabel="#{siteAgency.name}" />
+                </p:selectOneMenu>
+              </f:facet>
+            </p:cellEditor>
+          </p:column>
+          <!-- Actions -->
+          <p:column headerText="#{customProperties['administration.referentiel.site.column.action']}" styleClass="action_column">
+            <p:rowEditor id="btnModify" />
+            <!-- Bouton suppression -->
+            <p:commandButton id="btnDelete" type="button" rendered="#{currentSite.removable}" onclick="confirmDelete_#{currentSite.id}.show()" icon="ui-icon-trash" styleClass="btn" />
+            <p:tooltip for="btnDelete" value="#{customProperties['administration.referentiel.site.action.delete']}" showEffect="fade" hideEffect="fade" />
+            <!-- Confirmation suppression -->
+            <p:confirmDialog widgetVar="confirmDelete_#{currentSite.id}" message="#{customProperties['administration.referentiel.site.action.delete.confirm']}">
+              <p:commandButton value="#{customProperties['confirm.yes']}" update=":messages :frmRefSite:siteListing" process=":frmRefSite:siteListing" onclick="confirmDelete_#{currentSite.id}.hide()">
+                <p:collector value="#{currentSite}" removeFrom="#{siteController.siteBean.sites}" />
+              </p:commandButton>
+              <p:commandButton type="button" value="#{customProperties['confirm.no']}" onclick="confirmDelete_#{currentSite.id}.hide()" />
+            </p:confirmDialog>
+          </p:column>
+        </p:dataTable>
+      </p:outputPanel>
+      <p:fieldset legend="#{customProperties['administration.referentiel.site.fieldset']}" id="testLoic">
+        <p class="info_required">
+          Les champs suivis de <span class="mandatory">*</span> sont obligatoires.
+        </p>
+        <p>
+          <!-- Libellé -->
+          <h:outputLabel for="name" value="#{customProperties['administration.referentiel.site.field.site']}" styleClass="label">
+            <span class="mandatory">*</span>
+          </h:outputLabel>
+          <p:inputText id="name" value="#{siteController.siteBean.site.name}" maxlength="50" required="true" requiredMessage="#{customProperties['administration.referentiel.site.error.label']}" />
+        </p>
+
+        <div class="ddl">
+          <h:outputLabel for="newAgency" value="#{customProperties['administration.referentiel.site.field.agency']}" styleClass="label">
+            <span class="mandatory">*</span>
+          </h:outputLabel>
+          <p:selectOneMenu id="newAgency" value="#{siteController.siteBean.site.agency}" converter="abita.converter.dto" styleClass="dropdownlist" required="true" requiredMessage="#{customProperties['administration.referentiel.site.error.agency']}">
+            <f:attribute name="converter-values" value="#{siteController.siteBean.agencies}" />
+            <f:selectItem itemLabel="#{msg['dropdownlist.empty']}" value="#{null}" />
+            <f:selectItems value="#{siteController.siteBean.agencies}" var="agency" itemLabel="#{agency.name}" />
+          </p:selectOneMenu>
+        </div>
+        <!-- Bouton Ajouter -->
+        <p:commandButton id="btnAdd" value="#{customProperties['administration.referentiel.site.action.add']}" actionListener="#{siteController.addSiteToList}" update=":messages name newAgency siteListing" process="testLoic"/>
+      </p:fieldset>
+      <p:outputPanel layout="block" styleClass="action">
+        <p:commandButton id="btnValidate" value="#{customProperties['administration.referentiel.site.action.save']}" actionListener="#{siteController.saveData}" immediate="true" update=":messages" />
+        <p:commandButton id="btnCancel" value="#{customProperties['administration.referentiel.site.action.cancel']}" action="welcome" immediate="true" />
+      </p:outputPanel>
+    </h:form>
+  </ui:define>
+</ui:composition>
+</html>

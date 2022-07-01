@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<facelet-taglib xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facelettaglibary_2_0.xsd"
+	version="2.0">
+
+	<namespace>http://abita.com/facelets</namespace>
+
+	<tag>
+		<tag-name>labelInputText</tag-name>
+		<source>taglibs/labelInputText.xhtml</source>
+	</tag>
+	<tag>
+		<tag-name>beforeDateValidator</tag-name>
+		<validator>
+			<validator-id>beforeDateValidator</validator-id>
+		</validator>
+        <attribute>
+            <description>L'identifiant du composant possèdant l'autre date. Cette identifiant peut aussi bien être relatif au NamingContainer du premier composant qu'absolu.</description>
+            <name>boundComponentId</name>
+            <required>true</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>Le résumé du message à afficher en cas de problème de validation. Pas d'identifiant de message. 4 paramètres sont gérés.</description>
+            <name>summaryMessage</name>
+            <required>true</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>Le message complet à afficher en cas de problème de validation. Pas d'identifiant de message. 4 paramètres sont gérés.</description>
+            <name>detailMessage</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+	</tag>
+</facelet-taglib>

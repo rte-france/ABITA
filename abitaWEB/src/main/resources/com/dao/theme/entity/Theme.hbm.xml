@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.dao.theme.entity">
+
+	<class name="Theme" table="FWK_THEME">
+
+		<id name="id" column="THEME_ID" unsaved-value="null">
+			<generator class="native">
+				<param name="sequence">SEQ_THEME_ID</param>
+			</generator>
+		</id>
+
+		<property name="label" column="THEME_LABEL" type="java.lang.String" not-null="true" />
+
+		<property name="name" column="THEME_NAME" type="java.lang.String" not-null="true" />
+
+	</class>
+
+	<query name="getAllTheme"><![CDATA[
+        from Theme]]>
+    </query>
+
+    <query name="findThemeByName"><![CDATA[
+        from Theme t where t.name = :name]]>
+    </query>
+
+</hibernate-mapping>

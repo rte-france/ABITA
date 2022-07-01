@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.dao.domain.entity">
+
+	<class name="Domain" table="FWK_DOMAIN">
+
+		<id name="id" column="DOM_ID" unsaved-value="null">
+			<generator class="native">
+				<param name="sequence">SEQ_DOM_ID</param>
+			</generator>
+		</id>
+
+		<natural-id mutable="true">
+			<property name="name" length="20" column="DOM_NAME"/>
+		</natural-id>
+
+        <version name="version" column="DOM_VERSION"/>
+
+        <property name="displayName" column="DOM_DISPLAY_NAME"/>
+
+        <property name="comment" column="DOM_COMMENT"/>
+
+        <property name="index" column="DOM_INDEX"/>
+
+        <map name="parameters" cascade="save-update,merge,lock,delete,evict" lazy="false">
+        	<key column="DOM_ID" />
+        	<map-key type="java.lang.String" column="PRM_NAME" />
+        	<one-to-many class="com.dao.domain.entity.Parameter" />
+        </map>
+	</class>
+
+    <query name="findDomainByName"><![CDATA[
+        from Domain d where d.name = :name]]>
+    </query>
+
+    <query name="getAllDomains"><![CDATA[
+        from Domain d order by d.index]]>
+    </query>
+
+</hibernate-mapping>
+

@@ -1,0 +1,467 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:fn="http://java.sun.com/jsp/jstl/functions" xmlns:p="http://primefaces.org/ui">
+<ui:composition template="/templates/site/site.xhtml">
+  <ui:define name="title">
+    <h:outputText value="#{customProperties['page.title.prefix']}#{customProperties['contract.view.title']}" />
+  </ui:define>
+  <ui:define name="body-site">
+    <h2 class="center">#{customProperties['contract.view.title']}</h2>
+    <h:form id="frmViewContract" prependId="false" onkeypress="return event.keyCode != 13">
+      <p:fieldset legend="#{customProperties['contract.view.fieldset']}">
+        <p>
+          <!-- Ref Contrat Occupant  -->
+          <h:outputText value="#{customProperties['contract.field.refcontract']}" styleClass="label" />
+          <h:outputText value="#{contractController.contractBean.contractInputDTO.contractReference}" styleClass="long_desc" />
+        </p>
+        <p>
+          <!-- Ref Occupant  -->
+          <h:outputText value="#{customProperties['contract.field.tenant.reference']}" styleClass="label" />
+          <h:outputText value="#{contractController.contractBean.contractInputDTO.tenant.reference}" styleClass="long_desc" />
+        </p>
+        <p>
+          <!-- Ref Logement  -->
+          <h:outputText value="#{customProperties['contract.field.refhousing']}" styleClass="label" />
+          <h:outputText value="#{contractController.contractBean.contractInputDTO.housing.reference}" styleClass="long_desc" />
+        </p>
+        <p>
+          <!-- Domaine d'activité  -->
+          <h:outputText value="#{customProperties['contract.field.field']}" styleClass="label" />
+          <h:outputText value="#{contractController.contractBean.contractInputDTO.fieldOfActivity.gmr}" styleClass="long_desc" />
+        </p>
+        <p>
+          <!-- Agence, fixe si contrat clos -->
+          <h:outputText value="#{customProperties['housing.field.agency']}" styleClass="label" />
+          <h:outputText value="#{contractController.contractBean.contractInputDTO.agencyDisplay.name}"/>
+        </p>
+        <p>
+          <!-- Centre coût  -->
+          <h:outputText value="#{customProperties['contract.field.costcenter']}" styleClass="label" />
+          <h:outputText value="#{contractController.contractBean.contractInputDTO.costCenter.label}" styleClass="long_desc" />
+        </p>
+        <p>
+          <!-- Typologie de loyer  -->
+          <h:outputText value="#{customProperties['contract.field.renttypology']}" styleClass="label" />
+          <h:outputText value="#{contractController.contractBean.contractInputDTO.rentTypology.label}" styleClass="long_desc" />
+        </p>
+        <p>
+          <!-- Mode de paiement  -->
+          <h:outputText value="#{customProperties['contract.field.paymentmethod']}" styleClass="label" />
+          <h:outputText value="#{contractController.contractBean.contractInputDTO.paymentMethod.label}" styleClass="long_desc" />
+        </p>
+        <p>
+          <!-- Contrat signé  -->
+          <h:outputText value="#{customProperties['contract.field.signature']}" styleClass="label" />
+          <h:outputText value="#{customProperties['confirm.yes']}" rendered="#{contractController.contractBean.contractInputDTO.signature != null ? contractController.contractBean.contractInputDTO.signature : false}" />
+          <h:outputText value="#{customProperties['confirm.no']}" rendered="#{contractController.contractBean.contractInputDTO.signature != null ? !contractController.contractBean.contractInputDTO.signature : false}" />
+        </p>
+        <p>
+          <!-- Date de début de validité  -->
+          <h:outputText value="#{customProperties['contract.field.startvalidity']}" styleClass="label" />
+          <h:outputText value="#{contractController.contractBean.contractInputDTO.startValidityDate}" styleClass="long_desc">
+            <f:convertDateTime pattern="#{customProperties['pattern.date']}" />
+          </h:outputText>
+        </p>
+        <p>
+          <!-- Date de fin de validité  -->
+          <h:outputText value="#{customProperties['contract.field.endvalidity']}" styleClass="label" />
+          <h:outputText value="#{contractController.contractBean.contractInputDTO.endValidityDate}" styleClass="long_desc">
+            <f:convertDateTime pattern="#{customProperties['pattern.date']}" />
+          </h:outputText>
+        </p>
+        <p>
+          <!-- Motif de résiliation  -->
+          <h:outputText value="#{customProperties['contract.field.termination']}" styleClass="label" />
+          <h:outputText value="#{contractController.contractBean.contractInputDTO.termination.label}" styleClass="long_desc" />
+        </p>
+        <p>
+          <!-- Surface corrigée, fixe si contrat clos  -->
+          <h:outputText value="#{customProperties['contract.field.fixedsurface']}" styleClass="label" />
+          <h:outputText value="#{contractController.contractBean.contractInputDTO.revisedSurfaceAreaDisplay}" styleClass="long_desc" />
+        </p>
+        <p>
+          <!-- Loyer surface corrigée, fixe si contrat clos  -->
+          <h:outputText value="#{customProperties['contract.field.rentfixedsurface']}" styleClass="label" />
+          <h:outputText value="#{contractController.contractBean.contractInputDTO.revisedSurfaceAreaRentDisplay}" styleClass="long_desc" />
+        </p>
+        <p>
+          <!-- Nombre d'occupants  -->
+          <h:outputLabel value="#{customProperties['contract.field.household']}" styleClass="label" />
+          <h:outputText value="#{contractController.contractBean.contractInputDTO.householdSize}" styleClass="long_desc" />
+        </p>
+        <p>
+          <!-- Coefficient n/N, fixe si contrat clos  -->
+          <h:outputText value="#{customProperties['contract.field.coefficiant']}" styleClass="label" />
+          <h:outputText value="#{contractController.contractBean.contractInputDTO.NNCoefDisplay}" >
+            <f:convertNumber maxFractionDigits="2" minFractionDigits="2" locale="en_US" groupingUsed="false" />
+          </h:outputText>
+          <h:outputText value="(?)" title="#{contractController.contractBean.contractInputDTO.nNCoefDetail}" styleClass="sublabel" />
+        </p>
+        <p>
+          <!-- Abattement de précarité  -->
+          <h:outputText value="#{customProperties['contract.field.reducingvulnerability']}" styleClass="label" />
+          <h:outputText value="#{contractController.contractBean.contractInputDTO.shortTermContractDiscount}" styleClass="long_desc">
+            <f:convertNumber maxFractionDigits="2" minFractionDigits="2" locale="en_US" groupingUsed="false" />
+          </h:outputText>
+        </p>
+        <p>
+          <!-- Loyer marché  -->
+          <h:outputText value="#{customProperties['contract.field.marketrentprice']}" styleClass="label" />
+          <h:outputText value="#{contractController.contractBean.contractInputDTO.marketRentPrice}" styleClass="long_desc" />
+        </p>
+        <p>
+          <!-- Loyer plafond  -->
+          <h:outputText value="#{customProperties['contract.field.rentpricelimit']}" styleClass="label" />
+          <h:outputText value="#{contractController.contractBean.contractInputDTO.rentPriceLimit}" styleClass="long_desc" />
+        </p>
+        <p>
+          <!-- Loyer écrêté, fixe si contrat clos   -->
+          <h:outputText value="#{customProperties['contract.field.cappedrent']}" styleClass="label" />
+          <h:outputText value="#{contractController.contractBean.contractInputDTO.lopRentDisplay}" styleClass="long_desc" >
+            <f:convertNumber maxFractionDigits="2" minFractionDigits="2" locale="en_US" groupingUsed="false" />
+          </h:outputText>
+        </p>
+        <p>
+          <!-- Loyer net agent  -->
+          <h:outputText value="#{customProperties['contract.field.netrent']}" styleClass="label" />
+          <h:outputText value="#{contractController.contractBean.contractInputDTO.netAgentRent}" styleClass="long_desc">
+            <f:convertNumber maxFractionDigits="2" minFractionDigits="2" locale="en_US" groupingUsed="false" />
+          </h:outputText>
+        </p>
+        <p>
+          <!-- Loyer garage  -->
+          <h:outputText value="#{customProperties['contract.field.garagerent']}" styleClass="label" />
+          <h:outputText value="#{contractController.contractBean.contractInputDTO.garageRent}" styleClass="long_desc" />
+        </p>
+        <p>
+          <!-- Loyer jardin  -->
+          <h:outputText value="#{customProperties['contract.field.gardenrent']}" styleClass="label" />
+          <h:outputText value="#{contractController.contractBean.contractInputDTO.gardenRent}" styleClass="long_desc" />
+        </p>
+        <p>
+          <!-- Surloyer  -->
+          <h:outputText value="#{customProperties['contract.field.extrarent']}" styleClass="label" />
+          <h:outputText value="#{contractController.contractBean.contractInputDTO.extraRent}" styleClass="long_desc" />
+        </p>
+        <p>
+          <!-- Charges prévisionnelles  -->
+          <h:outputText value="#{customProperties['contract.field.expectedchargecost']}" styleClass="label" />
+          <h:outputText value="#{contractController.contractBean.contractInputDTO.expectedChargeCost}" styleClass="long_desc" />
+        </p>
+        <p>
+          <!-- Facturation de la consommation d’eau  -->
+          <h:outputText value="#{customProperties['contract.field.waterinvoicing']}" styleClass="label" />
+          <h:outputText value="#{contractController.contractBean.contractInputDTO.waterInvoicing}" styleClass="long_desc" />
+        </p>
+        <p>
+          <!-- Facturation des ordures ménagères  -->
+          <h:outputText value="#{customProperties['contract.field.garbageinvoicing']}" styleClass="label" />
+          <h:outputText value="#{contractController.contractBean.contractInputDTO.garbageInvoicing}" styleClass="long_desc" />
+        </p>
+        <p>
+          <!-- Remboursement assurance  -->
+          <h:outputText value="#{customProperties['contract.field.insurancereimbursement']}" styleClass="label" />
+          <h:outputText value="#{contractController.contractBean.contractInputDTO.insuranceReimbursement}" styleClass="long_desc" />
+        </p>
+        <p>
+          <!-- Date limite de validité de l'attestation d'assurance -->
+          <h:outputLabel value="#{customProperties['contract.field.insurancecertificateenddate']}" styleClass="label" />
+          <h:outputText value="#{contractController.contractBean.contractInputDTO.insuranceCertificateEndDate}" styleClass="long_desc">
+            <f:convertDateTime pattern="#{customProperties['pattern.date']}" />
+          </h:outputText>
+        </p>
+        <p>
+          <!-- Remboursement taxe habitation  -->
+          <h:outputText value="#{customProperties['contract.field.housingtaxreimbursement']}" styleClass="label" />
+          <h:outputText value="#{contractController.contractBean.contractInputDTO.housingTaxReimbursement}" styleClass="long_desc" />
+        </p>
+        <p>
+          <!-- Remboursement taxe ordures ménagères  -->
+          <h:outputText value="#{customProperties['contract.field.garbagereimbursement']}" styleClass="label" />
+          <h:outputText value="#{contractController.contractBean.contractInputDTO.garbageReimbursement}" styleClass="long_desc" />
+        </p>
+        <p>
+          <!-- Apurement annuel des charges  -->
+          <h:outputText value="#{customProperties['contract.field.annualclearancecharges']}" styleClass="label" />
+          <h:outputText value="#{contractController.contractBean.contractInputDTO.annualClearanceCharges}" styleClass="long_desc" />
+        </p>
+        <p>
+          <!-- Autres charges locatives  -->
+          <h:outputText value="#{customProperties['contract.field.otherinvoicing']}" styleClass="label" />
+          <h:outputText value="#{contractController.contractBean.contractInputDTO.otherInvoicingAmount} #{contractController.contractBean.contractInputDTO.otherInvoicingLabel}" styleClass="long_desc" />
+        </p>
+        <p>
+          <!-- Loyer prélevé  -->
+          <h:outputText value="#{customProperties['contract.field.withdrawnrent']}" styleClass="label" />
+          <h:outputText value="#{contractController.contractBean.contractInputDTO.fixedWithdrawnRent}" styleClass="long_desc">
+            <f:convertNumber maxFractionDigits="2" minFractionDigits="2" locale="en_US" groupingUsed="false" />
+          </h:outputText>
+        </p>
+        <p>
+          <!-- Loyer prélevé cumulé sur l'année  -->
+          <h:outputText value="#{customProperties['contract.field.addedwithdrawnrent']}" styleClass="label" />
+          <h:outputText value="#{contractController.contractBean.contractInputDTO.plainTempAddedWithdrawnRent}" styleClass="long_desc">
+            <f:convertNumber maxFractionDigits="2" minFractionDigits="2" locale="en_US" groupingUsed="false" />
+          </h:outputText>
+        </p>
+        <p>
+          <!-- Pécule de fin d'occupation  -->
+          <h:outputText value="#{customProperties['contract.field.terminationsavings']}" styleClass="label" />
+          <h:outputText value="#{customProperties['confirm.yes']}" rendered="#{contractController.contractBean.contractInputDTO.terminationSavings}" />
+          <h:outputText value="#{customProperties['confirm.no']}" rendered="#{!contractController.contractBean.contractInputDTO.terminationSavings}" />
+        </p>
+        <p>
+          <!-- Montant du pécule de fin d'occupation  -->
+          <h:outputText value="#{customProperties['contract.field.terminationsavingamount']}" styleClass="label" />
+          <h:outputText value="#{contractController.contractBean.contractInputDTO.plainTempTerminationSavingAmount}" styleClass="long_desc">
+            <f:convertNumber maxFractionDigits="2" minFractionDigits="2" locale="en_US" groupingUsed="false" />
+          </h:outputText>
+        </p>
+        <p>
+          <!-- Règlement du pécule de fin d'occupation  -->
+          <h:outputText value="#{customProperties['contract.field.terminationsavingspayment']}" styleClass="label" />
+          <h:outputText value="#{customProperties['confirm.yes']}" rendered="#{contractController.contractBean.contractInputDTO.terminationSavingsPayment}" />
+          <h:outputText value="#{customProperties['confirm.no']}" rendered="#{!contractController.contractBean.contractInputDTO.terminationSavingsPayment}" />
+
+          <h:outputText value="#{customProperties['contract.field.terminationsavingspaymentdate']}"
+                        styleClass="label short-label"
+                        rendered="#{contractController.contractBean.contractInputDTO.terminationSavingsPayment}" />
+          <h:outputText id="terminationSavingsPaymentDate"
+                        value="#{contractController.contractBean.contractInputDTO.terminationSavingsPaymentDate}"
+                        styleClass="short_desc"
+                        rendered="#{contractController.contractBean.contractInputDTO.terminationSavingsPayment}">
+            <f:convertDateTime pattern="#{customProperties['pattern.date']}" />
+          </h:outputText>
+        </p>
+        <p>
+          <!-- Avantage en nature, fixe si contrat clos -->
+          <h:outputText value="#{customProperties['contract.field.benefit']}" styleClass="label" />
+          <h:outputText value="#{contractController.contractBean.contractInputDTO.benefitDisplay}" styleClass="long_desc" >
+            <f:convertNumber maxFractionDigits="2" minFractionDigits="2" locale="en_US" groupingUsed="false" />
+          </h:outputText>
+        </p>
+        <p>
+          <!-- Montant de la valeur locative foncière  -->
+          <h:outputText value="#{customProperties['contract.field.realestaterentalvalue']}" styleClass="label" />
+          <h:outputText value="#{contractController.contractBean.contractInputDTO.realEstateRentalValue}" styleClass="long_desc" />
+        </p>
+      </p:fieldset>
+      <p:outputPanel layout="block" styleClass="action">
+        <p:commandButton id="btnUpdate" value="#{customProperties['common.action.update']}" action="#{contractController.redirectUpdateData}" rendered="#{security.access('utilisateur', 'administrateur')}" />
+        <p:commandButton id="btnDelete" value="#{customProperties['contract.action.delete']}" onclick="confirmDelete.show()" rendered="#{security.access('administrateur')}" />
+        <p:confirmDialog widgetVar="confirmDelete" message="#{customProperties['contract.action.delete.confirm']}">
+          <p:commandButton value="#{customProperties['confirm.yes']}" onclick="confirmDelete.hide()" action="#{contractController.deleteData}" />
+          <p:commandButton type="button" value="#{customProperties['confirm.no']}" onclick="confirmDelete.hide()" />
+        </p:confirmDialog>
+      </p:outputPanel>
+      <p:fieldset id="fldsetTenant" legend="#{customProperties['tenant.creation.fieldset']}">
+        <p>
+          <!-- Type d'occuapnt -->
+          <h:outputText value="#{customProperties['tenant.field.type']}" styleClass="label" />
+          <h:outputText value="#{contractController.contractBean.contractInputDTO.tenant.typeTenant.label}" />
+        </p>
+        <p>
+          <!-- Référence occupant -->
+          <h:outputText value="#{customProperties['tenant.field.reference']}" styleClass="label" />
+          <h:outputText value="#{contractController.contractBean.contractInputDTO.tenant.reference}" />
+        </p>
+        <p>
+          <!-- Nom -->
+          <h:outputText value="#{customProperties['tenant.field.name']}" styleClass="label" />
+          <h:outputText value="#{contractController.contractBean.contractInputDTO.tenant.lastName}" />
+        </p>
+        <p>
+          <!-- Prénom -->
+          <h:outputText value="#{customProperties['tenant.field.firstname']}" styleClass="label" />
+          <h:outputText value="#{contractController.contractBean.contractInputDTO.tenant.firstName}" />
+        </p>
+        <p>
+          <!-- Adresse -->
+          <h:outputText value="#{customProperties['tenant.field.adress']}" styleClass="label txtarea" />
+          <h:outputText value="#{contractController.contractBean.contractInputDTO.tenant.address}" />
+        </p>
+        <p>
+          <!-- Code postal -->
+          <h:outputText value="#{customProperties['tenant.field.cp']}" styleClass="label" />
+          <h:outputText value="#{contractController.contractBean.contractInputDTO.tenant.postalCode}" />
+        </p>
+        <p>
+          <!-- Ville -->
+          <h:outputText value="#{customProperties['tenant.field.city']}" styleClass="label" />
+          <h:outputText value="#{contractController.contractBean.contractInputDTO.tenant.city}" />
+        </p>
+        <p>
+          <!-- Cadre -->
+          <h:outputText value="#{customProperties['tenant.field.managerial']}" styleClass="label" />
+          <h:outputText value="#{customProperties['confirm.yes']}" rendered="#{contractController.contractBean.contractInputDTO.tenant.managerial != null ? contractController.contractBean.contractInputDTO.tenant.managerial : false}" />
+          <h:outputText value="#{customProperties['confirm.no']}" rendered="#{contractController.contractBean.contractInputDTO.tenant.managerial != null ? !contractController.contractBean.contractInputDTO.tenant.managerial : false}" />
+        </p>
+        <p>
+          <!-- Cadre à octobre N-1 -->
+          <h:outputText value="#{customProperties['tenant.field.managerial.last.year']}" styleClass="label" />
+          <h:outputText value="#{customProperties['confirm.yes']}" rendered="#{contractController.contractBean.contractInputDTO.tenant.managerialLastYear != null ? contractController.contractBean.contractInputDTO.tenant.managerialLastYear : false}" />
+          <h:outputText value="#{customProperties['confirm.no']}" rendered="#{contractController.contractBean.contractInputDTO.tenant.managerialLastYear != null ? !contractController.contractBean.contractInputDTO.tenant.managerialLastYear : false}" />
+        </p>
+        <p>
+          <!-- Nombre de personne constituant le foyer -->
+          <h:outputText value="#{customProperties['tenant.field.household']}" styleClass="label" />
+          <h:outputText value="#{contractController.contractBean.contractInputDTO.tenant.householdSize}" />
+        </p>
+        <p>
+          <!-- Nombre de personne constituant le foyer à octobre N-1 -->
+          <h:outputText value="#{customProperties['tenant.field.household.last.year']}" styleClass="label" />
+          <h:outputText value="#{contractController.contractBean.contractInputDTO.tenant.householdSizeLastYear}" />
+        </p>
+        <p>
+          <!-- Salaire brut -->
+          <h:outputText value="#{customProperties['contract.tenant.field.salary']}" styleClass="label" />
+          <h:outputText value="#{contractController.contractBean.contractInputDTO.tenant.actualSalary}" />
+        </p>
+        <p>
+          <!-- Salaire brut à octobre N-1 -->
+          <h:outputText value="#{customProperties['contract.tenant.field.salary.last.year']}" styleClass="label" />
+          <h:outputText value="#{contractController.contractBean.contractInputDTO.tenant.referenceGrossSalary}" />
+        </p>
+        <p>
+          <!-- Téléphone -->
+          <h:outputText value="#{customProperties['tenant.field.phone']}" styleClass="label" />
+          <h:outputText value="#{contractController.contractBean.contractInputDTO.tenant.phone}" styleClass="long_desc" />
+        </p>
+        <p>
+          <!-- Email -->
+          <h:outputText value="#{customProperties['tenant.field.email']}" styleClass="label" />
+          <h:outputText value="#{contractController.contractBean.contractInputDTO.tenant.mailAddress}" styleClass="long_desc" />
+        </p>
+      </p:fieldset>
+      <p:fieldset id="fldsetHousing" legend="#{customProperties['housing.creation.fieldset']}">
+        <p>
+          <!-- Référence -->
+          <h:outputText value="#{customProperties['housing.field.ref']}" styleClass="label" />
+          <h:outputText value="#{contractController.contractBean.contractInputDTO.housing.reference}" styleClass="long_desc" />
+        </p>
+        <p>
+          <!-- Adresse -->
+          <h:outputText value="#{customProperties['housing.field.adress']}" styleClass="label txtarea" />
+          <h:outputText value="#{contractController.contractBean.contractInputDTO.housing.address}" styleClass="long_desc" />
+        </p>
+        <p>
+          <!-- Code postal -->
+          <h:outputText value="#{customProperties['housing.field.cp']}" styleClass="label" />
+          <h:outputText value="#{contractController.contractBean.contractInputDTO.housing.postalCode}" styleClass="long_desc" />
+        </p>
+        <p>
+          <!-- Ville -->
+          <h:outputText value="#{customProperties['housing.field.city']}" styleClass="label" />
+          <h:outputText value="#{contractController.contractBean.contractInputDTO.housing.city}" styleClass="long_desc" />
+        </p>
+        <p>
+          <!-- Date d'entrée -->
+          <h:outputText value="#{customProperties['housing.field.date.in']}" styleClass="label" />
+          <h:outputText value="#{contractController.contractBean.contractInputDTO.housing.registerDate}" styleClass="long_desc">
+            <f:convertDateTime pattern="#{customProperties['pattern.date']}" />
+          </h:outputText>
+        </p>
+        <p>
+          <!-- Date de sortie -->
+          <h:outputText value="#{customProperties['housing.field.date.out']}" styleClass="label" />
+          <h:outputText value="#{contractController.contractBean.contractInputDTO.housing.unregisterDate}" styleClass="long_desc">
+            <f:convertDateTime pattern="#{customProperties['pattern.date']}" />
+          </h:outputText>
+        </p>
+        <p>
+          <!-- Motif de sortie -->
+          <h:outputLabel value="#{customProperties['housing.field.reason.for.exit']}" styleClass="label"/>
+          <h:outputText value="#{customProperties[contractController.contractBean.contractInputDTO.housing.reasonForExit.key]}" styleClass="long_desc"/>
+        </p>
+        <p>
+          <!-- Surface réelle -->
+          <h:outputText value="#{customProperties['housing.field.real.surface']}" styleClass="label" />
+          <h:outputText value="#{contractController.contractBean.contractInputDTO.housing.realSurfaceArea}" styleClass="long_desc" />
+        </p>
+        <p>
+          <!-- Surface corrigée -->
+          <h:outputText value="#{customProperties['housing.field.fixed.surface']}" styleClass="label" />
+          <h:outputText value="#{contractController.contractBean.contractInputDTO.housing.revisedSurfaceArea}" styleClass="long_desc" />
+        </p>
+        <p>
+          <!-- Propriété -->
+          <h:outputText value="#{customProperties['housing.field.property']}" styleClass="label" />
+          <h:outputText value="#{customProperties['confirm.yes']}" rendered="#{contractController.contractBean.contractInputDTO.housing.property}" styleClass="long_desc" />
+          <h:outputText value="#{customProperties['confirm.no']}" rendered="#{!contractController.contractBean.contractInputDTO.housing.property}" styleClass="long_desc" />
+        </p>
+        <p>
+          <!-- Jardin -->
+          <h:outputText value="#{customProperties['housing.field.garden']}" styleClass="label" />
+          <h:outputText value="#{customProperties['confirm.yes']}" rendered="#{contractController.contractBean.contractInputDTO.housing.gardenAvailable}" styleClass="long_desc" />
+          <h:outputText value="#{customProperties['confirm.no']}" rendered="#{!contractController.contractBean.contractInputDTO.housing.gardenAvailable}" styleClass="long_desc" />
+        </p>
+        <p>
+          <!-- Garage -->
+          <h:outputText value="#{customProperties['housing.field.garage']}" styleClass="label" />
+          <h:outputText value="#{customProperties['confirm.yes']}" rendered="#{contractController.contractBean.contractInputDTO.housing.garageAvailable}" styleClass="long_desc" />
+          <h:outputText value="#{customProperties['confirm.no']}" rendered="#{!contractController.contractBean.contractInputDTO.housing.garageAvailable}" styleClass="long_desc" />
+        </p>
+        <p>
+          <!-- Statut logement -->
+          <h:outputText value="#{customProperties['housing.field.status']}" styleClass="label" />
+          <h:outputText value="#{contractController.contractBean.contractInputDTO.housing.housingStatus.label}" styleClass="long_desc" />
+        </p>
+        <p>
+          <!-- Nombre de pièces -->
+          <h:outputText value="#{customProperties['housing.field.room.number']}" styleClass="label" />
+          <h:outputText value="#{contractController.contractBean.contractInputDTO.housing.roomCount}" styleClass="long_desc" />
+        </p>
+        <p>
+          <!-- Nature -->
+          <h:outputText value="#{customProperties['housing.field.nature']}" styleClass="label" />
+          <h:outputText value="#{contractController.contractBean.contractInputDTO.housing.housingNature.label}" styleClass="long_desc" />
+        </p>
+        <p>
+          <!-- Noyau dur -->
+          <h:outputText value="#{customProperties['housing.field.core']}" styleClass="label" />
+          <h:outputText value="#{customProperties['confirm.yes']}" rendered="#{contractController.contractBean.contractInputDTO.housing.core}" styleClass="long_desc" />
+          <h:outputText value="#{customProperties['confirm.no']}" rendered="#{!contractController.contractBean.contractInputDTO.housing.core}" styleClass="long_desc" />
+        </p>
+        <p>
+          <!-- Année de contruction -->
+          <h:outputText value="#{customProperties['housing.field.year']}" styleClass="label" />
+          <h:outputText value="#{contractController.contractBean.contractInputDTO.housing.year}" styleClass="long_desc" />
+        </p>
+        <p>
+          <!-- Gestionnaire du logement -->
+          <h:outputText value="#{customProperties['housing.field.manager']}" styleClass="label" />
+          <h:outputText value="#{contractController.contractBean.contractInputDTO.housing.thirdpartyContractManager.lastName} #{contractController.contractBean.contractInputDTO.housing.thirdpartyContractManager.firstName}" styleClass="long_desc" />
+        </p>
+        <p>
+          <!-- Catégorie du local -->
+          <h:outputText value="#{customProperties['housing.field.category']}" styleClass="label" />
+          <h:outputText value="#{contractController.contractBean.contractInputDTO.housing.roomCategory.label}" styleClass="long_desc" />
+        </p>
+        <p>
+          <!-- Domaine d'activité du logement de son contrat occupant en cours -->
+          <h:outputText value="#{customProperties['housing.field.field']}"  styleClass="label" />
+          <h:outputText value="#{contractController.contractBean.contractInputDTO.fieldOfActivity.gmr}" rendered="#{!contractController.contractBean.contractDTO.closedContract}" styleClass="long_desc" />
+          <h:outputText value="" rendered="#{contractController.contractBean.contractDTO.closedContract}" styleClass="long_desc" />
+        </p>
+        <p>
+          <!-- Agence -->
+          <h:outputText value="#{customProperties['housing.field.agency']}" styleClass="label" />
+          <h:outputText value="#{contractController.contractBean.contractInputDTO.housing.agency.name}" styleClass="long_desc" />
+        </p>
+        <p>
+          <!-- Site -->
+          <h:outputText value="#{customProperties['housing.field.rattachmentSite']}" styleClass="label" />
+          <h:outputText value="#{contractController.contractBean.contractInputDTO.housing.rattachmentSite.name}" styleClass="long_desc" />
+        </p>
+        <p>
+          <!-- Date de dernière maintenance DAAF -->
+          <h:outputText value="#{customProperties['housing.field.last.daaf.date']}" styleClass="label" />
+          <h:outputText value="#{contractController.contractBean.contractInputDTO.housing.lastDaafDate}" styleClass="long_desc">
+            <f:convertDateTime pattern="#{customProperties['pattern.date']}" />
+          </h:outputText>
+        </p>
+      </p:fieldset>
+    </h:form>
+  </ui:define>
+</ui:composition>
+</html>

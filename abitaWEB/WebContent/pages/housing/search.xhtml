@@ -1,0 +1,1490 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+<ui:composition template="/templates/site/site.xhtml">
+
+  <ui:define name="title">
+    <h:outputText value="#{customProperties['page.title.prefix']}#{customProperties['housing.search.title']}"/>
+  </ui:define>
+  <ui:define name="body-site">
+    <h2 class="center">#{customProperties['housing.search.title']}</h2>
+    <h:form id="frmSearchHousing" prependId="false">
+      <p:fieldset legend="#{customProperties['housing.search.fieldset']}">
+        <p>
+          <!-- Référence -->
+          <h:outputLabel for="reference" value="#{customProperties['housing.field.ref']}" styleClass="label"/>
+          <p:inputText id="reference" label="#{customProperties['housing.field.ref']}"
+                       value="#{housingSearchController.housingSearchBean.housingCriteria.reference}"/>
+        </p>
+        <p>
+          <!-- Adresse -->
+          <h:outputLabel for="adress" value="#{customProperties['housing.field.adress']}" styleClass="label txtarea"/>
+          <p:inputTextarea id="adress" value="#{housingSearchController.housingSearchBean.housingCriteria.address}"
+                           rows="4" cols="74" maxlength="250"/>
+        </p>
+        <p>
+          <!-- Code postal -->
+          <h:outputLabel for="cp" value="#{customProperties['housing.field.cp']}" styleClass="label"/>
+          <p:inputText id="cp" value="#{housingSearchController.housingSearchBean.housingCriteria.postalCode}"
+                       maxlength="5"/>
+        </p>
+        <p>
+          <!-- Ville -->
+          <h:outputLabel for="city" value="#{customProperties['housing.field.city']}" styleClass="label"/>
+          <p:inputText id="city" value="#{housingSearchController.housingSearchBean.housingCriteria.city}"
+                       maxlength="50"/>
+        </p>
+        <p>
+          <!-- Date d'entrée -->
+          <h:outputLabel for="register_date" value="#{customProperties['housing.field.date.in']}" styleClass="label"/>
+          <p:calendar id="register_date"
+                      value="#{housingSearchController.housingSearchBean.housingCriteria.registerDate}" locale="fr"
+                      pattern="#{customProperties['pattern.date']}" navigator="true" maxlength="10"/>
+        </p>
+        <p>
+          <!-- Date de sortie -->
+          <h:outputLabel for="unregister_date" value="#{customProperties['housing.field.date.out']}"
+                         styleClass="label"/>
+          <p:calendar id="unregister_date"
+                      value="#{housingSearchController.housingSearchBean.housingCriteria.unregisterDate}" locale="fr"
+                      pattern="#{customProperties['pattern.date']}" navigator="true" maxlength="10"/>
+        </p>
+        <div class="ddl">
+          <!-- Motif de sortie -->
+          <h:outputLabel for="reason_for_exit" value="#{customProperties['housing.field.reason.for.exit']}"
+                         styleClass="label"/>
+          <p:selectOneMenu id="reason_for_exit"
+                           value="#{housingSearchController.housingSearchBean.housingCriteria.reasonForExit}"
+                           styleClass="dropdownlist">
+            <f:selectItem itemLabel="#{msg['dropdownlist.empty']}" value="#{null}"/>
+            <f:selectItems value="#{housingSearchController.housingSearchBean.housingCriteria.reasonForExitArray}"
+                           var="reasonForExit" itemValue="#{reasonForExit}"
+                           itemLabel="#{customProperties[reasonForExit.key]}"/>
+          </p:selectOneMenu>
+        </div>
+        <p>
+          <!-- Surface réelle -->
+          <h:outputLabel for="real_surface" value="#{customProperties['housing.field.real.surface']}"
+                         styleClass="label"/>
+          <p:inputText id="real_surface" label="#{customProperties['housing.field.real.surface']}"
+                       value="#{housingSearchController.housingSearchBean.housingCriteria.realSurfaceArea}"
+                       maxlength="8"/>
+        </p>
+        <p>
+          <!-- Surface corrigée -->
+          <h:outputLabel for="fixed_surface" value="#{customProperties['housing.field.fixed.surface']}"
+                         styleClass="label"/>
+          <p:inputText id="fixed_surface" label="#{customProperties['housing.field.fixed.surface']}"
+                       value="#{housingSearchController.housingSearchBean.housingCriteria.revisedSurfaceArea}"
+                       maxlength="8"/>
+        </p>
+        <div class="ddl">
+          <!-- Propriété -->
+          <h:outputLabel for="property" value="#{customProperties['housing.field.property']}" styleClass="label"/>
+          <p:selectOneMenu id="property" value="#{housingSearchController.housingSearchBean.property}">
+            <f:selectItem itemLabel="#{customProperties['confirm.all']}" noSelectionOption="true"/>
+            <f:selectItem itemLabel="#{customProperties['confirm.yes']}" itemValue="#{true}"/>
+            <f:selectItem itemLabel="#{customProperties['confirm.no']}" itemValue="#{false}"/>
+          </p:selectOneMenu>
+        </div>
+        <div class="ddl">
+          <!-- Jardin -->
+          <h:outputLabel for="garden" value="#{customProperties['housing.field.garden']}" styleClass="label"/>
+          <p:selectOneMenu id="garden" value="#{housingSearchController.housingSearchBean.gardenAvailable}">
+            <f:selectItem itemLabel="#{customProperties['confirm.all']}" noSelectionOption="true"/>
+            <f:selectItem itemLabel="#{customProperties['confirm.yes']}" itemValue="#{true}"/>
+            <f:selectItem itemLabel="#{customProperties['confirm.no']}" itemValue="#{false}"/>
+          </p:selectOneMenu>
+        </div>
+        <p>
+          <!-- M² -->
+          <h:outputLabel for="Square_Meter" value="#{customProperties['housing.field.square.meter']}"
+                         styleClass="label"/>
+          <p:inputText id="Square_Meter" label="#{customProperties['housing.field.square.meter']}"
+                       value="#{housingSearchController.housingSearchBean.housingCriteria.squareMeter}" maxlength="8"/>
+        </p>
+        <div class="ddl">
+          <!-- Garage -->
+          <h:outputLabel for="garage" value="#{customProperties['housing.field.garage']}" styleClass="label"/>
+          <p:selectOneMenu id="garage" value="#{housingSearchController.housingSearchBean.garageAvailable}">
+            <f:selectItem itemLabel="#{customProperties['confirm.all']}" noSelectionOption="true"/>
+            <f:selectItem itemLabel="#{customProperties['confirm.yes']}" itemValue="#{true}"/>
+            <f:selectItem itemLabel="#{customProperties['confirm.no']}" itemValue="#{false}"/>
+          </p:selectOneMenu>
+        </div>
+        <div class="ddl">
+          <!-- Statut logement -->
+          <h:outputLabel for="status" value="#{customProperties['housing.field.status']}" styleClass="label"/>
+          <p:selectOneMenu id="status"
+                           value="#{housingSearchController.housingSearchBean.housingCriteria.housingStatus}"
+                           styleClass="dropdownlist">
+            <f:selectItem itemLabel="#{msg['dropdownlist.empty']}" value="#{null}"/>
+            <f:selectItems value="#{housingSearchController.allHousingStatus}" var="status"
+                           itemLabel="#{status.label}"/>
+          </p:selectOneMenu>
+        </div>
+        <div class="ddl">
+          <p>
+            <!-- Nombre de pièces -->
+            <h:outputLabel for="room_number" value="#{customProperties['housing.field.room.number']}"
+                           styleClass="label"/>
+            <p:inputText id="room_number" label="#{customProperties['housing.field.room.number']}"
+                         value="#{housingSearchController.housingSearchBean.housingCriteria.roomCount}" maxlength="3"/>
+          </p>
+        </div>
+        <div class="ddl">
+          <!-- Nature -->
+          <h:outputLabel for="nature" value="#{customProperties['housing.field.nature']}" styleClass="label"/>
+          <p:selectOneMenu id="nature"
+                           value="#{housingSearchController.housingSearchBean.housingCriteria.housingNature}"
+                           converter="abita.converter.dto" styleClass="dropdownlist">
+            <f:attribute name="converter-values" value="#{housingSearchController.allHousingNature}"/>
+            <f:selectItem itemLabel="#{msg['dropdownlist.empty']}" value="#{null}"/>
+            <f:selectItems value="#{housingSearchController.allHousingNature}" var="nature"
+                           itemLabel="#{nature.label}"/>
+          </p:selectOneMenu>
+        </div>
+        <div class="ddl">
+          <!-- Noyau dur -->
+          <h:outputLabel for="core" value="#{customProperties['housing.field.core']}" styleClass="label"/>
+          <p:selectOneMenu id="core" value="#{housingSearchController.housingSearchBean.core}" styleClass="radio">
+            <f:selectItem itemLabel="#{customProperties['confirm.all']}" noSelectionOption="true"/>
+            <f:selectItem itemLabel="#{customProperties['confirm.yes']}" itemValue="#{true}"/>
+            <f:selectItem itemLabel="#{customProperties['confirm.no']}" itemValue="#{false}"/>
+          </p:selectOneMenu>
+        </div>
+        <div class="ddl">
+          <p>
+            <!-- Année de contruction -->
+            <h:outputLabel for="year_number" value="#{customProperties['housing.field.year']}" styleClass="label"/>
+            <p:inputText id="year_number" label="#{customProperties['housing.field.year']}"
+                         value="#{housingSearchController.housingSearchBean.housingCriteria.year}" maxlength="4"/>
+          </p>
+        </div>
+        <div class="ddl">
+          <!-- Gestionnaire du logement -->
+          <h:outputLabel for="manager" value="#{customProperties['housing.field.manager']}" styleClass="label"/>
+          <p:selectOneMenu id="manager"
+                           value="#{housingSearchController.housingSearchBean.housingCriteria.thirdpartyContractManager}"
+                           converter="abita.converter.dto" styleClass="dropdownlist">
+            <f:attribute name="converter-values" value="#{housingSearchController.allThirdpartyContractManager}"/>
+            <f:selectItem itemLabel="#{msg['dropdownlist.empty']}" value="#{null}"/>
+            <f:selectItems value="#{housingSearchController.allThirdpartyContractManager}" var="user"
+                           itemLabel="#{user.lastName} #{user.firstName}"/>
+          </p:selectOneMenu>
+        </div>
+        <div class="ddl">
+          <!-- Catégorie du local -->
+          <h:outputLabel for="category" value="#{customProperties['housing.field.category']}" styleClass="label"/>
+          <p:selectOneMenu id="category"
+                           value="#{housingSearchController.housingSearchBean.housingCriteria.roomCategory}"
+                           converter="abita.converter.dto" styleClass="dropdownlist">
+            <f:attribute name="converter-values" value="#{housingSearchController.allRoomCategory}"/>
+            <f:selectItem itemLabel="#{msg['dropdownlist.empty']}" value="#{null}"/>
+            <f:selectItems value="#{housingSearchController.allRoomCategory}" var="category"
+                           itemLabel="#{category.label}"/>
+          </p:selectOneMenu>
+        </div>
+        <div class="ddl">
+          <!-- Domaine d'activité -->
+          <h:outputLabel for="field" value="#{customProperties['housing.field.field']}" styleClass="label"/>
+          <p:selectOneMenu id="field"
+                           value="#{housingSearchController.housingSearchBean.housingCriteria.fieldOfActivity}"
+                           converter="abita.converter.dto" styleClass="dropdownlist">
+            <f:attribute name="converter-values" value="#{housingSearchController.allFieldOfActivity}"/>
+            <f:selectItem itemLabel="#{msg['dropdownlist.empty']}" value="#{null}"/>
+            <f:selectItems value="#{housingSearchController.allFieldOfActivity}" var="fieldItem"
+                           itemLabel="#{fieldItem.label} #{fieldItem.gmr}"/>
+          </p:selectOneMenu>
+        </div>
+        <div class="ddl">
+          <!-- Agence -->
+          <h:outputLabel for="agency" value="#{customProperties['housing.field.agency']}" styleClass="label"/>
+          <p:selectOneMenu id="agency" value="#{housingSearchController.housingSearchBean.housingCriteria.agency}"
+                           converter="abita.converter.dto" styleClass="dropdownlist">
+            <f:attribute name="converter-values" value="#{housingSearchController.agencies}"/>
+            <f:selectItem itemLabel="#{msg['dropdownlist.empty']}" value="#{null}"/>
+            <f:selectItems value="#{housingSearchController.agencies}" var="agency" itemLabel="#{agency.name}"/>
+            <p:ajax update="rattachmentSite" listener="#{housingSearchController.updateSiteListForCurrentAgency()}"/>
+          </p:selectOneMenu>
+        </div>
+        <div class="ddl">
+          <!-- Site -->
+          <h:outputLabel for="rattachmentSite" value="#{customProperties['housing.field.rattachmentSite']}"
+                         styleClass="label"/>
+          <p:selectOneMenu id="rattachmentSite"
+                           value="#{housingSearchController.housingSearchBean.housingCriteria.rattachmentSite}"
+                           converter="abita.converter.dto" styleClass="dropdownlist"
+                           disabled="#{empty housingSearchController.housingSearchBean.housingCriteria.agency}">
+            <f:attribute name="converter-values" value="#{housingSearchController.housingSearchBean.sites}"/>
+            <f:selectItem itemLabel="#{null}" value="#{null}"/>
+            <f:selectItems value="#{housingSearchController.housingSearchBean.sites}" var="rattachmentSite"
+                           itemLabel="#{rattachmentSite.name}"/>
+          </p:selectOneMenu>
+        </div>
+        <div class="ddl">
+          <p>
+            <!-- Date de dernière maintenance DAAF -->
+            <h:outputText value="#{customProperties['housing.field.last.daaf.date']}" styleClass="label"/>
+            <p:calendar id="last_daaf_date"
+                        value="#{housingSearchController.housingSearchBean.housingCriteria.lastDaafDate}" locale="fr"
+                        pattern="#{customProperties['pattern.date']}" navigator="true" maxlength="10"/>
+          </p>
+          <div class="ddl">
+            <!-- Exclusion des logements sortis -->
+            <h:outputLabel for="exclude_unregister_date"
+                           value="#{customProperties['housing.field.exclude.unregister.date']}" styleClass="label"/>
+            <p:selectOneMenu id="exclude_unregister_date"
+                             value="#{housingSearchController.housingSearchBean.housingCriteria.excludeHousingWithUnregisterDate}"
+                             styleClass="radio">
+              <f:selectItem itemLabel="#{customProperties['confirm.no']}" itemValue="#{false}"/>
+              <f:selectItem itemLabel="#{customProperties['confirm.yes']}" itemValue="#{true}"/>
+            </p:selectOneMenu>
+          </div>
+        </div>
+        <div class="ddl">
+          <!-- Assainissement -->
+          <h:outputLabel for="sanitation" value="#{customProperties['housing.field.sanitation']}" styleClass="label"/>
+          <p:selectOneMenu id="sanitation"
+                           value="#{housingSearchController.housingSearchBean.housingCriteria.sanitation}"
+                           converter="abita.converter.dto" styleClass="dropdownlist">
+            <f:attribute name="converter-values" value="#{housingSearchController.sanitations}"/>
+            <f:selectItem itemLabel="#{msg['dropdownlist.empty']}" value="#{null}"/>
+            <f:selectItems value="#{housingSearchController.sanitations}" var="sanitation"
+                           itemLabel="#{sanitation.label}"/>
+          </p:selectOneMenu>
+        </div>
+        <div class="ddl">
+          <!-- Type de chauffage -->
+          <h:outputLabel for="heatingtype" value="#{customProperties['housing.field.heatingType']}" styleClass="label"/>
+          <p:selectOneMenu id="heatingtype"
+                           value="#{housingSearchController.housingSearchBean.housingCriteria.heatingtype}"
+                           converter="abita.converter.dto" styleClass="dropdownlist">
+            <f:attribute name="converter-values" value="#{housingSearchController.heatingTypes}"/>
+            <f:selectItem itemLabel="#{msg['dropdownlist.empty']}" value="#{null}"/>
+            <f:selectItems value="#{housingSearchController.heatingTypes}" var="heatingtype"
+                           itemLabel="#{heatingtype.label}"/>
+          </p:selectOneMenu>
+        </div>
+        <div class="ddl">
+          <!-- Climatisseur -->
+          <h:outputLabel for="airconditioner" value="#{customProperties['housing.field.airconditioner']}"
+                         styleClass="label"/>
+          <p:selectOneMenu id="airconditioner"
+                           value="#{housingSearchController.housingSearchBean.housingCriteria.airconditioner}"
+                           converter="abita.converter.dto" styleClass="dropdownlist">
+            <f:attribute name="converter-values" value="#{housingSearchController.airconditioners}"/>
+            <f:selectItem itemLabel="#{msg['dropdownlist.empty']}" value="#{null}"/>
+            <f:selectItems value="#{housingSearchController.airconditioners}" var="airconditioner"
+                           itemLabel="#{airconditioner.label}"/>
+          </p:selectOneMenu>
+        </div>
+        <p>
+          <!-- OI Logement -->
+          <h:outputLabel for="oiHousing" value="#{customProperties['housing.field.oiHousing']}" styleClass="label"/>
+          <p:inputText id="oiHousing" label="#{customProperties['housing.field.oiHousing']}"
+                       value="#{housingSearchController.housingSearchBean.housingCriteria.oiHousing}" maxlength="50"/>
+        </p>
+        <p>
+          <!-- EOTP -->
+          <h:outputLabel for="eotp" value="#{customProperties['housing.field.eotp']}" styleClass="label"/>
+          <p:inputText id="eotp" label="#{customProperties['housing.field.eotp']}"
+                       value="#{housingSearchController.housingSearchBean.housingCriteria.eotp}" maxlength="50"/>
+        </p>
+
+
+        <div class="ddl">
+          <!-- Cuisine Equipée -->
+          <h:outputLabel for="equippedKitchen" value="#{customProperties['housing.field.equippedKitchen']}"
+                         styleClass="label"/>
+          <p:selectOneMenu id="equippedKitchen" value="#{housingSearchController.housingSearchBean.equippedKitchen}">
+            <f:selectItem itemLabel="#{customProperties['confirm.all']}" noSelectionOption="true"/>
+            <f:selectItem itemLabel="#{customProperties['confirm.yes']}" itemValue="#{true}"/>
+            <f:selectItem itemLabel="#{customProperties['confirm.no']}" itemValue="#{false}"/>
+          </p:selectOneMenu>
+        </div>
+        <p>
+          <!-- Date Cuisine -->
+          <h:outputLabel for="kitchen_date" value="#{customProperties['housing.field.kitchenDate']}"
+                         styleClass="label"/>
+          <p:calendar id="kitchen_date" value="#{housingSearchController.housingSearchBean.housingCriteria.kitchenDate}"
+                      locale="fr" pattern="#{customProperties['pattern.date']}" navigator="true" maxlength="10"/>
+        </p>
+        <div class="ddl">
+          <!-- Salle de Bain -->
+          <h:outputLabel for="bathroom" value="#{customProperties['housing.field.bathroom']}" styleClass="label"/>
+          <p:selectOneMenu id="bathroom" value="#{housingSearchController.housingSearchBean.bathroom}">
+            <f:selectItem itemLabel="#{customProperties['confirm.all']}" noSelectionOption="true"/>
+            <f:selectItem itemLabel="#{customProperties['confirm.yes']}" itemValue="#{true}"/>
+            <f:selectItem itemLabel="#{customProperties['confirm.no']}" itemValue="#{false}"/>
+          </p:selectOneMenu>
+        </div>
+        <p>
+          <!-- Date Salle de Bain -->
+          <h:outputLabel for="bathroom_date" value="#{customProperties['housing.field.bathroomDate']}"
+                         styleClass="label"/>
+          <p:calendar id="bathroom_date"
+                      value="#{housingSearchController.housingSearchBean.housingCriteria.bathroomDate}" locale="fr"
+                      pattern="#{customProperties['pattern.date']}" navigator="true" maxlength="10"/>
+        </p>
+        <div class="ddl">
+          <!-- Gaz -->
+          <h:outputLabel for="gas" value="#{customProperties['housing.field.gas']}" styleClass="label"/>
+          <p:selectOneMenu id="gas" value="#{housingSearchController.housingSearchBean.gas}">
+            <f:selectItem itemLabel="#{customProperties['confirm.all']}" noSelectionOption="true"/>
+            <f:selectItem itemLabel="#{customProperties['confirm.yes']}" itemValue="#{true}"/>
+            <f:selectItem itemLabel="#{customProperties['confirm.no']}" itemValue="#{false}"/>
+          </p:selectOneMenu>
+        </div>
+        <p>
+          <!-- Date Gaz -->
+          <h:outputLabel for="gas_date" value="#{customProperties['housing.field.gasDate']}" styleClass="label"/>
+          <p:calendar id="gas_date" value="#{housingSearchController.housingSearchBean.housingCriteria.gasDate}"
+                      locale="fr" pattern="#{customProperties['pattern.date']}" navigator="true" maxlength="10"/>
+        </p>
+        <div class="ddl">
+          <!-- Anomalie Gaz -->
+          <h:outputLabel for="gasAno" value="#{customProperties['housing.field.gasAno']}" styleClass="label"/>
+          <p:selectOneMenu id="gasAno" value="#{housingSearchController.housingSearchBean.gasAno}">
+            <f:selectItem itemLabel="#{customProperties['confirm.all']}" noSelectionOption="true"/>
+            <f:selectItem itemLabel="#{customProperties['confirm.yes']}" itemValue="#{true}"/>
+            <f:selectItem itemLabel="#{customProperties['confirm.no']}" itemValue="#{false}"/>
+          </p:selectOneMenu>
+        </div>
+        <div class="ddl">
+          <!-- DPE -->
+          <h:outputLabel for="dpe" value="#{customProperties['housing.field.dpe']}" styleClass="label"/>
+          <p:selectOneMenu id="dpe" value="#{housingSearchController.housingSearchBean.dpe}">
+            <f:selectItem itemLabel="#{customProperties['confirm.all']}" noSelectionOption="true"/>
+            <f:selectItem itemLabel="#{customProperties['confirm.yes']}" itemValue="#{true}"/>
+            <f:selectItem itemLabel="#{customProperties['confirm.no']}" itemValue="#{false}"/>
+          </p:selectOneMenu>
+        </div>
+        <p>
+          <!-- Date DPE -->
+          <h:outputLabel for="dpe_date" value="#{customProperties['housing.field.dpeDate']}" styleClass="label"/>
+          <p:calendar id="dpe_date" value="#{housingSearchController.housingSearchBean.housingCriteria.dpeDate}"
+                      locale="fr" pattern="#{customProperties['pattern.date']}" navigator="true" maxlength="10"/>
+        </p>
+        <div class="ddl">
+          <!-- Elect -->
+          <h:outputLabel for="elect" value="#{customProperties['housing.field.elect']}" styleClass="label"/>
+          <p:selectOneMenu id="elect" value="#{housingSearchController.housingSearchBean.elect}">
+            <f:selectItem itemLabel="#{customProperties['confirm.all']}" noSelectionOption="true"/>
+            <f:selectItem itemLabel="#{customProperties['confirm.yes']}" itemValue="#{true}"/>
+            <f:selectItem itemLabel="#{customProperties['confirm.no']}" itemValue="#{false}"/>
+          </p:selectOneMenu>
+        </div>
+        <p>
+          <!-- Date Elect -->
+          <h:outputLabel for="elect_date" value="#{customProperties['housing.field.electDate']}" styleClass="label"/>
+          <p:calendar id="elect_date" value="#{housingSearchController.housingSearchBean.housingCriteria.electDate}"
+                      locale="fr" pattern="#{customProperties['pattern.date']}" navigator="true" maxlength="10"/>
+        </p>
+        <div class="ddl">
+          <!-- Anomalie Electrique -->
+          <h:outputLabel for="electAno" value="#{customProperties['housing.field.electAno']}" styleClass="label"/>
+          <p:selectOneMenu id="electAno" value="#{housingSearchController.housingSearchBean.electAno}">
+            <f:selectItem itemLabel="#{customProperties['confirm.all']}" noSelectionOption="true"/>
+            <f:selectItem itemLabel="#{customProperties['confirm.yes']}" itemValue="#{true}"/>
+            <f:selectItem itemLabel="#{customProperties['confirm.no']}" itemValue="#{false}"/>
+          </p:selectOneMenu>
+        </div>
+        <div class="ddl">
+          <!-- Amiante -->
+          <h:outputLabel for="asbestos" value="#{customProperties['housing.field.asbestos']}" styleClass="label"/>
+          <p:selectOneMenu id="asbestos" value="#{housingSearchController.housingSearchBean.asbestos}">
+            <f:selectItem itemLabel="#{customProperties['confirm.all']}" noSelectionOption="true"/>
+            <f:selectItem itemLabel="#{customProperties['confirm.yes']}" itemValue="#{true}"/>
+            <f:selectItem itemLabel="#{customProperties['confirm.no']}" itemValue="#{false}"/>
+          </p:selectOneMenu>
+        </div>
+        <p>
+          <!-- Date Amiante -->
+          <h:outputLabel for="asbestos_date" value="#{customProperties['housing.field.asbestosDate']}"
+                         styleClass="label"/>
+          <p:calendar id="asbestos_date"
+                      value="#{housingSearchController.housingSearchBean.housingCriteria.asbestosDate}" locale="fr"
+                      pattern="#{customProperties['pattern.date']}" navigator="true" maxlength="10"/>
+        </p>
+        <div class="ddl">
+          <!-- Anomalie Amiantes -->
+          <h:outputLabel for="asbestosAno" value="#{customProperties['housing.field.asbestosAno']}" styleClass="label"/>
+          <p:selectOneMenu id="asbestosAno" value="#{housingSearchController.housingSearchBean.asbestosAno}">
+            <f:selectItem itemLabel="#{customProperties['confirm.all']}" noSelectionOption="true"/>
+            <f:selectItem itemLabel="#{customProperties['confirm.yes']}" itemValue="#{true}"/>
+            <f:selectItem itemLabel="#{customProperties['confirm.no']}" itemValue="#{false}"/>
+          </p:selectOneMenu>
+        </div>
+        <div class="ddl">
+          <!-- Plomb -->
+          <h:outputLabel for="lead" value="#{customProperties['housing.field.lead']}" styleClass="label"/>
+          <p:selectOneMenu id="lead" value="#{housingSearchController.housingSearchBean.lead}">
+            <f:selectItem itemLabel="#{customProperties['confirm.all']}" noSelectionOption="true"/>
+            <f:selectItem itemLabel="#{customProperties['confirm.yes']}" itemValue="#{true}"/>
+            <f:selectItem itemLabel="#{customProperties['confirm.no']}" itemValue="#{false}"/>
+          </p:selectOneMenu>
+        </div>
+        <p>
+          <!-- Date Plomb -->
+          <h:outputLabel for="lead_date" value="#{customProperties['housing.field.leadDate']}" styleClass="label"/>
+          <p:calendar id="lead_date" value="#{housingSearchController.housingSearchBean.housingCriteria.leadDate}"
+                      locale="fr" pattern="#{customProperties['pattern.date']}" navigator="true" maxlength="10"/>
+        </p>
+        <div class="ddl">
+          <!-- Anomalie Plomb -->
+          <h:outputLabel for="leadAno" value="#{customProperties['housing.field.leadAno']}" styleClass="label"/>
+          <p:selectOneMenu id="leadAno" value="#{housingSearchController.housingSearchBean.leadAno}">
+            <f:selectItem itemLabel="#{customProperties['confirm.all']}" noSelectionOption="true"/>
+            <f:selectItem itemLabel="#{customProperties['confirm.yes']}" itemValue="#{true}"/>
+            <f:selectItem itemLabel="#{customProperties['confirm.no']}" itemValue="#{false}"/>
+          </p:selectOneMenu>
+        </div>
+        <div class="ddl">
+          <!-- Termites -->
+          <h:outputLabel for="termite" value="#{customProperties['housing.field.termite']}" styleClass="label"/>
+          <p:selectOneMenu id="termite" value="#{housingSearchController.housingSearchBean.termite}">
+            <f:selectItem itemLabel="#{customProperties['confirm.all']}" noSelectionOption="true"/>
+            <f:selectItem itemLabel="#{customProperties['confirm.yes']}" itemValue="#{true}"/>
+            <f:selectItem itemLabel="#{customProperties['confirm.no']}" itemValue="#{false}"/>
+          </p:selectOneMenu>
+        </div>
+        <p>
+          <!-- Date Termites -->
+          <h:outputLabel for="termite_date" value="#{customProperties['housing.field.termiteDate']}"
+                         styleClass="label"/>
+          <p:calendar id="termite_date" value="#{housingSearchController.housingSearchBean.housingCriteria.termiteDate}"
+                      locale="fr" pattern="#{customProperties['pattern.date']}" navigator="true" maxlength="10"/>
+        </p>
+        <div class="ddl">
+          <!-- Anomalie Termites -->
+          <h:outputLabel for="termiteAno" value="#{customProperties['housing.field.termiteAno']}" styleClass="label"/>
+          <p:selectOneMenu id="termiteAno" value="#{housingSearchController.housingSearchBean.termiteAno}">
+            <f:selectItem itemLabel="#{customProperties['confirm.all']}" noSelectionOption="true"/>
+            <f:selectItem itemLabel="#{customProperties['confirm.yes']}" itemValue="#{true}"/>
+            <f:selectItem itemLabel="#{customProperties['confirm.no']}" itemValue="#{false}"/>
+          </p:selectOneMenu>
+        </div>
+        <div class="ddl">
+          <!-- ERNMT -->
+          <h:outputLabel for="ernmt" value="#{customProperties['housing.field.ernmt']}" styleClass="label"/>
+          <p:selectOneMenu id="ernmt" value="#{housingSearchController.housingSearchBean.ernmt}">
+            <f:selectItem itemLabel="#{customProperties['confirm.all']}" noSelectionOption="true"/>
+            <f:selectItem itemLabel="#{customProperties['confirm.yes']}" itemValue="#{true}"/>
+            <f:selectItem itemLabel="#{customProperties['confirm.no']}" itemValue="#{false}"/>
+          </p:selectOneMenu>
+        </div>
+        <p>
+          <!-- Date ERNMT -->
+          <h:outputLabel for="ernmt_date" value="#{customProperties['housing.field.ernmtDate']}" styleClass="label"/>
+          <p:calendar id="ernmt_date" value="#{housingSearchController.housingSearchBean.housingCriteria.ernmtDate}"
+                      locale="fr" pattern="#{customProperties['pattern.date']}" navigator="true" maxlength="10"/>
+        </p>
+        <div class="ddl">
+          <!-- Carrez -->
+          <h:outputLabel for="carrez" value="#{customProperties['housing.field.carrez']}" styleClass="label"/>
+          <p:selectOneMenu id="carrez" value="#{housingSearchController.housingSearchBean.carrez}">
+            <f:selectItem itemLabel="#{customProperties['confirm.all']}" noSelectionOption="true"/>
+            <f:selectItem itemLabel="#{customProperties['confirm.yes']}" itemValue="#{true}"/>
+            <f:selectItem itemLabel="#{customProperties['confirm.no']}" itemValue="#{false}"/>
+          </p:selectOneMenu>
+        </div>
+        <p>
+          <!-- Date Carrez -->
+          <h:outputLabel for="carrez_date" value="#{customProperties['housing.field.carrezDate']}" styleClass="label"/>
+          <p:calendar id="carrez_date" value="#{housingSearchController.housingSearchBean.housingCriteria.carrezDate}"
+                      locale="fr" pattern="#{customProperties['pattern.date']}" navigator="true" maxlength="10"/>
+        </p>
+
+
+        <div class="ddl">
+          <!-- Avenir logement -->
+          <h:outputLabel for="futur_of_housing" value="#{customProperties['housing.field.futurOfHousing']}"
+                         styleClass="label"/>
+          <p:selectOneMenu id="futur_of_housing"
+                           value="#{housingSearchController.housingSearchBean.housingCriteria.futurOfHousing}"
+                           styleClass="dropdownlist">
+            <f:selectItem itemLabel="#{msg['dropdownlist.empty']}" value="#{null}"/>
+            <f:selectItems value="#{housingSearchController.housingSearchBean.housingCriteria.futurOfHousingArray}"
+                           var="futurOfHousing" itemValue="#{futurOfHousing}"
+                           itemLabel="#{customProperties[futurOfHousing.key]}"/>
+          </p:selectOneMenu>
+        </div>
+
+        <p>
+          <!-- Année:Avenir du logement -->
+          <h:outputLabel for="unregister_date_futur" value="#{customProperties['housing.field.dateFuturOfHousing']}"
+                         styleClass="label"/>
+          <p:inputText id="unregister_date_futur" label="#{customProperties['housing.field.dateFuturOfHousing']}"
+                       value="#{housingSearchController.housingSearchBean.housingCriteria.dateFuturOfHousing}"
+                       maxlength="4"/>
+        </p>
+
+        <p>
+          <!-- Prix:Avenir du logement -->
+          <h:outputLabel for="futurOfHousingPrice" value="#{customProperties['housing.field.futurOfHousingPrice']}"
+                         styleClass="label"/>
+          <p:inputText id="futurOfHousingPrice" label="#{customProperties['housing.field.futurOfHousingPrice']}"
+                       value="#{housingSearchController.housingSearchBean.housingCriteria.futurOfHousingPrice}"
+                       maxlength="8"/>
+        </p>
+
+        <p>
+          <!-- Dernière visite du logement -->
+          <h:outputLabel for="lastVisitDate" value="#{customProperties['housing.field.lastVisitDate']}"
+                         styleClass="label"/>
+          <p:calendar id="lastVisitDate"
+                      value="#{housingSearchController.housingSearchBean.housingCriteria.lastVisitDate}" locale="fr"
+                      pattern="#{customProperties['pattern.date']}" navigator="true" maxlength="10"/>
+        </p>
+        <div class="ddl">
+          <!-- Assainissment aux normes -->
+          <h:outputLabel for="sanitationstd" value="#{customProperties['housing.field.SanitationStandards']}"
+                         styleClass="label">
+          </h:outputLabel>
+          <p:selectOneMenu id="sanitationstd"
+                           value="#{housingSearchController.housingSearchBean.housingCriteria.sanitationstd }"
+                           styleClass="dropdownlist">
+            <f:selectItem itemLabel="#{msg['dropdownlist.empty']}" value="#{null}"/>
+            <f:selectItems value="#{housingSearchController.housingSearchBean.housingCriteria.sanitationstdArray}"
+                           var="sanitationstd" itemValue="#{sanitationstd}"
+                           itemLabel="#{customProperties[sanitationstd.key]}"/>
+          </p:selectOneMenu>
+        </div>
+
+        <div class="ddl">
+          <!-- Façade -->
+          <h:outputLabel for="facade" value="#{customProperties['housing.field.facade']}" styleClass="label">
+          </h:outputLabel>
+          <p:selectOneMenu id="facade" value="#{housingSearchController.housingSearchBean.housingCriteria.facade}"
+                           styleClass="dropdownlist">
+            <f:selectItem itemLabel="#{msg['dropdownlist.empty']}" value="#{null}"/>
+            <f:selectItems value="#{housingSearchController.housingSearchBean.housingCriteria.facadeArray}"
+                           var="facade" itemValue="#{facade}"
+                           itemLabel="#{customProperties[facade.key]}"/>
+          </p:selectOneMenu>
+        </div>
+
+        <div class="ddl">
+          <!--   couverture -->
+          <h:outputLabel for="couverture" value="#{customProperties['housing.field.cover']}" styleClass="label">
+          </h:outputLabel>
+          <p:selectOneMenu id="couverture"
+                           value="#{housingSearchController.housingSearchBean.housingCriteria.couverture}"
+                           styleClass="dropdownlist">
+            <f:selectItem itemLabel="#{msg['dropdownlist.empty']}" value="#{null}"/>
+            <f:selectItems value="#{housingSearchController.housingSearchBean.housingCriteria.couvertureArray}"
+                           var="couverture"
+                           itemValue="#{couverture}" itemLabel="#{customProperties[couverture.key]}"/>
+          </p:selectOneMenu>
+        </div>
+
+        <div class="ddl">
+          <!-- isolation -->
+          <h:outputLabel for="isolation" value="#{customProperties['housing.field.insulation']}"
+                         styleClass="label">
+          </h:outputLabel>
+          <p:selectOneMenu id="isolation"
+                           value="#{housingSearchController.housingSearchBean.housingCriteria.insulation}"
+                           styleClass="dropdownlist">
+            <f:selectItem itemLabel="#{msg['dropdownlist.empty']}" value="#{null}"/>
+            <f:selectItems value="#{housingSearchController.housingSearchBean.housingCriteria.insulationArray}"
+                           var="insulation"
+                           itemValue="#{insulation}" itemLabel="#{customProperties[insulation.key]}"/>
+
+          </p:selectOneMenu>
+        </div>
+
+        <div class="ddl">
+          <!-- murs -->
+          <h:outputLabel for="walls" value="#{customProperties['housing.field.walls']}" styleClass="label">
+          </h:outputLabel>
+          <p:selectOneMenu id="walls" value="#{housingSearchController.housingSearchBean.housingCriteria.walls }"
+                           styleClass="dropdownlist">
+
+            <f:selectItem itemLabel="#{msg['dropdownlist.empty']}" value="#{null}"/>
+            <f:selectItems value="#{housingSearchController.housingSearchBean.housingCriteria.wallsArray}"
+                           var="walls" itemValue="#{walls}"
+                           itemLabel="#{customProperties[walls.key]}"/>
+          </p:selectOneMenu>
+        </div>
+
+        <div class="ddl">
+          <!-- Menuiserie huisserie-->
+          <h:outputLabel for="joinery" value="#{customProperties['housing.field.JoineryFrame']}"
+                         styleClass="label">
+          </h:outputLabel>
+          <p:selectOneMenu id="joinery"
+                           value="#{housingSearchController.housingSearchBean.housingCriteria.joineryFrame }"
+                           styleClass="dropdownlist">
+            <f:selectItem itemLabel="#{msg['dropdownlist.empty']}" value="#{null}"/>
+            <f:selectItems value="#{housingSearchController.housingSearchBean.housingCriteria.joineryFrameArray}"
+                           var="joineryFrame" itemValue="#{joineryFrame}"
+                           itemLabel="#{customProperties[joineryFrame.key]}"/>
+          </p:selectOneMenu>
+        </div>
+
+        <div class="ddl">
+          <!-- Finitions intérieurs (sols, murs, plafonds …)-->
+          <h:outputLabel for="finitions" value="#{customProperties['housing.field.interiorFinishes']}"
+                         styleClass="label">
+          </h:outputLabel>
+          <p:selectOneMenu id="finitions" value="#{housingSearchController.housingSearchBean.housingCriteria.finitions}"
+                           styleClass="dropdownlist">
+            <f:selectItem itemLabel="#{msg['dropdownlist.empty']}" value="#{null}"/>
+            <f:selectItems value="#{housingSearchController.housingSearchBean.housingCriteria.finitionsArray}"
+                           var="finitions" itemValue="#{finitions}" itemLabel="#{customProperties[finitions.key]}"/>
+          </p:selectOneMenu>
+        </div>
+
+        <div class="ddl">
+          <!--  VMC -->
+          <h:outputLabel for="vmc" value="#{customProperties['housing.field.vmc']}" styleClass="label">
+          </h:outputLabel>
+          <p:selectOneMenu id="vmc" value="#{housingSearchController.housingSearchBean.housingCriteria.vmc}"
+                           styleClass="dropdownlist">
+            <f:selectItem itemLabel="#{msg['dropdownlist.empty']}" value="#{null}"/>
+            <f:selectItems value="#{housingSearchController.housingSearchBean.housingCriteria.vmcArray}" var="vmc"
+                           itemValue="#{vmc}" itemLabel="#{customProperties[vmc.key]}"/>
+          </p:selectOneMenu>
+        </div>
+
+        <div class="ddl">
+          <!--  Plomberie / Sanitaire-->
+          <h:outputLabel for="plomberie" value="#{customProperties['housing.field.plomberieSanitaire']}"
+                         styleClass="label">
+          </h:outputLabel>
+          <p:selectOneMenu id="plomberie" value="#{housingSearchController.housingSearchBean.housingCriteria.plomberie}"
+                           styleClass="dropdownlist">
+            <f:selectItem itemLabel="#{msg['dropdownlist.empty']}" value="#{null}"/>
+            <f:selectItems value="#{housingSearchController.housingSearchBean.housingCriteria.plomberieArray}"
+                           var="plomberie"
+                           itemValue="#{plomberie}" itemLabel="#{customProperties[plomberie.key]}"/>
+          </p:selectOneMenu>
+        </div>
+
+        <div class="ddl">
+          <!--Etiquette énergétique (DPE) -->
+          <h:outputLabel for="energyLabel" value="#{customProperties['housing.field.energyLabel']}"
+                         styleClass="label">
+          </h:outputLabel>
+          <p:selectOneMenu id="energyLabel"
+                           value="#{housingSearchController.housingSearchBean.housingCriteria.energyLabel}"
+                           styleClass="dropdownlist">
+            <f:selectItem itemLabel="#{msg['dropdownlist.empty']}" value="#{null}"/>
+            <f:selectItems value="#{housingSearchController.housingSearchBean.housingCriteria.energyLabelArray}"
+                           var="energyLabel"
+                           itemValue="#{energyLabel}" itemLabel="#{customProperties[energyLabel.key]}"/>
+          </p:selectOneMenu>
+        </div>
+        <p>
+          <!-- Emission de GES -->
+          <h:outputLabel for="EmissionGES" value="#{customProperties['housing.field.emissionGes']}"
+                         styleClass="label">
+          </h:outputLabel>
+          <p:inputText id="EmissionGES" value="#{housingSearchController.housingSearchBean.housingCriteria.emissionGes}"
+                       maxlength="10" label="#{customProperties['housing.field.emissionGes']}"/>
+        </p>
+
+        <p>
+          <!-- Année:Vente programmée en -->
+          <h:outputLabel for="year_number_sale" value="#{customProperties['housing.field.dateProgrammedSale']}"
+                         styleClass="label"/>
+          <p:inputText id="year_number_sale"
+                       label="#{customProperties['housing.field.dateProgrammedSale']}"
+                       value="#{housingSearchController.housingSearchBean.housingCriteria.dateProgrammedSale}"
+                       maxlength="4"/>
+        </p>
+
+        <p>
+          <!-- Année:Démolition programmée en -->
+
+          <h:outputLabel for="year_number_demolition" value="#{customProperties['housing.field.dateDemolition']}"
+                         styleClass="label"/>
+          <p:inputText id="year_number_demolition" label="#{customProperties['housing.field.dateDemolition']}"
+                       value="#{housingSearchController.housingSearchBean.housingCriteria.dateDemolition}"
+                       maxlength="4">
+          </p:inputText>
+        </p>
+
+        <p>
+          <!-- Coût démolition "-->
+          <h:outputLabel for="demolitioncout" value="#{customProperties['housing.field.coutDemolition']}"
+                         styleClass="label">
+          </h:outputLabel>
+          <p:inputText id="demolitioncout"
+                       value="#{housingSearchController.housingSearchBean.housingCriteria.coutDemolition}"
+                       maxlength="10" label="#{customProperties['housing.field.coutDemolition']}"/>
+        </p>
+        <p>
+          <!-- Année: Rénovation prévu en -->
+          <h:outputLabel for="year_number_renovation" value="#{customProperties['housing.field.dateRenovation']}"
+                         styleClass="label"/>
+          <p:inputText
+            id="year_number_renovation" label="#{customProperties['housing.field.dateRenovation']}"
+            value="#{housingSearchController.housingSearchBean.housingCriteria.dateRenovation}" maxlength="4">
+          </p:inputText>
+        </p>
+
+        <p>
+          <!-- Coût de la rénovation -->
+          <h:outputLabel for="coutRenovation" value="#{customProperties['housing.field.coutRenovation']}"
+                         styleClass="label">
+          </h:outputLabel>
+          <p:inputText id="coutRenovation"
+                       value="#{housingSearchController.housingSearchBean.housingCriteria.coutRenovation}"
+                       maxlength="10" label="#{customProperties['housing.field.coutRenovation']}"/>
+        </p>
+
+
+
+        <!-- Année: Avenir du logement-->
+        <p:column sortBy="#{housing.sortedDateFuturOfHousing}" styleClass="multi_line long_label">
+          <f:facet name="header">
+            <h:outputText value="#{customProperties['housing.field.dateFuturOfHousing']}"/>
+          </f:facet>
+          <h:outputText value="#{housing.dateFuturOfHousing}"/>
+        </p:column>
+      </p:fieldset>
+      <p:fieldset legend="#{customProperties['tenant.search.fieldset']}">
+        <div class="ddl">
+          <!-- Type d'occupant -->
+          <h:outputLabel for="type" value="#{customProperties['tenant.field.type']}" styleClass="label"/>
+          <p:selectOneMenu id="type" value="#{housingSearchController.housingSearchBean.tenantCriteria.typeTenant}"
+                           converter="abita.converter.dto" styleClass="dropdownlist">
+            <f:attribute name="converter-values" value="#{housingSearchController.allTypeTenant}"/>
+            <f:selectItem itemLabel="#{msg['dropdownlist.empty']}" value="#{null}"/>
+            <f:selectItems value="#{housingSearchController.allTypeTenant}" var="type" itemLabel="#{type.label}"/>
+          </p:selectOneMenu>
+        </div>
+        <p>
+          <!-- Référence occupant -->
+          <h:outputLabel for="ref" value="#{customProperties['tenant.field.reference']}" styleClass="label"/>
+          <p:inputText id="ref" value="#{housingSearchController.housingSearchBean.tenantCriteria.reference}"
+                       maxlength="8"/>
+        </p>
+        <p>
+          <!-- Nom -->
+          <h:outputLabel for="name" value="#{customProperties['tenant.field.name']}" styleClass="label"/>
+          <p:inputText id="name" value="#{housingSearchController.housingSearchBean.tenantCriteria.lastName}"
+                       maxlength="50"/>
+        </p>
+        <p>
+          <!-- Prénom -->
+          <h:outputLabel for="firstname" value="#{customProperties['tenant.field.firstname']}" styleClass="label"/>
+          <p:inputText id="firstname" value="#{housingSearchController.housingSearchBean.tenantCriteria.firstName}"
+                       maxlength="50"/>
+        </p>
+        <p>
+          <!-- Adresse -->
+          <h:outputLabel for="adressTenant" value="#{customProperties['tenant.field.adress']}"
+                         styleClass="label txtarea"/>
+          <p:inputTextarea id="adressTenant" value="#{housingSearchController.housingSearchBean.tenantCriteria.address}"
+                           rows="4" cols="74" maxlength="250"/>
+        </p>
+        <p>
+          <!-- Code postal -->
+          <h:outputLabel for="cpTenant" value="#{customProperties['tenant.field.cp']}" styleClass="label"/>
+          <p:inputText id="cpTenant" value="#{housingSearchController.housingSearchBean.tenantCriteria.postalCode}"
+                       maxlength="5"/>
+        </p>
+        <p>
+          <!-- Ville -->
+          <h:outputLabel for="cityTenant" value="#{customProperties['tenant.field.city']}" styleClass="label"/>
+          <p:inputText id="cityTenant" value="#{housingSearchController.housingSearchBean.tenantCriteria.city}"
+                       maxlength="50"/>
+        </p>
+        <div class="ddl">
+          <!-- Cadre -->
+          <h:outputLabel for="managerial" value="#{customProperties['tenant.field.managerial']}" styleClass="label"/>
+          <p:selectOneMenu id="managerial" value="#{housingSearchController.housingSearchBean.managerial}">
+            <f:selectItem itemLabel="#{customProperties['confirm.all']}" noSelectionOption="true"/>
+            <f:selectItem itemLabel="#{customProperties['confirm.yes']}" itemValue="#{true}"/>
+            <f:selectItem itemLabel="#{customProperties['confirm.no']}" itemValue="#{false}"/>
+          </p:selectOneMenu>
+        </div>
+        <div class="ddl">
+          <!-- Cadre à octobre N-1 -->
+          <h:outputLabel for="managerialLastYear" value="#{customProperties['tenant.field.managerial.last.year']}"
+                         styleClass="label"/>
+          <p:selectOneMenu id="managerialLastYear"
+                           value="#{housingSearchController.housingSearchBean.managerialLastYear}">
+            <f:selectItem itemLabel="#{customProperties['confirm.all']}" noSelectionOption="true"/>
+            <f:selectItem itemLabel="#{customProperties['confirm.yes']}" itemValue="#{true}"/>
+            <f:selectItem itemLabel="#{customProperties['confirm.no']}" itemValue="#{false}"/>
+          </p:selectOneMenu>
+        </div>
+        <p>
+          <!-- Nombre de personne constituant le foyer -->
+          <h:outputLabel for="household_number" value="#{customProperties['tenant.field.household']}"
+                         styleClass="label"/>
+          <p:inputText id="household_number"
+                       value="#{housingSearchController.housingSearchBean.tenantCriteria.householdSize}"
+                       label="#{customProperties['tenant.field.household']}" maxlength="3"/>
+        </p>
+        <p>
+          <!-- Nombre de personne constituant le foyer à octobre N-1 -->
+          <h:outputLabel for="householdLastYear_number" value="#{customProperties['tenant.field.household.last.year']}"
+                         styleClass="label"/>
+          <p:inputText id="householdLastYear_number"
+                       value="#{housingSearchController.housingSearchBean.tenantCriteria.householdSizeLastYear}"
+                       label="#{customProperties['tenant.field.household.last.year']}" maxlength="3"/>
+        </p>
+        <p>
+          <!-- Salaire brut -->
+          <h:outputLabel for="salary_number" id="chkSalary" value="#{customProperties['tenant.field.salary']}"
+                         styleClass="label"/>
+          <p:inputText id="salary_number"
+                       value="#{housingSearchController.housingSearchBean.tenantCriteria.actualSalary}"
+                       label="#{customProperties['tenant.field.salary']}" maxlength="10"/>
+        </p>
+        <p>
+          <!-- Salaire brut à octobre N-1 -->
+          <h:outputLabel for="salaryLastYear_number" id="chkSalaryLastYear"
+                         value="#{customProperties['tenant.field.salary.last.year']}" styleClass="label"/>
+          <p:inputText id="salaryLastYear_number"
+                       value="#{housingSearchController.housingSearchBean.tenantCriteria.referenceGrossSalary}"
+                       label="#{customProperties['tenant.field.salary.last.year']}" maxlength="10"/>
+        </p>
+      </p:fieldset>
+      <p:outputPanel layout="block" styleClass="action">
+        <p:commandButton id="btnValidate" value="#{customProperties['housing.action.search']}"
+                         actionListener="#{housingSearchController.searchData}" update=":messages result"
+                         oncomplete="cleanResultAndShowErrors();"/>
+        <p:commandButton id="btnCancel" value="#{customProperties['housing.action.cancel']}"
+                         action="#{housingSearchController.cancel}" immediate="true"/>
+      </p:outputPanel>
+      <p:outputPanel layout="block" id="result">
+        <p:dataTable id="resultTab" var="housing" value="#{housingSearchController.housingSearchBean.lstResultSearch}"
+                     emptyMessage="#{customProperties['no.data']}" sortBy="#{housing.reference}"
+                     rendered="#{housingSearchController.housingSearchBean.lstResultSearch != null}" paginator="true"
+                     paginatorPosition="bottom" rows="100"
+                     rowsPerPageTemplate="#{housingSearchController.paginationTemplate}"
+                     paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                     currentPageReportTemplate="(Enregistrements : {startRecord} - {endRecord} sur {totalRecords}, Page: {currentPage}/{totalPages})">
+          <!-- Référence -->
+          <p:column sortBy="#{housing.reference}" styleClass="multi_line long_label">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['housing.field.ref']}"/>
+            </f:facet>
+            <!-- 							<h:outputText value="#{housing.id}" /> -->
+            <p:commandLink value="#{housing.reference}" actionListener="#{housingSearchController.redirectConsult}">
+              <f:attribute name="data_id" value="#{housing.id}"/>
+            </p:commandLink>
+          </p:column>
+          <!-- Adresse -->
+          <p:column sortBy="#{housing.address.toUpperCase()}">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['housing.field.adress']}"/>
+            </f:facet>
+            <h:outputText value="#{housing.shortAddress()}"/>
+          </p:column>
+          <!-- Adresse pour l'export Excel -->
+          <p:column styleClass="dt_export_excel">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['housing.field.adress']}"/>
+            </f:facet>
+            <h:outputText value="#{housing.address}"/>
+          </p:column>
+          <!-- Code postal -->
+          <p:column sortBy="#{housing.postalCode}" styleClass="multi_line">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['housing.field.cp']}"/>
+            </f:facet>
+            <h:outputText value="#{housing.postalCode}"/>
+          </p:column>
+          <!-- Ville -->
+          <p:column sortBy="#{housing.city.toUpperCase()}">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['housing.field.city']}"/>
+            </f:facet>
+            <h:outputText value="#{housing.city}"/>
+          </p:column>
+          <!-- Date d'entrée -->
+          <p:column sortBy="#{housing.registerDate}" styleClass="multi_line">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['housing.field.date.in']}"/>
+            </f:facet>
+            <h:outputText value="#{housing.registerDate}">
+              <f:convertDateTime pattern="#{customProperties['pattern.date']}"/>
+            </h:outputText>
+          </p:column>
+          <!-- Date de sortie -->
+          <p:column sortBy="#{housing.sortedUnregisterDate}" styleClass="multi_line">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['housing.field.date.out']}"/>
+            </f:facet>
+            <h:outputText value="#{housing.unregisterDate}">
+              <f:convertDateTime pattern="#{customProperties['pattern.date']}"/>
+            </h:outputText>
+          </p:column>
+          <!-- Motif de sortie -->
+          <p:column sortBy="#{customProperties[housing.reasonForExit.key]}" styleClass="multi_line">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['housing.field.reason.for.exit']}"/>
+            </f:facet>
+            <h:outputText value="#{customProperties[housing.reasonForExit.key]}"/>
+          </p:column>
+          <!-- Surface réelle -->
+          <p:column sortBy="#{housing.realSurfaceArea}" styleClass="multi_line">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['housing.field.real.surface']}">
+                <p:separator style="foreground-color: #FF0000"/>
+              </h:outputText>
+            </f:facet>
+            <h:outputText value="#{housing.realSurfaceArea}"/>
+          </p:column>
+          <!-- Surface corrigée -->
+          <p:column sortBy="#{housing.revisedSurfaceArea}" styleClass="multi_line">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['housing.field.fixed.surface']}"/>
+            </f:facet>
+            <h:outputText value="#{housing.revisedSurfaceArea}"/>
+          </p:column>
+          <!-- Propriété RTE -->
+          <p:column sortBy="#{housing.property}" styleClass="multi_line">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['housing.field.property']}"/>
+            </f:facet>
+            <h:outputText value="#{customProperties['confirm.yes']}" rendered="#{housing.property}"/>
+            <h:outputText value="#{customProperties['confirm.no']}" rendered="#{!housing.property}"/>
+          </p:column>
+          <!-- Jardin -->
+          <p:column sortBy="#{housing.gardenAvailable}">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['housing.field.garden']}"/>
+            </f:facet>
+            <h:outputText value="#{customProperties['confirm.yes']}" rendered="#{housing.gardenAvailable}"/>
+            <h:outputText value="#{customProperties['confirm.no']}" rendered="#{!housing.gardenAvailable}"/>
+          </p:column>
+          <!-- M²(nombre) -->
+          <p:column sortBy="#{housing.sortedSquareMeter}" styleClass="multi_line">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['housing.field.square.meter']}"/>
+            </f:facet>
+            <h:outputText value="#{housing.squareMeter}"/>
+          </p:column>
+          <!-- Garage -->
+          <p:column sortBy="#{housing.garageAvailable}">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['housing.field.garage']}"/>
+            </f:facet>
+            <h:outputText value="#{customProperties['confirm.yes']}" rendered="#{housing.garageAvailable}"/>
+            <h:outputText value="#{customProperties['confirm.no']}" rendered="#{!housing.garageAvailable}"/>
+          </p:column>
+          <!-- Statut logement -->
+          <p:column sortBy="#{housing.housingStatus.label}" styleClass="multi_line">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['housing.field.status']}"/>
+            </f:facet>
+            <h:outputText value="#{housing.housingStatus.label}"/>
+          </p:column>
+          <!-- Nombre de pièces -->
+          <p:column sortBy="#{housing.roomCount}" styleClass="multi_line">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['housing.field.room.number']}"/>
+            </f:facet>
+            <h:outputText value="#{housing.roomCount}"/>
+          </p:column>
+          <!-- Nature -->
+          <p:column sortBy="#{housing.sortedHousingNature}">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['housing.field.nature']}"/>
+            </f:facet>
+            <h:outputText value="#{housing.housingNature.label}"/>
+          </p:column>
+          <!-- Noyau dur -->
+          <p:column sortBy="#{housing.core}">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['housing.field.core']}"/>
+            </f:facet>
+            <h:outputText value="#{customProperties['confirm.yes']}" rendered="#{housing.core}"/>
+            <h:outputText value="#{customProperties['confirm.no']}" rendered="#{!housing.core}"/>
+          </p:column>
+          <!-- Année de construction -->
+          <p:column sortBy="#{housing.sortedYear}" styleClass="multi_line long_label">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['housing.field.year']}"/>
+            </f:facet>
+            <h:outputText value="#{housing.year}"/>
+          </p:column>
+          <!-- Gestionnaire du logement -->
+          <p:column sortBy="#{housing.thirdpartyContractManager.lastName}" styleClass="multi_line long_label">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['housing.field.manager']}"/>
+            </f:facet>
+            <h:outputText
+              value="#{housing.thirdpartyContractManager.lastName} #{housing.thirdpartyContractManager.firstName}"/>
+          </p:column>
+          <!-- Catégorie du local -->
+          <p:column sortBy="#{housing.roomCategory.label}" styleClass="multi_line">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['housing.field.category']}"/>
+            </f:facet>
+            <h:outputText value="#{housing.roomCategory.label}"/>
+          </p:column>
+          <!-- Domaine d'activité de son contrat occupant en cours -->
+          <p:column sortBy="#{housing.sortedFieldOfActivity}" styleClass="multi_line">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['housing.field.field']}"/>
+            </f:facet>
+            <h:outputText value="#{housing.fieldOfActivity.label} #{housing.fieldOfActivity.gmr}"/>
+          </p:column>
+          <!-- Agence -->
+          <p:column sortBy="#{housing.agency.name}" styleClass="multi_line">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['housing.field.agency']}"/>
+            </f:facet>
+            <h:outputText value="#{housing.agency.name}"/>
+          </p:column>
+          <!-- Site -->
+          <p:column sortBy="#{housing.sortedRattachmentSite}" styleClass="multi_line">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['housing.field.rattachmentSite']}"/>
+            </f:facet>
+            <h:outputText value="#{housing.rattachmentSite.name}"/>
+          </p:column>
+          <!-- Date de dernière maintenance DAAF -->
+          <p:column sortBy="#{housing.sortedLastDaafDate}" styleClass="multi_line">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['housing.field.last.daaf.date']}"/>
+            </f:facet>
+            <h:outputText value="#{housing.lastDaafDate}">
+              <f:convertDateTime pattern="#{customProperties['pattern.date']}"/>
+            </h:outputText>
+          </p:column>
+          <!-- Assainissement -->
+          <p:column sortBy="#{housing.sortedSanitation}" styleClass="multi_line">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['housing.field.sanitation']}"/>
+            </f:facet>
+            <h:outputText value="#{housing.sanitation.label}"/>
+          </p:column>
+          <!-- Type de Chauffage -->
+          <p:column sortBy="#{housing.sortedHeatingType}" styleClass="multi_line">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['housing.field.heatingType']}"/>
+            </f:facet>
+            <h:outputText value="#{housing.heatingType.label}"/>
+          </p:column>
+          <!-- Climatisseur -->
+          <p:column sortBy="#{housing.sortedAirConditioner}" styleClass="multi_line">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['housing.field.airconditioner']}"/>
+            </f:facet>
+            <h:outputText value="#{housing.airconditioner.label}"/>
+          </p:column>
+          <!-- OI Logement -->
+          <p:column sortBy="#{housing.sortedOiHousing}" styleClass="multi_line">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['housing.field.oiHousing']}"/>
+            </f:facet>
+            <h:outputText value="#{housing.oiHousing}"/>
+          </p:column>
+          <!--tableau-->
+
+          <!-- EOTP -->
+          <p:column sortBy="#{housing.sortedEotp}" styleClass="multi_line">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['housing.field.eotp']}"/>
+            </f:facet>
+            <h:outputText value="#{housing.eotp}"/>
+          </p:column>
+          <!-- Cuisine Equipée -->
+          <p:column sortBy="#{housing.sortedEquippedKitchen}">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['housing.field.equippedKitchen']}"/>
+            </f:facet>
+            <h:outputText value="#{customProperties['confirm.yes']}" rendered="#{housing.equippedKitchen}"/>
+            <h:outputText value="#{customProperties['confirm.no']}" rendered="#{false == housing.equippedKitchen}"/>
+          </p:column>
+          <!-- Date Cuisine-->
+          <p:column sortBy="#{housing.sortedkitchenDate}" styleClass="multi_line">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['housing.field.kitchenDate']}"/>
+            </f:facet>
+            <h:outputText value="#{housing.kitchenDate}">
+              <f:convertDateTime pattern="#{customProperties['pattern.date']}"/>
+            </h:outputText>
+          </p:column>
+          <!-- Salle de Bain -->
+          <p:column sortBy="#{housing.sortedBathroom}">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['housing.field.bathroom']}"/>
+            </f:facet>
+            <h:outputText value="#{customProperties['confirm.yes']}" rendered="#{housing.bathroom}"/>
+            <h:outputText value="#{customProperties['confirm.no']}" rendered="#{false == housing.bathroom}"/>
+          </p:column>
+          <!-- Date salle de bain -->
+          <p:column sortBy="#{housing.sortedbathroomDate}" styleClass="multi_line">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['housing.field.bathroomDate']}"/>
+            </f:facet>
+            <h:outputText value="#{housing.bathroomDate}">
+              <f:convertDateTime pattern="#{customProperties['pattern.date']}"/>
+            </h:outputText>
+          </p:column>
+          <!-- DPE -->
+          <p:column sortBy="#{housing.sortedDpe}">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['housing.field.dpe']}"/>
+            </f:facet>
+            <h:outputText value="#{customProperties['confirm.yes']}" rendered="#{housing.dpe}"/>
+            <h:outputText value="#{customProperties['confirm.no']}" rendered="#{false == housing.dpe}"/>
+          </p:column>
+          <!-- Date DPE -->
+          <p:column sortBy="#{housing.sorteddpeDate}" styleClass="multi_line">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['housing.field.dpeDate']}"/>
+            </f:facet>
+            <h:outputText value="#{housing.dpeDate}">
+              <f:convertDateTime pattern="#{customProperties['pattern.date']}"/>
+            </h:outputText>
+          </p:column>
+          <!-- Gaz -->
+          <p:column sortBy="#{housing.sortedGas}">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['housing.field.gas']}"/>
+            </f:facet>
+            <h:outputText value="#{customProperties['confirm.yes']}" rendered="#{housing.gas}"/>
+            <h:outputText value="#{customProperties['confirm.no']}" rendered="#{false == housing.gas}"/>
+          </p:column>
+          <!-- Date GAZ -->
+          <p:column sortBy="#{housing.sortedgasDate}" styleClass="multi_line">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['housing.field.gasDate']}"/>
+            </f:facet>
+            <h:outputText value="#{housing.gasDate}">
+              <f:convertDateTime pattern="#{customProperties['pattern.date']}"/>
+            </h:outputText>
+          </p:column>
+          <!-- Anomalie Gaz -->
+          <p:column sortBy="#{housing.sortedGasAno}">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['housing.field.gasAno']}"/>
+            </f:facet>
+            <h:outputText value="#{customProperties['confirm.yes']}" rendered="#{housing.gasAno}"/>
+            <h:outputText value="#{customProperties['confirm.no']}" rendered="#{false == housing.gasAno}"/>
+          </p:column>
+          <!-- Elect -->
+          <p:column sortBy="#{housing.sortedElect}">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['housing.field.elect']}"/>
+            </f:facet>
+            <h:outputText value="#{customProperties['confirm.yes']}" rendered="#{housing.elect}"/>
+            <h:outputText value="#{customProperties['confirm.no']}" rendered="#{false == housing.elect}"/>
+          </p:column>
+          <!-- Date ELECT -->
+          <p:column sortBy="#{housing.sortedelectDate}" styleClass="multi_line">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['housing.field.electDate']}"/>
+            </f:facet>
+            <h:outputText value="#{housing.electDate}">
+              <f:convertDateTime pattern="#{customProperties['pattern.date']}"/>
+            </h:outputText>
+          </p:column>
+          <!-- Anomalie Elect -->
+          <p:column sortBy="#{housing.sortedElectAno}">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['housing.field.electAno']}"/>
+            </f:facet>
+            <h:outputText value="#{customProperties['confirm.yes']}" rendered="#{housing.electAno}"/>
+            <h:outputText value="#{customProperties['confirm.no']}" rendered="#{false == housing.electAno}"/>
+          </p:column>
+          <!-- Amiantes -->
+          <p:column sortBy="#{housing.sortedAsbestos}">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['housing.field.asbestos']}"/>
+            </f:facet>
+            <h:outputText value="#{customProperties['confirm.yes']}" rendered="#{housing.asbestos}"/>
+            <h:outputText value="#{customProperties['confirm.no']}" rendered="#{false == housing.asbestos}"/>
+          </p:column>
+          <!-- Date Amiantes -->
+          <p:column sortBy="#{housing.sortedasbestosDate}" styleClass="multi_line">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['housing.field.asbestosDate']}"/>
+            </f:facet>
+            <h:outputText value="#{housing.asbestosDate}">
+              <f:convertDateTime pattern="#{customProperties['pattern.date']}"/>
+            </h:outputText>
+          </p:column>
+          <!-- Anomalie Amiantes -->
+          <p:column sortBy="#{housing.sortedAsbestosAno}">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['housing.field.asbestosAno']}"/>
+            </f:facet>
+            <h:outputText value="#{customProperties['confirm.yes']}" rendered="#{housing.asbestosAno}"/>
+            <h:outputText value="#{customProperties['confirm.no']}" rendered="#{false == housing.asbestosAno}"/>
+          </p:column>
+          <!-- Plomb -->
+          <p:column sortBy="#{housing.sortedLead}">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['housing.field.lead']}"/>
+            </f:facet>
+            <h:outputText value="#{customProperties['confirm.yes']}" rendered="#{housing.lead}"/>
+            <h:outputText value="#{customProperties['confirm.no']}" rendered="#{false == housing.lead}"/>
+          </p:column>
+          <!-- Date Plomb -->
+          <p:column sortBy="#{housing.sortedleadDate}" styleClass="multi_line">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['housing.field.leadDate']}"/>
+            </f:facet>
+            <h:outputText value="#{housing.leadDate}">
+              <f:convertDateTime pattern="#{customProperties['pattern.date']}"/>
+            </h:outputText>
+          </p:column>
+          <!-- Anomalie Plomb -->
+          <p:column sortBy="#{housing.sortedLeadAno}">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['housing.field.leadAno']}"/>
+            </f:facet>
+            <h:outputText value="#{customProperties['confirm.yes']}" rendered="#{housing.leadAno}"/>
+            <h:outputText value="#{customProperties['confirm.no']}" rendered="#{false == housing.leadAno}"/>
+          </p:column>
+          <!-- Termites -->
+          <p:column sortBy="#{housing.sortedTermite}">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['housing.field.termite']}"/>
+            </f:facet>
+            <h:outputText value="#{customProperties['confirm.yes']}" rendered="#{housing.termite}"/>
+            <h:outputText value="#{customProperties['confirm.no']}" rendered="#{false == housing.termite}"/>
+          </p:column>
+          <!-- Date Termites -->
+          <p:column sortBy="#{housing.sortedtermiteDate}" styleClass="multi_line">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['housing.field.termiteDate']}"/>
+            </f:facet>
+            <h:outputText value="#{housing.termiteDate}">
+              <f:convertDateTime pattern="#{customProperties['pattern.date']}"/>
+            </h:outputText>
+          </p:column>
+          <!-- Anomalie Termites -->
+          <p:column sortBy="#{housing.sortedTermiteAno}">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['housing.field.termiteAno']}"/>
+            </f:facet>
+            <h:outputText value="#{customProperties['confirm.yes']}" rendered="#{housing.termiteAno}"/>
+            <h:outputText value="#{customProperties['confirm.no']}" rendered="#{false == housing.termiteAno}"/>
+          </p:column>
+          <!-- ERNMT -->
+          <p:column sortBy="#{housing.sortedErnmt}">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['housing.field.ernmt']}"/>
+            </f:facet>
+            <h:outputText value="#{customProperties['confirm.yes']}" rendered="#{housing.ernmt}"/>
+            <h:outputText value="#{customProperties['confirm.no']}" rendered="#{false == housing.ernmt}"/>
+          </p:column>
+          <!-- Date ERNMT -->
+          <p:column sortBy="#{housing.sortedernmtDate}" styleClass="multi_line">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['housing.field.ernmtDate']}"/>
+            </f:facet>
+            <h:outputText value="#{housing.ernmtDate}">
+              <f:convertDateTime pattern="#{customProperties['pattern.date']}"/>
+            </h:outputText>
+          </p:column>
+          <!-- Carrez -->
+          <p:column sortBy="#{housing.sortedCarrez}">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['housing.field.carrez']}"/>
+            </f:facet>
+            <h:outputText value="#{customProperties['confirm.yes']}" rendered="#{housing.carrez}"/>
+            <h:outputText value="#{customProperties['confirm.no']}" rendered="#{false == housing.carrez}"/>
+          </p:column>
+          <!-- Date Carrez -->
+          <p:column sortBy="#{housing.sortedcarrezDate}" styleClass="multi_line">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['housing.field.carrezDate']}"/>
+            </f:facet>
+            <h:outputText value="#{housing.carrezDate}">
+              <f:convertDateTime pattern="#{customProperties['pattern.date']}"/>
+            </h:outputText>
+          </p:column>
+
+          <!-- Avenir du logement -->
+          <p:column sortBy="#{customProperties[housing.futurOfHousing.key]}" styleClass="multi_line">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['housing.field.futurOfHousing']}"/>
+            </f:facet>
+            <h:outputText value="#{customProperties[housing.futurOfHousing.key]}"/>
+          </p:column>
+
+          <!-- Année(Avenir du logement) -->
+          <p:column sortBy="#{housing.dateFuturOfHousing}" styleClass="multi_line">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['housing.field.dateFuturOfHousing']}"/>
+            </f:facet>
+            <h:outputText value="#{housing.dateFuturOfHousing}">
+              <f:convertDateTime pattern="#{customProperties['pattern.date']}"/>
+            </h:outputText>
+          </p:column>
+
+          <!-- Prix(Avenir du logement) -->
+          <p:column sortBy="#{housing.futurOfHousingPrice}" styleClass="multi_line">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['housing.field.futurOfHousingPrice']}"/>
+            </f:facet>
+            <h:outputText value="#{housing.futurOfHousingPrice}">
+            </h:outputText>
+          </p:column>
+
+          <!-- Dernière visite du logement -->
+          <p:column sortBy="#{housing.sortedLastVisitDate}" styleClass="multi_line">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['housing.field.lastVisitDate']}"/>
+            </f:facet>
+            <h:outputText value="#{housing.lastVisitDate}">
+              <f:convertDateTime pattern="#{customProperties['pattern.date']}"/>
+            </h:outputText>
+          </p:column>
+
+          <!-- Assainissement aux normes -->
+          <p:column sortBy="#{customProperties[housing.sanitationstd.key]}" styleClass="multi_line">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['housing.field.SanitationStandards']}"/>
+            </f:facet>
+            <h:outputText value="#{customProperties[housing.sanitationstd.key]}"/>
+          </p:column>
+
+          <!-- Facade -->
+          <p:column sortBy="#{customProperties[housing.facade.key]}" styleClass="multi_line">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['housing.field.facade']}"/>
+            </f:facet>
+            <h:outputText value="#{customProperties[housing.facade.key]}"/>
+          </p:column>
+
+          <!-- Couverture -->
+          <p:column sortBy="#{customProperties[housing.couverture.key]}" styleClass="multi_line">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['housing.field.cover']}"/>
+            </f:facet>
+            <h:outputText value="#{customProperties[housing.couverture.key]}"/>
+          </p:column>
+
+          <!-- Isolation -->
+          <p:column sortBy="#{customProperties[housing.insulation.key]}" styleClass="multi_line">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['housing.field.insulation']}"/>
+            </f:facet>
+            <h:outputText value="#{customProperties[housing.insulation.key]}"/>
+          </p:column>
+
+          <!-- Murs -->
+          <p:column sortBy="#{customProperties[housing.walls.key]}" styleClass="multi_line">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['housing.field.walls']}"/>
+            </f:facet>
+            <h:outputText value="#{customProperties[housing.walls.key]}"/>
+          </p:column>
+
+          <!-- Menuiseries / huisseries -->
+          <p:column sortBy="#{customProperties[housing.joineryFrame.key]}" styleClass="multi_line">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['housing.field.JoineryFrame']}"/>
+            </f:facet>
+            <h:outputText value="#{customProperties[housing.joineryFrame.key]}"/>
+          </p:column>
+
+          <!-- Finitions intérieur-->
+          <p:column sortBy="#{customProperties[housing.finitions.key]}" styleClass="multi_line">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['housing.field.interiorFinishes']}"/>
+            </f:facet>
+            <h:outputText value="#{customProperties[housing.finitions.key]}"/>
+          </p:column>
+
+          <!-- Vmc-->
+          <p:column sortBy="#{customProperties[housing.vmc.key]}" styleClass="multi_line">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['housing.field.vmc']}"/>
+            </f:facet>
+            <h:outputText value="#{customProperties[housing.vmc.key]}"/>
+          </p:column>
+
+          <!-- plomberie-->
+          <p:column sortBy="#{customProperties[housing.plomberie.key]}" styleClass="multi_line">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['housing.field.plomberieSanitaire']}"/>
+            </f:facet>
+            <h:outputText value="#{customProperties[housing.plomberie.key]}"/>
+          </p:column>
+
+          <!-- Etiquette énergétique (DPE)-->
+          <p:column sortBy="#{customProperties[housing.energyLabel.key]}" styleClass="multi_line">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['housing.field.energyLabel']}"/>
+            </f:facet>
+            <h:outputText value="#{customProperties[housing.energyLabel.key]}"/>
+          </p:column>
+
+          <!-- Emission GES-->
+          <p:column sortBy="#{housing.emissionGes}" styleClass="multi_line">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['housing.field.emissionGes']}"/>
+            </f:facet>
+            <h:outputText value="#{housing.emissionGes}">
+            </h:outputText>
+          </p:column>
+
+          <!-- vente programmée en-->
+          <p:column sortBy="#{housing.dateProgrammedSale}" styleClass="multi_line">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['housing.field.dateProgrammedSale']}"/>
+            </f:facet>
+            <h:outputText value="#{housing.dateProgrammedSale}">
+            </h:outputText>
+          </p:column>
+
+          <!-- démolition programmée en-->
+          <p:column sortBy="#{housing.dateDemolition}" styleClass="multi_line">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['housing.field.dateDemolition']}"/>
+            </f:facet>
+            <h:outputText value="#{housing.dateDemolition}">
+            </h:outputText>
+          </p:column>
+
+          <!-- Coût démolition -->
+          <p:column sortBy="#{housing.coutDemolition}" styleClass="multi_line">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['housing.field.coutDemolition']}"/>
+            </f:facet>
+            <h:outputText value="#{housing.coutDemolition}">
+            </h:outputText>
+          </p:column>
+
+          <!-- rénovation programmée en-->
+          <p:column sortBy="#{housing.dateRenovation}" styleClass="multi_line">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['housing.field.dateRenovation']}"/>
+            </f:facet>
+            <h:outputText value="#{housing.dateRenovation}">
+            </h:outputText>
+          </p:column>
+
+          <!-- Coût Rénovation -->
+          <p:column sortBy="#{housing.coutRenovation}" styleClass="multi_line">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['housing.field.coutRenovation']}"/>
+            </f:facet>
+            <h:outputText value="#{housing.coutRenovation}">
+            </h:outputText>
+          </p:column>
+        </p:dataTable>
+
+        <div id="btn_actions">
+          <p:commandButton id="exportbtn" value="#{customProperties['housing.action.export']}" immediate="true"
+                           ajax="false"
+                           rendered="#{housingSearchController.housingSearchBean.lstResultSearch.size() > 0}">
+            <p:dataExporter type="xls" target="resultTab" fileName="export_logement"
+                            postProcessor="#{housingSearchController.postProcessXLS}" excludeColumns="1"/>
+          </p:commandButton>
+        </div>
+      </p:outputPanel>
+    </h:form>
+  </ui:define>
+</ui:composition>
+</html>

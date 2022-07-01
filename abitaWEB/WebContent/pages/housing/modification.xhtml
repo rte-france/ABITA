@@ -1,0 +1,855 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:fn="http://java.sun.com/jsp/jstl/functions" xmlns:p="http://primefaces.org/ui" xmlns:abita="http://abita.com/facelets">
+<ui:composition template="/templates/site/site.xhtml">
+  <ui:define name="title">
+    <h:outputText value="#{customProperties['page.title.prefix']}#{customProperties['housing.update.title']}" />
+  </ui:define>
+  <ui:define name="body-site">
+    <h2 class="center">#{customProperties['housing.update.title']}</h2>
+    <h:form id="frmUpdateHousing" prependId="false">
+      <p:fieldset legend="#{customProperties['housing.creation.fieldset']}">
+        <p class="info_required">
+          Les champs suivis de <span class="mandatory">*</span> sont obligatoires.
+        </p>
+        <p>
+          <!-- Référence -->
+          <h:outputText value="#{customProperties['housing.field.ref']}" styleClass="label" />
+          <h:outputText value="#{housingController.housingBean.housingDTO.reference}" />
+        </p>
+        <p>
+          <!-- Adresse -->
+          <h:outputLabel value="#{customProperties['housing.field.adress']}" styleClass="label txtarea">
+            <span class="mandatory">*</span>
+          </h:outputLabel>
+          <p:inputTextarea value="#{housingController.housingBean.housingDTO.address}" rows="4" cols="74" maxlength="250" />
+        </p>
+        <p>
+          <!-- Code postal -->
+          <h:outputLabel value="#{customProperties['housing.field.cp']}" styleClass="label">
+            <span class="mandatory">*</span>
+          </h:outputLabel>
+          <p:inputText value="#{housingController.housingBean.housingDTO.postalCode}" maxlength="5" />
+        </p>
+        <p>
+          <!-- Ville -->
+          <h:outputLabel value="#{customProperties['housing.field.city']}" styleClass="label">
+            <span class="mandatory">*</span>
+          </h:outputLabel>
+          <p:inputText value="#{housingController.housingBean.housingDTO.city}" maxlength="50" />
+        </p>
+        <p>
+          <!-- Date d'entrée -->
+          <h:outputText value="#{customProperties['housing.field.date.in']}" styleClass="label" />
+          <h:outputText value="#{housingController.housingBean.housingDTO.registerDate}">
+            <f:convertDateTime pattern="#{customProperties['pattern.date']}" />
+          </h:outputText>
+          <p:calendar id="register_date" value="#{housingController.housingBean.housingDTO.registerDate}" locale="fr" pattern="#{customProperties['pattern.date']}" navigator="true" maxlength="10" styleClass="chk_mod" binding="#{registerDate}">
+            <abita:beforeDateValidator boundComponentId="unregister_date" summaryMessage="#{customProperties['housing.error.date.out.before.date.in']}" />
+          </p:calendar>
+        </p>
+        <p>
+          <!-- Date de sortie -->
+          <h:outputLabel for="unregister_date" value="#{customProperties['housing.field.date.out']}" styleClass="label" />
+          <p:calendar id="unregister_date" value="#{housingController.housingBean.housingDTO.unregisterDate}" locale="fr" pattern="#{customProperties['pattern.date']}" navigator="true" maxlength="10" binding="#{unregisterDate}">
+            <f:attribute name="housing" value="#{housingController.housingBean.housingDTO.id}" />
+            <f:attribute name="summaryMessage" value="#{customProperties['housing.error.date.out.before.date.end.validity']}" />
+            <f:validator binding="#{unregisterDateAfterEndValidityDateValidator}" for="unregister_date" />
+            <p:ajax event="change" update="@this, :messages, reason_for_exit" listener="#{housingController.resetReasonForExit()}" process="@this, reason_for_exit" />
+            <p:ajax event="dateSelect" update="@this, :messages, reason_for_exit" listener="#{housingController.resetReasonForExit()}" process="@this, reason_for_exit" />
+          </p:calendar>
+        </p>
+        <div class="ddl">
+          <!-- Motif de sortie -->
+          <h:outputLabel for="reason_for_exit" value="#{customProperties['housing.field.reason.for.exit']}" styleClass="label">
+          </h:outputLabel>
+          <p:selectOneMenu id="reason_for_exit" value="#{housingController.housingBean.housingDTO.reasonForExit}" styleClass="dropdownlist"  disabled="#{empty housingController.housingBean.housingDTO.unregisterDate}">
+            <f:selectItem itemLabel="#{msg['dropdownlist.empty']}" value="#{null}" />
+            <f:selectItems value="#{housingController.housingBean.reasonForExitArray}" var="reasonForExit" itemValue="#{reasonForExit}" itemLabel="#{customProperties[reasonForExit.key]}" />
+          </p:selectOneMenu>
+        </div>
+        <p>
+          <!-- Commentaire général -->
+          <h:outputLabel for="generalComment" value="#{customProperties['housing.field.general.comment']}" styleClass="label txtarea" />
+          <p:inputTextarea id="generalComment" value="#{housingController.housingBean.housingDTO.generalComment}" rows="4" cols="74" maxlength="500" />
+        </p>
+        <p>
+          <!-- Surface réelle -->
+          <h:outputLabel for="real_surface" value="#{customProperties['housing.field.real.surface']}" styleClass="label">
+            <span class="mandatory">*</span>
+          </h:outputLabel>
+          <p:inputText id="real_surface" value="#{housingController.housingBean.housingDTO.realSurfaceArea}" maxlength="9" label="#{customProperties['housing.field.real.surface']}" />
+        </p>
+        <p>
+          <!-- Surface corrigée -->
+          <h:outputLabel for="fixed_surface" value="#{customProperties['housing.field.fixed.surface']}" styleClass="label">
+            <span class="mandatory">*</span>
+          </h:outputLabel>
+          <p:inputText id="fixed_surface" value="#{housingController.housingBean.housingDTO.revisedSurfaceArea}" maxlength="9" label="#{customProperties['housing.field.fixed.surface']}" />
+        </p>
+        <div class="ddl">
+          <!-- Propriété -->
+          <h:outputLabel for="property" value="#{customProperties['housing.field.property']}" styleClass="label">
+            <span class="mandatory">*</span>
+          </h:outputLabel>
+          <p:selectOneRadio id="property" value="#{housingController.housingBean.housingDTO.property}" styleClass="radio">
+            <f:selectItem itemLabel="#{customProperties['confirm.yes']}" itemValue="#{true}" />
+            <f:selectItem itemLabel="#{customProperties['confirm.no']}" itemValue="#{false}" />
+          </p:selectOneRadio>
+        </div>
+        <div class="ddl">
+          <!-- Jardin -->
+          <h:outputLabel for="garden" value="#{customProperties['housing.field.garden']}" styleClass="label">
+            <span class="mandatory">*</span>
+          </h:outputLabel>
+          <p:selectOneRadio id="garden" value="#{housingController.housingBean.housingDTO.gardenAvailable}" styleClass="radio">
+            <p:ajax global="false" update="squareMeter" listener="#{housingBean.setBooleanValueInList('gardenAvailable', housingBean.housingDTO.gardenAvailable)}" />
+
+            <f:selectItem itemLabel="#{customProperties['confirm.yes']}" itemValue="#{true}" />
+            <f:selectItem itemLabel="#{customProperties['confirm.no']}" itemValue="#{false}" />
+          </p:selectOneRadio>
+        </div>
+        <p:outputPanel id="squareMeter" layout="block" styleClass="ddl">
+          <p:outputPanel rendered="#{housingBean.getBooleanValueInList('gardenAvailable')}">
+          <!-- M² -->
+          <h:outputLabel for="SquareMeterId" id="SquareMeterLabelId" value="#{customProperties['housing.field.square.meter']}" styleClass="label">
+            <span class="mandatory">*</span>
+          </h:outputLabel>
+          <p:inputText id="SquareMeterId" value="#{housingController.housingBean.housingDTO.squareMeter}" maxlength="8" label="#{customProperties['housing.field.square.meter']}"/>
+          </p:outputPanel>
+        </p:outputPanel>
+        <div class="ddl">
+          <!-- Garage -->
+          <h:outputLabel for="garage" value="#{customProperties['housing.field.garage']}" styleClass="label">
+            <span class="mandatory">*</span>
+          </h:outputLabel>
+          <p:selectOneRadio id="garage" value="#{housingController.housingBean.housingDTO.garageAvailable}" styleClass="radio">
+
+            <f:selectItem itemLabel="#{customProperties['confirm.yes']}" itemValue="#{true}" />
+            <f:selectItem itemLabel="#{customProperties['confirm.no']}" itemValue="#{false}" />
+          </p:selectOneRadio>
+        </div>
+        <div class="ddl">
+          <!-- Statut logement -->
+          <h:outputLabel for="status" value="#{customProperties['housing.field.status']}" styleClass="label">
+            <span class="mandatory">*</span>
+          </h:outputLabel>
+          <h:outputText id="status" value="#{housingController.housingBean.housingDTO.housingStatus.label}" requiredMessage="#{validationMessageProperties['housing.creation.error.status']}" styleClass="long_desc" />
+        </div>
+        <p>
+          <!-- Nombre de pièces -->
+          <h:outputLabel for="room_number" value="#{customProperties['housing.field.room.number']}" styleClass="label">
+            <span class="mandatory">*</span>
+          </h:outputLabel>
+          <p:inputText id="room_number" value="#{housingController.housingBean.housingDTO.roomCount}" requiredMessage="#{validationMessageProperties['housing.creation.error.room.number']}" maxlength="3" label="#{customProperties['housing.field.room.number']}" />
+        </p>
+        <div class="ddl">
+          <!-- Nature -->
+          <h:outputLabel for="nature" value="#{customProperties['housing.field.nature']}" styleClass="label">
+            <span class="mandatory">*</span>
+          </h:outputLabel>
+          <p:selectOneMenu id="nature" value="#{housingController.housingBean.housingDTO.housingNature}" converter="abita.converter.dto" styleClass="dropdownlist">
+            <f:attribute name="converter-values" value="#{housingController.allHousingNature}" />
+            <f:selectItem itemLabel="#{msg['dropdownlist.empty']}" value="#{null}" />
+            <f:selectItems value="#{housingController.allHousingNature}" var="nature" itemLabel="#{nature.label}" />
+          </p:selectOneMenu>
+        </div>
+        <div class="ddl">
+          <!-- Noyau dur -->
+          <h:outputLabel for="core" value="#{customProperties['housing.field.core']}" styleClass="label">
+            <span class="mandatory">*</span>
+          </h:outputLabel>
+          <p:selectOneRadio id="core" value="#{housingController.housingBean.housingDTO.core}" styleClass="radio">
+            <f:selectItem itemLabel="#{customProperties['confirm.yes']}" itemValue="#{true}" />
+            <f:selectItem itemLabel="#{customProperties['confirm.no']}" itemValue="#{false}" />
+          </p:selectOneRadio>
+        </div>
+        <p>
+          <!-- Année de contruction -->
+          <h:outputText value="#{customProperties['housing.field.year']}" styleClass="label" />
+          <p:inputText id="year_number" value="#{housingController.housingBean.housingDTO.year}" maxlength="4" label="#{customProperties['housing.field.year']}" />
+        </p>
+        <div class="ddl">
+          <!-- Gestionnaire du logement -->
+          <h:outputLabel for="manager" value="#{customProperties['housing.field.manager']}" styleClass="label">
+            <span class="mandatory">*</span>
+          </h:outputLabel>
+          <p:selectOneMenu id="manager" value="#{housingController.housingBean.housingDTO.thirdpartyContractManager}" converter="abita.converter.dto" styleClass="dropdownlist">
+            <f:attribute name="converter-values" value="#{housingController.allThirdpartyContractManager}" />
+            <f:selectItem itemLabel="#{msg['dropdownlist.empty']}" value="#{null}" />
+            <f:selectItems value="#{housingController.allThirdpartyContractManager}" var="user" itemLabel="#{user.lastName} #{user.firstName}" />
+          </p:selectOneMenu>
+        </div>
+        <div class="ddl">
+          <!-- Catégorie du local -->
+          <h:outputLabel for="category" value="#{customProperties['housing.field.category']}" styleClass="label">
+            <span class="mandatory">*</span>
+          </h:outputLabel>
+          <p:selectOneMenu id="category" value="#{housingController.housingBean.housingDTO.roomCategory}" converter="abita.converter.dto" styleClass="dropdownlist">
+            <f:attribute name="converter-values" value="#{housingController.allRoomCategory}" />
+            <f:selectItem itemLabel="#{msg['dropdownlist.empty']}" value="#{null}" />
+            <f:selectItems value="#{housingController.allRoomCategory}" var="category" itemLabel="#{category.label}" />
+          </p:selectOneMenu>
+        </div>
+        <div class="ddl">
+          <!-- Agence -->
+          <h:outputLabel for="agencyId" value="#{customProperties['housing.field.agency']}" styleClass="label">
+            <span class="mandatory">*</span>
+          </h:outputLabel>
+          <p:selectOneMenu id="agencyId" value="#{housingController.housingBean.housingDTO.agency}" converter="abita.converter.dto" styleClass="dropdownlist">
+            <f:attribute name="converter-values" value="#{housingController.agencies}" />
+            <f:selectItem itemLabel="#{msg['dropdownlist.empty']}" value="#{null}" itemDisabled="true"/>
+            <f:selectItems value="#{housingController.agencies}" var="agency" itemLabel="#{agency.name}" />
+            <p:ajax update="rattachmentSite" listener="#{housingController.updateSiteListForCurrentAgency()}"/>
+          </p:selectOneMenu>
+        </div>
+        <div class="ddl">
+          <!-- Site -->
+          <h:outputLabel for="rattachmentSite" value="#{customProperties['housing.field.rattachmentSite']}" styleClass="label">
+            <span class="mandatory">*</span>
+          </h:outputLabel>
+          <p:selectOneMenu id="rattachmentSite" value="#{housingController.housingBean.housingDTO.rattachmentSite}" converter="abita.converter.dto" styleClass="dropdownlist">
+            <f:attribute name="converter-values" value="#{housingController.housingBean.sites}" />
+            <f:selectItem itemLabel="#{null}" value="#{null}" itemDisabled="true"/>
+            <f:selectItems value="#{housingController.housingBean.sites}" var="rattachmentSite" itemLabel="#{rattachmentSite.name}" />
+          </p:selectOneMenu>
+        </div>
+        <p>
+          <!-- Date de dernière maintenance DAAF -->
+          <h:outputText value="#{customProperties['housing.field.last.daaf.date']}" styleClass="label" />
+          <p:calendar id="last_daaf_date" value="#{housingController.housingBean.housingDTO.lastDaafDate}" locale="fr" pattern="#{customProperties['pattern.date']}" navigator="true" maxlength="10">
+            <f:attribute name="registerDate" value="#{registerDate.value}" />
+            <f:attribute name="unregisterDate" value="#{unregisterDate.value}" />
+            <f:attribute name="summaryMessage" value="#{customProperties['housing.error.date.daaf.not.between.in.and.end']}" />
+            <f:validator binding="#{lastDaafDateBetweenRegisterAndUnregisterDate}" for="last_daaf_date" />
+          </p:calendar>
+        </p>
+        <div class="ddl">
+          <!-- Assainissement -->
+          <h:outputLabel for="sanitationId" value="#{customProperties['housing.field.sanitation']}" styleClass="label">
+            <span class="mandatory">*</span>
+          </h:outputLabel>
+          <p:selectOneMenu id="sanitationId" value="#{housingController.housingBean.housingDTO.sanitation}" converter="abita.converter.dto" styleClass="dropdownlist">
+            <f:attribute name="converter-values" value="#{housingController.allSanitation}" />
+            <f:selectItem itemLabel="#{msg['dropdownlist.empty']}" value="#{null}" itemDisabled="true"/>
+            <f:selectItems value="#{housingController.allSanitation}" var="sanitation" itemLabel="#{sanitation.label}" />
+          </p:selectOneMenu>
+        </div>
+        <div class="ddl">
+          <!-- Climatisseur -->
+          <h:outputLabel for="airConditionerId" value="#{customProperties['housing.field.airconditioner']}" styleClass="label">
+            <span class="mandatory">*</span>
+          </h:outputLabel>
+          <p:selectOneMenu id="airConditionerId" value="#{housingController.housingBean.housingDTO.airconditioner}" converter="abita.converter.dto" styleClass="dropdownlist">
+            <f:attribute name="converter-values" value="#{housingController.allAirconditioner}" />
+            <f:selectItem itemLabel="#{msg['dropdownlist.empty']}" value="#{null}" itemDisabled="true"/>
+            <f:selectItems value="#{housingController.allAirconditioner}" var="airconditioner" itemLabel="#{airconditioner.label}" />
+          </p:selectOneMenu>
+        </div>
+        <div class="ddl">
+          <!-- Type de Chauffage -->
+          <h:outputLabel for="heatingTypeId" value="#{customProperties['housing.field.heatingType']}" styleClass="label">
+            <span class="mandatory">*</span>
+          </h:outputLabel>
+          <p:selectOneMenu id="heatingTypeId" value="#{housingController.housingBean.housingDTO.heatingType}" converter="abita.converter.dto" styleClass="dropdownlist">
+            <f:attribute name="converter-values" value="#{housingController.allHeatingType}" />
+            <f:selectItem itemLabel="#{msg['dropdownlist.empty']}" value="#{null}" itemDisabled="true"/>
+            <f:selectItems value="#{housingController.allHeatingType}" var="heatingtype" itemLabel="#{heatingtype.label}" />
+          </p:selectOneMenu>
+        </div>
+        <p>
+          <!-- OI Logement -->
+          <h:outputLabel for="oiHousingId" value="#{customProperties['housing.field.oiHousing']}" styleClass="label">
+            <span class="mandatory">*</span>
+          </h:outputLabel>
+          <h:outputText />
+          <p:inputText id = "oiHousingId" value="#{housingController.housingBean.housingDTO.oiHousing}" maxlength="50" />
+        </p>
+        <p>
+          <!-- EOTP -->
+          <h:outputText value="#{customProperties['housing.field.eotp']}" styleClass="label" />
+          <p:inputText value="#{housingController.housingBean.housingDTO.eotp}" maxlength="50" />
+        </p>
+        <div class="ddl">
+          <!-- Cuisine Equipé -->
+          <h:outputLabel for="equippedKitchen" value="#{customProperties['housing.field.equippedKitchen']}" styleClass="label"  />
+          <p:selectOneRadio id="equippedKitchen" value="#{housingController.housingBean.housingDTO.equippedKitchen}" styleClass="radio" >
+            <p:ajax global="false" update="KitchenId" listener="#{housingBean.setBooleanValueInList('equippedKitchen', housingBean.housingDTO.equippedKitchen)}" />
+
+            <f:selectItem itemLabel="#{customProperties['confirm.yes']}" itemValue="#{true}" />
+            <f:selectItem itemLabel="#{customProperties['confirm.no']}" itemValue="#{false}" />
+          </p:selectOneRadio>
+        </div>
+        <p:outputPanel id="KitchenId" layout="block" styleClass="ddl">
+        <p:outputPanel rendered="#{housingBean.getBooleanValueInList('equippedKitchen')}">
+          <!-- Date Cuisine -->
+          <h:outputLabel for="KitchenDate" id="KitchenDateLabel" value="#{customProperties['housing.field.kitchenDate']}" styleClass="label">
+            <span class="mandatory">*</span>
+          </h:outputLabel>
+          <p:calendar id="KitchenDate" value="#{housingController.housingBean.housingDTO.kitchenDate}" required="#{housingController.getBooleanValueInList('equippedKitchen')}" requiredMessage="#{validationMessageProperties['housing.creation.error.kitchenDate']}" locale="fr" pattern="#{customProperties['pattern.date']}" navigator="true" maxlength="10" binding="#{kitchenDate}">
+            <f:attribute name="housing" value="#{housingController.housingBean.housingDTO.id}" />
+            <f:attribute name="summaryMessage" value="#{customProperties['housing.creation.error.kitchenDate']}" />
+          </p:calendar>
+        </p:outputPanel>
+        </p:outputPanel>
+        <div class="ddl">
+          <!-- Salle de Bain -->
+          <h:outputLabel for="bathroom" value="#{customProperties['housing.field.bathroom']}" styleClass="label"/>
+          <p:selectOneRadio id="bathroom" value="#{housingController.housingBean.housingDTO.bathroom}" styleClass="radio">
+            <p:ajax global="false" update="bathroomId" listener="#{housingBean.setBooleanValueInList('Bathroom', housingBean.housingDTO.bathroom)}" />
+
+            <f:selectItem itemLabel="#{customProperties['confirm.yes']}" itemValue="#{true}" />
+            <f:selectItem itemLabel="#{customProperties['confirm.no']}" itemValue="#{false}" />
+          </p:selectOneRadio>
+        </div>
+        <p:outputPanel id="bathroomId" layout="block" styleClass="ddl">
+        <p:outputPanel rendered="#{housingBean.getBooleanValueInList('Bathroom')}">
+          <!-- Date Salle de Bain -->
+          <h:outputLabel for="bathroomDate" id="bathroomDateLabel" value="#{customProperties['housing.field.bathroomDate']}" styleClass="label">
+            <span class="mandatory">*</span>
+          </h:outputLabel>
+          <p:calendar id="bathroomDate" value="#{housingController.housingBean.housingDTO.bathroomDate}" required="#{housingController.getBooleanValueInList('Bathroom')}" requiredMessage="#{validationMessageProperties['housing.creation.error.bathroomDate']}" locale="fr" pattern="#{customProperties['pattern.date']}" navigator="true" maxlength="10" binding="#{bathroomDate}">
+            <f:attribute name="housing" value="#{housingController.housingBean.housingDTO.id}" />
+            <f:attribute name="summaryMessage" value="#{customProperties['housing.creation.error.bathroomDate']}" />
+          </p:calendar>
+        </p:outputPanel>
+        </p:outputPanel>
+        <div class="ddl">
+          <!-- Gaz -->
+          <h:outputLabel for="gas" value="#{customProperties['housing.field.gas']}" styleClass="label">
+            <span class="mandatory">*</span>
+          </h:outputLabel>
+          <p:selectOneRadio id="gas" value="#{housingController.housingBean.housingDTO.gas}" styleClass="radio">
+            <p:ajax global="false empty" update="gasId" listener="#{housingBean.setBooleanValueInList('Gas', housingBean.housingDTO.gas)}" />
+
+            <f:selectItem itemLabel="#{customProperties['confirm.yes']}" itemValue="#{true}" />
+            <f:selectItem itemLabel="#{customProperties['confirm.no']}" itemValue="#{false}" />
+          </p:selectOneRadio>
+        </div>
+        <p:outputPanel id="gasId" layout="block" styleClass="ddl">
+        <p:outputPanel rendered="#{housingBean.getBooleanValueInList('Gas')}">
+          <!-- Date Gaz -->
+          <h:outputLabel for="gasDate" id="gasDateLabel" value="#{customProperties['housing.field.gasDate']}" styleClass="label">
+            <span class="mandatory">*</span>
+          </h:outputLabel>
+          <p:calendar id="gasDate" value="#{housingController.housingBean.housingDTO.gasDate}" required="#{housingController.getBooleanValueInList('Gas')}" requiredMessage="#{validationMessageProperties['housing.creation.error.gasDate']}" locale="fr" pattern="#{customProperties['pattern.date']}" navigator="true" maxlength="10" binding="#{gasDate}">
+            <f:attribute name="housing" value="#{housingController.housingBean.housingDTO.id}" />
+            <f:attribute name="summaryMessage" value="#{customProperties['housing.creation.error.gasDate']}" />
+          </p:calendar>
+          <div class="ddl">
+            <!-- Gaz Ano-->
+            <h:outputLabel for="gasAno" id="gasAnoLabel" value="#{customProperties['housing.field.gasAno']}" styleClass="label">
+              <span class="mandatory">*</span>
+            </h:outputLabel>
+            <p:selectOneRadio id="gasAno" value="#{housingController.housingBean.housingDTO.gasAno}" required="#{housingController.getBooleanValueInList('Gas')}" requiredMessage="#{validationMessageProperties['housing.creation.error.gasAno']}" styleClass="radio">
+              <f:selectItem itemLabel="#{customProperties['confirm.yes']}" itemValue="#{true}" />
+              <f:selectItem itemLabel="#{customProperties['confirm.no']}" itemValue="#{false}" />
+            </p:selectOneRadio>
+          </div>
+        </p:outputPanel>
+        </p:outputPanel>
+        <div class="ddl">
+          <!-- Dpe -->
+          <h:outputLabel for="dpe" value="#{customProperties['housing.field.dpe']}" styleClass="label">
+            <span class="mandatory">*</span>
+          </h:outputLabel>
+          <p:selectOneRadio id="dpe" value="#{housingController.housingBean.housingDTO.dpe}" styleClass="radio">
+            <p:ajax global="false empty" update="dpeId" listener="#{housingBean.setBooleanValueInList('Dpe', housingBean.housingDTO.dpe)}" />
+
+            <f:selectItem itemLabel="#{customProperties['confirm.yes']}" itemValue="#{true}" />
+            <f:selectItem itemLabel="#{customProperties['confirm.no']}" itemValue="#{false}" />
+          </p:selectOneRadio>
+        </div>
+        <p:outputPanel id="dpeId" layout="block" styleClass="ddl">
+        <p:outputPanel rendered="#{housingBean.getBooleanValueInList('Dpe')}">
+          <!-- Date Dpe -->
+          <h:outputLabel for="dpeDateId" id="dpeDateLabel" value="#{customProperties['housing.field.dpeDate']}" styleClass="label">
+            <span class="mandatory">*</span>
+          </h:outputLabel>
+          <p:calendar id="dpeDateId" value="#{housingController.housingBean.housingDTO.dpeDate}" required="#{housingController.getBooleanValueInList('Dpe')}" requiredMessage="#{validationMessageProperties['housing.creation.error.dpeDate']}" locale="fr" pattern="#{customProperties['pattern.date']}" navigator="true" maxlength="10" binding="#{dpeDate}">
+            <f:attribute name="housing" value="#{housingController.housingBean.housingDTO.id}" />
+            <f:attribute name="summaryMessage" value="#{customProperties['housing.creation.error.dpeDate']}" />
+          </p:calendar>
+        </p:outputPanel>
+        </p:outputPanel>
+        <div class="ddl">
+          <!-- Elect -->
+          <h:outputLabel for="elect" value="#{customProperties['housing.field.elect']}" styleClass="label">
+            <span class="mandatory">*</span>
+          </h:outputLabel>
+          <p:selectOneRadio id="elect" value="#{housingController.housingBean.housingDTO.elect}" styleClass="radio">
+            <p:ajax global="false empty" update="electId" listener="#{housingBean.setBooleanValueInList('Elect', housingBean.housingDTO.elect)}" />
+
+            <f:selectItem itemLabel="#{customProperties['confirm.yes']}" itemValue="#{true}" />
+            <f:selectItem itemLabel="#{customProperties['confirm.no']}" itemValue="#{false}" />
+          </p:selectOneRadio>
+        </div>
+        <p:outputPanel id="electId" layout="block" styleClass="ddl">
+        <p:outputPanel rendered="#{housingBean.getBooleanValueInList('Elect')}">
+          <!-- Date Elect -->
+          <h:outputLabel for="electDate" id="electDateLabel" value="#{customProperties['housing.field.electDate']}" styleClass="label">
+            <span class="mandatory">*</span>
+          </h:outputLabel>
+          <p:calendar id="electDate" value="#{housingController.housingBean.housingDTO.electDate}" required="#{housingController.getBooleanValueInList('Elect')}" requiredMessage="#{validationMessageProperties['housing.creation.error.electDate']}" locale="fr" pattern="#{customProperties['pattern.date']}" navigator="true" maxlength="10" binding="#{electDate}">
+            <f:attribute name="housing" value="#{housingController.housingBean.housingDTO.id}" />
+            <f:attribute name="summaryMessage" value="#{customProperties['housing.creation.error.electDate']}" />
+          </p:calendar>
+          <div class="ddl">
+            <!-- Elect Ano-->
+            <h:outputLabel for="electAno" id="electAnoLabel" value="#{customProperties['housing.field.electAno']}" styleClass="label">
+              <span class="mandatory">*</span>
+            </h:outputLabel>
+            <p:selectOneRadio id="electAno" value="#{housingController.housingBean.housingDTO.electAno}" required="#{housingController.getBooleanValueInList('Elect')}" requiredMessage="#{validationMessageProperties['housing.creation.error.electAno']}"  styleClass="radio">
+              <f:selectItem itemLabel="#{customProperties['confirm.yes']}" itemValue="#{true}" />
+              <f:selectItem itemLabel="#{customProperties['confirm.no']}" itemValue="#{false}" />
+            </p:selectOneRadio>
+          </div>
+        </p:outputPanel>
+        </p:outputPanel>
+        <div class="ddl">
+          <!-- Amiante-->
+          <h:outputLabel for="asbestos" value="#{customProperties['housing.field.asbestos']}" styleClass="label">
+            <span class="mandatory">*</span>
+          </h:outputLabel>
+          <p:selectOneRadio id="asbestos" value="#{housingController.housingBean.housingDTO.asbestos}" styleClass="radio">
+            <p:ajax global="false empty" update="asbestosId" listener="#{housingBean.setBooleanValueInList('Asbestos', housingBean.housingDTO.asbestos)}" />
+
+            <f:selectItem itemLabel="#{customProperties['confirm.yes']}" itemValue="#{true}" />
+            <f:selectItem itemLabel="#{customProperties['confirm.no']}" itemValue="#{false}" />
+          </p:selectOneRadio>
+        </div>
+        <p:outputPanel id="asbestosId" layout="block" styleClass="ddl">
+        <p:outputPanel rendered="#{housingBean.getBooleanValueInList('Asbestos')}">
+          <!-- Date Amiante -->
+          <h:outputLabel for="asbestosDate" id="asbestosDateLabel" value="#{customProperties['housing.field.asbestosDate']}" styleClass="label">
+            <span class="mandatory">*</span>
+          </h:outputLabel>
+          <p:calendar id="asbestosDate" value="#{housingController.housingBean.housingDTO.asbestosDate}" required="#{housingController.getBooleanValueInList('Asbestos')}" requiredMessage="#{validationMessageProperties['housing.creation.error.asbestosDate']}" locale="fr" pattern="#{customProperties['pattern.date']}" navigator="true" maxlength="10" binding="#{asbestosDate}">
+            <f:attribute name="housing" value="#{housingController.housingBean.housingDTO.id}" />
+            <f:attribute name="summaryMessage" value="#{customProperties['housing.creation.error.asbestosDate']}" />
+          </p:calendar>
+          <div class="ddl">
+            <!-- Amiante Ano-->
+            <h:outputLabel for="asbestosAno" id="asbestosAnoLabel" value="#{customProperties['housing.field.asbestosAno']}" styleClass="label">
+              <span class="mandatory">*</span>
+            </h:outputLabel>
+            <p:selectOneRadio id="asbestosAno" value="#{housingController.housingBean.housingDTO.asbestosAno}" required="#{housingController.getBooleanValueInList('Asbestos')}" requiredMessage="#{validationMessageProperties['housing.creation.error.asbestosAno']}"  styleClass="radio">
+              <f:selectItem itemLabel="#{customProperties['confirm.yes']}" itemValue="#{true}" />
+              <f:selectItem itemLabel="#{customProperties['confirm.no']}" itemValue="#{false}" />
+            </p:selectOneRadio>
+          </div>
+        </p:outputPanel>
+        </p:outputPanel>
+        <div class="ddl">
+          <!-- Plomb-->
+          <h:outputLabel for="lead" value="#{customProperties['housing.field.lead']}" styleClass="label">
+            <span class="mandatory">*</span>
+          </h:outputLabel>
+          <p:selectOneRadio id="lead" value="#{housingController.housingBean.housingDTO.lead}" styleClass="radio">
+            <p:ajax global="false empty" update="leadId" listener="#{housingBean.setBooleanValueInList('Lead', housingBean.housingDTO.lead)}" />
+
+            <f:selectItem itemLabel="#{customProperties['confirm.yes']}" itemValue="#{true}" />
+            <f:selectItem itemLabel="#{customProperties['confirm.no']}" itemValue="#{false}" />
+          </p:selectOneRadio>
+        </div>
+        <p:outputPanel id="leadId" layout="block" styleClass="ddl">
+        <p:outputPanel rendered="#{housingBean.getBooleanValueInList('Lead')}">
+          <!-- Date Plomb -->
+          <h:outputLabel for="leadDate" id="leadDateLabel" value="#{customProperties['housing.field.leadDate']}" styleClass="label">
+            <span class="mandatory">*</span>
+          </h:outputLabel>
+          <p:calendar id="leadDate" value="#{housingController.housingBean.housingDTO.leadDate}" required="#{housingController.getBooleanValueInList('Lead')}" requiredMessage="#{validationMessageProperties['housing.creation.error.leadDate']}" locale="fr" pattern="#{customProperties['pattern.date']}" navigator="true" maxlength="10" binding="#{leadDate}">
+            <f:attribute name="housing" value="#{housingController.housingBean.housingDTO.id}" />
+            <f:attribute name="summaryMessage" value="#{customProperties['housing.creation.error.leadDate']}" />
+          </p:calendar>
+          <div class="ddl">
+            <!-- Plomb Ano-->
+            <h:outputLabel for="leadAno" id="leadAnoLabel" value="#{customProperties['housing.field.leadAno']}"  styleClass="label">
+              <span class="mandatory">*</span>
+            </h:outputLabel>
+            <p:selectOneRadio id="leadAno" value="#{housingController.housingBean.housingDTO.leadAno}" required="#{housingController.getBooleanValueInList('Lead')}" requiredMessage="#{validationMessageProperties['housing.creation.error.leadAno']}" styleClass="radio">
+              <f:selectItem itemLabel="#{customProperties['confirm.yes']}" itemValue="#{true}" />
+              <f:selectItem itemLabel="#{customProperties['confirm.no']}" itemValue="#{false}" />
+            </p:selectOneRadio>
+          </div>
+        </p:outputPanel>
+        </p:outputPanel>
+        <div class="ddl">
+          <!-- Termite-->
+          <h:outputLabel for="termite" value="#{customProperties['housing.field.termite']}" styleClass="label">
+            <span class="mandatory">*</span>
+          </h:outputLabel>
+          <p:selectOneRadio id="termite" value="#{housingController.housingBean.housingDTO.termite}" styleClass="radio">
+            <p:ajax global="false empty" update="termiteId" listener="#{housingBean.setBooleanValueInList('Termite', housingBean.housingDTO.termite)}" />
+
+            <f:selectItem itemLabel="#{customProperties['confirm.yes']}" itemValue="#{true}" />
+            <f:selectItem itemLabel="#{customProperties['confirm.no']}" itemValue="#{false}" />
+          </p:selectOneRadio>
+        </div>
+        <p:outputPanel id="termiteId" layout="block" styleClass="ddl">
+        <p:outputPanel rendered="#{housingBean.getBooleanValueInList('Termite')}">
+          <!-- Date Termite -->
+          <h:outputLabel for="termiteDate" id="termiteDateLabel" value="#{customProperties['housing.field.termiteDate']}" styleClass="label">
+            <span class="mandatory">*</span>
+          </h:outputLabel>
+          <p:calendar id="termiteDate" value="#{housingController.housingBean.housingDTO.termiteDate}" required="#{housingController.getBooleanValueInList('Termite')}" requiredMessage="#{validationMessageProperties['housing.creation.error.termiteDate']}" locale="fr" pattern="#{customProperties['pattern.date']}" navigator="true" maxlength="10" binding="#{termiteDate}">
+            <f:attribute name="housing" value="#{housingController.housingBean.housingDTO.id}" />
+            <f:attribute name="summaryMessage" value="#{customProperties['housing.creation.error.termiteDate']}" />
+          </p:calendar>
+          <div class="ddl">
+            <!-- Termite Ano-->
+            <h:outputLabel for="termiteAno" id="termiteAnoLabel" value="#{customProperties['housing.field.termiteAno']}"  styleClass="label">
+              <span class="mandatory">*</span>
+            </h:outputLabel>
+            <p:selectOneRadio id="termiteAno" value="#{housingController.housingBean.housingDTO.termiteAno}" required="#{housingController.getBooleanValueInList('Termite')}" requiredMessage="#{validationMessageProperties['housing.creation.error.termiteAno']}" styleClass="radio">
+              <f:selectItem itemLabel="#{customProperties['confirm.yes']}" itemValue="#{true}" />
+              <f:selectItem itemLabel="#{customProperties['confirm.no']}" itemValue="#{false}" />
+            </p:selectOneRadio>
+          </div>
+        </p:outputPanel>
+        </p:outputPanel>
+        <div class="ddl">
+          <!-- ERNMT-->
+          <h:outputLabel for="ernmt" value="#{customProperties['housing.field.ernmt']}" styleClass="label">
+            <span class="mandatory">*</span>
+          </h:outputLabel>
+          <p:selectOneRadio id="ernmt" value="#{housingController.housingBean.housingDTO.ernmt}" styleClass="radio">
+            <p:ajax global="false empty" update="ernmtId" listener="#{housingBean.setBooleanValueInList('Ernmt', housingBean.housingDTO.ernmt)}" />
+            <f:selectItem itemLabel="#{customProperties['confirm.yes']}" itemValue="#{true}" />
+            <f:selectItem itemLabel="#{customProperties['confirm.no']}" itemValue="#{false}" />
+          </p:selectOneRadio>
+        </div>
+        <p:outputPanel id="ernmtId" layout="block" styleClass="ddl">
+        <p:outputPanel rendered="#{housingBean.getBooleanValueInList('Ernmt')}">
+          <!-- Date Ernmt -->
+          <h:outputLabel for="ernmtDate" id="ernmtDateLabel" value="#{customProperties['housing.field.ernmtDate']}" styleClass="label">
+            <span class="mandatory">*</span>
+          </h:outputLabel>
+          <p:calendar id="ernmtDate" value="#{housingController.housingBean.housingDTO.ernmtDate}" required="#{housingController.getBooleanValueInList('Ernmt')}" requiredMessage="#{validationMessageProperties['housing.creation.error.ernmtDate']}" locale="fr" pattern="#{customProperties['pattern.date']}" navigator="true" maxlength="10" binding="#{ernmtDate}">
+            <f:attribute name="housing" value="#{housingController.housingBean.housingDTO.id}" />
+            <f:attribute name="summaryMessage" value="#{customProperties['housing.creation.error.ernmtDate']}" />
+          </p:calendar>
+        </p:outputPanel>
+        </p:outputPanel>
+        <div class="ddl">
+          <!-- Carrez-->
+          <h:outputLabel for="carrez" value="#{customProperties['housing.field.carrez']}" styleClass="label">
+            <span class="mandatory">*</span>
+          </h:outputLabel>
+          <p:selectOneRadio id="carrez" value="#{housingController.housingBean.housingDTO.carrez}" styleClass="radio">
+            <p:ajax global="false empty" update="carrezId" listener="#{housingBean.setBooleanValueInList('Carrez', housingBean.housingDTO.carrez)}" />
+            <f:selectItem itemLabel="#{customProperties['confirm.yes']}" itemValue="#{true}" />
+            <f:selectItem itemLabel="#{customProperties['confirm.no']}" itemValue="#{false}" />
+          </p:selectOneRadio>
+        </div>
+        <p:outputPanel id="carrezId" layout="block" styleClass="ddl">
+          <p:outputPanel rendered="#{housingBean.getBooleanValueInList('Carrez')}">
+          <!-- Date carrez -->
+          <h:outputLabel for="carrezDate" id="carrezDateLabel" value="#{customProperties['housing.field.carrezDate']}" styleClass="label">
+            <span class="mandatory">*</span>
+          </h:outputLabel>
+          <p:calendar id="carrezDate" value="#{housingController.housingBean.housingDTO.carrezDate}" required="#{housingController.getBooleanValueInList('Carrez')}" requiredMessage="#{validationMessageProperties['housing.creation.error.carrezDate']}" locale="fr" pattern="#{customProperties['pattern.date']}" navigator="true" maxlength="10" binding="#{carrezDate}">
+            <f:attribute name="housing" value="#{housingController.housingBean.housingDTO.id}" />
+            <f:attribute name="summaryMessage" value="#{customProperties['housing.creation.error.carrezDate']}" />
+          </p:calendar>
+        </p:outputPanel>
+        </p:outputPanel>
+
+        <div class="ddl">
+          <!-- Avenir du logement -->
+          <h:outputLabel for="futur_of_housing" value="#{customProperties['housing.field.futurOfHousing']}"
+                         styleClass="label">
+            <span class="mandatory">*</span>
+          </h:outputLabel>
+          <p:selectOneMenu id="futur_of_housing"
+                           value="#{housingController.housingBean.housingDTO.futurOfHousing}"
+                           styleClass="dropdownlist">
+
+
+            <f:attribute name="converter-values" value="#{housingController.housingBean.futurOfHousingArray}"/>
+
+            <f:selectItems value="#{housingController.housingBean.futurOfHousingArray}" var="futurOfHousing"
+                           itemValue="#{futurOfHousing}" itemLabel="#{customProperties[futurOfHousing.key]}"/>
+            <p:ajax listener="#{housingController.resetFuturOfHousingDate()}"
+                    update="futurOfHousingPrice,dateFutureBloc,priceFutureBloc"
+            />
+          </p:selectOneMenu>
+        </div>
+
+        <p>
+          <p:outputPanel id="dateFutureBloc" layout="block" styleClass="ddl">
+            <p:outputPanel rendered="#{housingController.housingBean.futureOfHousingBloc}">
+              <h:outputLabel for="unregister_date_futur"
+                             value="#{customProperties['housing.field.dateFuturOfHousing']}"
+                             styleClass="label" type="#{housingController.resetFuturOfHousingDate()}">
+                <span class="mandatory">*</span>
+              </h:outputLabel>
+              <p:inputText id="unregister_date_futur"
+                           label="#{customProperties['housing.field.dateFuturOfHousing']}"
+                           value="#{housingController.housingBean.housingDTO.dateFuturOfHousing}" maxlength="4"
+                           type="#{housingController.resetFuturOfHousingDate()}"
+                           required="#{housingController.housingBean.futureOfHousingBloc}" binding="#{dateFuturOfHousing}"/>
+            </p:outputPanel>
+          </p:outputPanel>
+        </p>
+
+        <p>
+          <p:outputPanel id="priceFutureBloc" layout="block" styleClass="ddl">
+            <p:outputPanel rendered="#{housingController.housingBean.futureOfHousingBloc}">
+              <!-- Prix-->
+              <h:outputLabel for="futurOfHousingPrice"
+                             value="#{customProperties['housing.field.futurOfHousingPrice']}" styleClass="label">
+                <span class="mandatory">*</span>
+              </h:outputLabel>
+              <p:inputText id="futurOfHousingPrice"
+                           value="#{housingController.housingBean.housingDTO.futurOfHousingPrice}" maxlength="8"
+                           label="#{customProperties['housing.field.futurOfHousingPrice']}"
+                           disabled="#{housingController.resetFuturOfHousingDate()}"/>
+            </p:outputPanel>
+          </p:outputPanel>
+        </p>
+
+        <p>
+          <!-- Dernière visite du logement -->
+          <h:outputLabel for="lastVisitDate" value="#{customProperties['housing.field.lastVisitDate']}"
+                         styleClass="label"/>
+          <p:calendar id="lastVisitDate" value="#{housingController.housingBean.housingDTO.lastVisitDate}"
+                      locale="fr" pattern="#{customProperties['pattern.date']}" navigator="true" maxlength="10">
+
+          </p:calendar>
+        </p>
+        <div class="ddl">
+          <!-- Assainissment aux normes -->
+          <h:outputLabel for="sanitationstd" value="#{customProperties['housing.field.SanitationStandards']}"
+                         styleClass="label">
+          </h:outputLabel>
+          <p:selectOneMenu id="sanitationstd" value="#{housingController.housingBean.housingDTO.sanitationstd }"
+                           styleClass="dropdownlist">
+            <f:selectItem itemLabel="#{msg['dropdownlist.empty']}" value="#{null}"/>
+            <f:selectItems value="#{housingController.housingBean.sanitationstdArray}"
+                           var="sanitationstd" itemValue="#{sanitationstd}"
+                           itemLabel="#{customProperties[sanitationstd.key]}"/>
+          </p:selectOneMenu>
+        </div>
+
+        <div class="ddl">
+          <!-- Façade -->
+          <h:outputLabel for="facade" value="#{customProperties['housing.field.facade']}" styleClass="label">
+          </h:outputLabel>
+          <p:selectOneMenu id="facade" value="#{housingController.housingBean.housingDTO.facade }"
+                           styleClass="dropdownlist">
+            <f:selectItem itemLabel="#{msg['dropdownlist.empty']}" value="#{null}"/>
+            <f:selectItems value="#{housingController.housingBean.facadeArray}"
+                           var="facade" itemValue="#{facade}"
+                           itemLabel="#{customProperties[facade.key]}"/>
+          </p:selectOneMenu>
+        </div>
+
+        <div class="ddl">
+          <!--   couverture -->
+          <h:outputLabel for="couverture" value="#{customProperties['housing.field.cover']}" styleClass="label">
+          </h:outputLabel>
+          <p:selectOneMenu id="couverture" value="#{housingController.housingBean.housingDTO.couverture}"
+                           styleClass="dropdownlist">
+            <f:selectItem itemLabel="#{msg['dropdownlist.empty']}" value="#{null}"/>
+            <f:selectItems value="#{housingController.housingBean.couvertureArray}" var="couverture"
+                           itemValue="#{couverture}" itemLabel="#{customProperties[couverture.key]}"/>
+          </p:selectOneMenu>
+        </div>
+
+        <div class="ddl">
+          <!-- isolation -->
+          <h:outputLabel for="isolation" value="#{customProperties['housing.field.insulation']}"
+                         styleClass="label">
+          </h:outputLabel>
+          <p:selectOneMenu id="isolation" value="#{housingController.housingBean.housingDTO.insulation}"
+                           styleClass="dropdownlist">
+            <p:ajax listener="#{housingController.resetWalls()}" update="wallsBloc"/>
+            <f:selectItem itemLabel="#{msg['dropdownlist.empty']}" value="#{null}"/>
+            <f:selectItems value="#{housingController.housingBean.insulationArray}" var="insulation"
+                           itemValue="#{insulation}" itemLabel="#{customProperties[insulation.key]}"/>
+
+          </p:selectOneMenu>
+        </div>
+
+        <div class="ddl">
+          <!-- murs -->
+          <!-- murs -->
+          <p:outputPanel id="wallsBloc" layout="block" styleClass="ddl">
+            <p:outputPanel rendered="#{housingController.housingBean.murBloc}">
+              <h:outputLabel for="walls" value="#{customProperties['housing.field.walls']}" styleClass="label">
+              </h:outputLabel>
+              <p:selectOneMenu id="walls" value="#{housingController.housingBean.housingDTO.walls }"
+                               styleClass="dropdownlist">
+
+                <f:selectItem itemLabel="#{msg['dropdownlist.empty']}" value="#{null}"/>
+                <f:selectItems value="#{housingController.housingBean.wallsArray}"
+                               var="walls" itemValue="#{walls}"
+                               itemLabel="#{customProperties[walls.key]}"
+                               required="#{housingController.resetWalls()}"/>
+              </p:selectOneMenu>
+            </p:outputPanel>
+          </p:outputPanel>
+        </div>
+
+        <div class="ddl">
+          <!-- Menuiserie huisserie-->
+          <h:outputLabel for="joinery" value="#{customProperties['housing.field.JoineryFrame']}"
+                         styleClass="label">
+          </h:outputLabel>
+          <p:selectOneMenu id="joinery" value="#{housingController.housingBean.housingDTO.joineryFrame }"
+                           styleClass="dropdownlist">
+            <f:selectItem itemLabel="#{msg['dropdownlist.empty']}" value="#{null}"/>
+            <f:selectItems value="#{housingController.housingBean.joineryFrameArray}"
+                           var="joineryFrame" itemValue="#{joineryFrame}"
+                           itemLabel="#{customProperties[joineryFrame.key]}"/>
+          </p:selectOneMenu>
+        </div>
+
+        <div class="ddl">
+          <!-- Finitions intérieurs (sols, murs, plafonds …)-->
+          <h:outputLabel for="finitions" value="#{customProperties['housing.field.interiorFinishes']}"
+                         styleClass="label">
+          </h:outputLabel>
+          <p:selectOneMenu id="finitions" value="#{housingController.housingBean.housingDTO.finitions}"
+                           styleClass="dropdownlist">
+            <f:selectItem itemLabel="#{msg['dropdownlist.empty']}" value="#{null}"/>
+            <f:selectItems value="#{housingController.housingBean.finitionsArray}" var="finitions"
+                           itemValue="#{finitions}" itemLabel="#{customProperties[finitions.key]}"/>
+          </p:selectOneMenu>
+        </div>
+
+        <div class="ddl">
+          <!--  VMC -->
+          <h:outputLabel for="vmc" value="#{customProperties['housing.field.vmc']}" styleClass="label">
+          </h:outputLabel>
+          <p:selectOneMenu id="vmc" value="#{housingController.housingBean.housingDTO.vmc}"
+                           styleClass="dropdownlist">
+            <f:selectItem itemLabel="#{msg['dropdownlist.empty']}" value="#{null}"/>
+            <f:selectItems value="#{housingController.housingBean.vmcArray}" var="vmc" itemValue="#{vmc}"
+                           itemLabel="#{customProperties[vmc.key]}"/>
+          </p:selectOneMenu>
+        </div>
+        <div class="ddl">
+          <!--  Plomberie / Sanitaire-->
+          <h:outputLabel for="plomberie" value="#{customProperties['housing.field.plomberieSanitaire']}"
+                         styleClass="label">
+          </h:outputLabel>
+          <p:selectOneMenu id="plomberie" value="#{housingController.housingBean.housingDTO.plomberie}"
+                           styleClass="dropdownlist">
+            <f:selectItem itemLabel="#{msg['dropdownlist.empty']}" value="#{null}"/>
+            <f:selectItems value="#{housingController.housingBean.plomberieArray}" var="plomberie"
+                           itemValue="#{plomberie}" itemLabel="#{customProperties[plomberie.key]}"/>
+          </p:selectOneMenu>
+        </div>
+
+        <div class="ddl">
+          <!--Etiquette énergétique (DPE) -->
+          <h:outputLabel for="energyLabel" value="#{customProperties['housing.field.energyLabel']}"
+                         styleClass="label">
+          </h:outputLabel>
+          <p:selectOneMenu id="energyLabel" value="#{housingController.housingBean.housingDTO.energyLabel}"
+                           styleClass="dropdownlist">
+            <f:selectItem itemLabel="#{msg['dropdownlist.empty']}" value="#{null}"/>
+            <f:selectItems value="#{housingController.housingBean.energyLabelArray}" var="energyLabel"
+                           itemValue="#{energyLabel}" itemLabel="#{customProperties[energyLabel.key]}"/>
+          </p:selectOneMenu>
+        </div>
+
+        <p>
+          <!-- Emission de GES -->
+          <h:outputLabel for="EmissionGES" value="#{customProperties['housing.field.emissionGes']}"
+                         styleClass="label">
+          </h:outputLabel>
+          <p:inputText id="EmissionGES" value="#{housingController.housingBean.housingDTO.emissionGes}"
+                       maxlength="10" label="#{customProperties['housing.field.emissionGes']}"/>
+        </p>
+
+        <p>
+          <!-- Année:Vente programmée en -->
+          <h:outputLabel for="year_number_sale" value="#{customProperties['housing.field.dateProgrammedSale']}"
+                         styleClass="label"/>
+          <p:inputText id="year_number_sale" label="#{customProperties['housing.field.dateProgrammedSale']}"
+                       value="#{housingController.housingBean.housingDTO.dateProgrammedSale}"
+                       maxlength="4"/>
+        </p>
+
+        <p>
+          <!-- Année:Démolition programmée en -->
+
+          <h:outputLabel for="year_number_demolition" value="#{customProperties['housing.field.dateDemolition']}"
+                         styleClass="label"/>
+
+          <p:inputText id="year_number_demolition" label="#{customProperties['housing.field.dateDemolition']}" value="#{housingController.housingBean.housingDTO.dateDemolition}" maxlength="4">
+            <p:ajax listener="#{housingController.resetDemolition()}" update="demolitionBloc" />
+          </p:inputText>
+        </p>
+
+        <p>
+          <!-- Coût démolition "-->
+          <p:outputPanel id="demolitionBloc" layout="block" styleClass="ddl">
+          <p:outputPanel rendered="#{housingController.housingBean.demolitionBloc}">
+          <h:outputLabel for="demolitioncout" value="#{customProperties['housing.field.coutDemolition']}"
+                         styleClass="label">
+          </h:outputLabel>
+          <p:inputText id="demolitioncout" value="#{housingController.housingBean.housingDTO.coutDemolition}"
+                       maxlength="8" label="#{customProperties['housing.field.coutDemolition']}" disabled="#{housingController.resetDemolition()}" />
+          </p:outputPanel>
+          </p:outputPanel>
+        </p>
+
+
+
+        <p>
+          <!-- Année:Rénovation programmée en -->
+
+          <h:outputLabel for="year_number_renovation" value="#{customProperties['housing.field.dateRenovation']}"
+                         styleClass="label"/>
+
+          <p:inputText id="year_number_renovation" label="#{customProperties['housing.field.dateRenovation']}" value="#{housingController.housingBean.housingDTO.dateRenovation}" maxlength="4">
+            <p:ajax listener="#{housingController.resetRenovation()}" update="renovationBloc" />
+          </p:inputText>
+        </p>
+
+        <p>
+          <!-- Coût rénovation "-->
+          <p:outputPanel id="renovationBloc" layout="block" styleClass="ddl">
+            <p:outputPanel rendered="#{housingController.housingBean.renovationBloc}">
+              <h:outputLabel for="coutRenovation" value="#{customProperties['housing.field.coutRenovation']}"
+                             styleClass="label">
+              </h:outputLabel>
+              <p:inputText id="coutRenovation" value="#{housingController.housingBean.housingDTO.coutRenovation}"
+                           maxlength="8" label="#{customProperties['housing.field.coutDemolition']}"
+                           disabled="#{housingController.resetRenovation()}" />
+            </p:outputPanel>
+          </p:outputPanel>
+        </p>
+       <!-- <p>
+          &lt;!&ndash; Année: Rénovation prévu en &ndash;&gt;
+          <h:outputLabel for="year_number_renovation" value="#{customProperties['housing.field.dateRenovation']}"
+                         styleClass="label"/>
+          <p:inputText
+            id="year_number_renovation" label="#{customProperties['housing.field.dateRenovation']}"
+            value="#{housingController.housingBean.housingDTO.dateRenovation}" maxlength="4">
+            <p:ajax listener="#{housingController.resetRenovation()}" update="coutRenovation" />
+          </p:inputText>
+        </p>
+
+        <p>
+          &lt;!&ndash; Coût de la rénovation &ndash;&gt;
+          <h:outputLabel for="coutRenovation" value="#{customProperties['housing.field.coutRenovation']}"
+                         styleClass="label">
+          </h:outputLabel>
+          <p:inputText id="coutRenovation" value="#{housingController.housingBean.housingDTO.coutRenovation}"
+                       maxlength="6" label="#{customProperties['housing.field.coutRenovation']}" disabled="#{housingController.resetRenovation()}"/>
+        </p>-->
+      </p:fieldset>
+      <h:inputHidden id="checkId" value=" " />
+      <p:outputPanel layout="block" styleClass="action">
+        <p:commandButton id="btnValidate" value="#{customProperties['housing.action.save']}" validateClient="true" action="#{housingController.saveOrUpdateData}" update=":messages @form" />
+        <p:commandButton id="btnCancel" value="#{customProperties['housing.action.cancel']}" action="#{housingController.cancel}" immediate="true" />
+      </p:outputPanel>
+    </h:form>
+  </ui:define>
+</ui:composition>
+</html>

@@ -1,0 +1,24 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+	<ui:composition template="/templates/site/site.xhtml">
+		<ui:define name="title">
+			<h:outputText value="#{siteViewController.siteName}" />: <h:outputText value="#{access['admin.access.group.title']}" />
+		</ui:define>
+
+		<ui:define name="body-site">
+			<h:form id="groupForm">
+				<!-- Arbre des groups -->
+				<p:panel header="#{access['group.header']}">
+					<p:tree value="#{groupController.bean.groups}" var="node" expanded="true" id="treeSelectionGroup" rendered="#{groupController.bean.groups != null}">
+						<p:treeNode id="nodelist">
+							<h:outputText value="#{node.identifier}" />
+						</p:treeNode>
+					</p:tree>
+				</p:panel>
+			</h:form>
+		</ui:define>
+	</ui:composition>
+</html>

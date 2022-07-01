@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+<hibernate-mapping package="com.abita.dao.thirdpartycontract.entity">
+  <class name="com.abita.dao.thirdpartycontract.entity.ThirdPartyContractEntity" table="THIRD_PARTY_CONTRACT">
+    <id name="id" column="TPC_ID">
+      <generator class="sequence">
+        <param name="sequence">SEQ_THIRD_PARTY_CONTRACT</param>
+      </generator>
+    </id>
+    <property name="reference" column="TPC_REFERENCE" type="java.lang.String" />
+    <property name="contractPeriod" column="TPC_CONTRACT_PERIOD" type="java.lang.Integer" />
+    <property name="noticePeriod" column="TPC_NOTICE_PERIOD" type="java.lang.Integer" />
+    <property name="startValidity" column="TPC_START_VALIDITY_DATE" type="java.util.Date" />
+    <property name="startSupplierPaymentDate" column="TPC_START_SUPPLIER_PAYMENT_DAT" type="java.util.Date" />
+    <property name="rentAmount" column="TPC_RENT_AMOUNT" type="java.math.BigDecimal" />
+    <property name="revisedRentAmount" column="TPC_REVISED_RENT_AMOUNT" type="java.math.BigDecimal" />
+    <property name="revisedRentDate" column="TPC_REVISED_RENT_DATE" type="java.util.Date" />
+    <property name="lastRevisedRent" column="TPC_LAST_REVISED_RENT_DATE" type="java.util.Date" />
+    <property name="expectedChargeCost" column="TPC_EXPECTED_CHARGE_COST" type="java.math.BigDecimal" />
+    <property name="revisedExpectedChargeCostAmount" column="TPC_REVISED_EXPECT_CHARGE_COST" type="java.math.BigDecimal" />
+    <property name="revisedExpectedChargeCostDate" column="TPC_REVISED_EXPECT_CHARGE_DATE" type="java.util.Date" />
+    <property name="lastRevisedExpectedChargeCost" column="TPC_LAST_REVISED_EXP_CHA_DATE" type="java.util.Date" />
+    <property name="guaranteedDepositAmount" column="TPC_GUARANTEED_DEPOSIT_AMOUNT" type="java.math.BigDecimal" />
+    <property name="realEstateAgencyFee" column="TPC_REAL_ESTATE_AGENCY_FEE" type="java.math.BigDecimal" />
+    <property name="sporadicallyInvoicing" column="TPC_SPORADICALLY_INVOICING" type="java.math.BigDecimal" />
+    <property name="cancellationDate" column="TPC_CANCELLATION_DATE" type="java.util.Date" />
+    <property name="guaranteedDepositRefund" column="TPC_GUARANTEED_DEPOSIT_REFUND" type="java.lang.Boolean" />
+    <property name="expiryDate" column="TPC_EXPIRY_DATE" type="java.lang.Boolean" />
+    <property name="ylRegularization" column="TPC_YL_REGULARIZATION" type="java.lang.Integer" />
+    <many-to-one name="thirdParty" class="com.abita.dao.thirdparty.entity.ThirdPartyEntity" column="THP_ID" />
+    <many-to-one name="housing" class="com.abita.dao.housing.entity.HousingEntity" column="HOU_ID" />
+    <many-to-one name="fieldOfActivity" class="com.abita.dao.fieldofactivity.entity.FieldOfActivityEntity" column="FOA_ID" />
+    <many-to-one name="costCenter" class="com.abita.dao.costcenter.entity.CostCenterEntity" column="CCE_ID" />
+    <many-to-one name="paymentCycle" class="com.abita.dao.paymentcycle.entity.PaymentCycleEntity" column="PCY_ID" />
+    <many-to-one name="thirdPartyTermination" class="com.abita.dao.thirdpartytermination.entity.ThirdPartyTerminationEntity" column="TPT_ID" />
+    <many-to-one name="fixedAgency" class="com.abita.dao.agency.entity.AgencyEntity" column="TPC_AGC_ID_FIX" />
+    <property name="closedThirdPartyContract" column="TPC_CLOSED" type="java.lang.Boolean" />
+  </class>
+
+  <query name="findThirdPartyContractByHousing"><![CDATA[
+        select distinct tpc  from ThirdPartyContractEntity tpc where tpc.housing = :idHousing ]]>
+  </query>
+
+  <query name="generateReferenceThirdPartyContract">
+    	<![CDATA[ SELECT LPAD(MAX(tpc.reference) + 1, 4, 0) AS NB FROM ThirdPartyContractEntity tpc ]]>
+  </query>
+
+  <query name="findLastThirdPartyContractByHousing"><![CDATA[
+        select tpc from ThirdPartyContractEntity tpc where tpc.housing = :idHousing and tpc.cancellationDate is null order by tpc.startValidity desc]]>
+  </query>
+
+  <sql-query name="findThirdPartyContractInProgressOrClose">
+    <return alias="tpc" class="com.abita.dao.thirdpartycontract.entity.ThirdPartyContractEntity" />
+        <![CDATA[
+            SELECT {tpc.*}
+            FROM THIRD_PARTY_CONTRACT tpc
+            WHERE tpc.tpc_start_validity_date <= :endDate
+            AND tpc.tpc_start_supplier_payment_dat <= :endDate
+        ]]>
+  </sql-query>
+
+  <sql-query name="findThirdPartyContractToRegularize">
+    <return alias="tpc" class="com.abita.dao.thirdpartycontract.entity.ThirdPartyContractEntity" />
+        <![CDATA[
+            SELECT {tpc.*}
+            FROM THIRD_PARTY_CONTRACT tpc
+            WHERE tpc.tpc_yl_regularization > 0
+        ]]>
+  </sql-query>
+
+  <sql-query name="resetThirdPartyContractToRegularize">
+        <![CDATA[
+            UPDATE THIRD_PARTY_CONTRACT tpc
+            SET tpc.TPC_YL_REGULARIZATION = 0
+        ]]>
+  </sql-query>
+
+  <sql-query name="findThirdPartyContractPerCycle">
+    <return alias="tpc" class="com.abita.dao.thirdpartycontract.entity.ThirdPartyContractEntity" />
+    	<![CDATA[SELECT {tpc.*}
+	   	 	FROM THIRD_PARTY_CONTRACT tpc
+			INNER JOIN PAYMENT_CYCLE pc ON pc.pcy_id = tpc.pcy_id
+			WHERE pc.pcy_label = :paymentCycleLabel
+			AND tpc.tpc_start_validity_date <= :endDate
+			AND (tpc.tpc_cancellation_date >= :startDate
+	  			OR tpc.tpc_cancellation_date IS NULL)
+	  		AND (tpc.tpc_expiry_date = :expiryDate
+	  			OR tpc.tpc_expiry_date IS NULL)]]>
+  </sql-query>
+
+  <sql-query name="updateSporadicallyInvoicingThirdPartyContract">
+    	<![CDATA[
+    		UPDATE THIRD_PARTY_CONTRACT tpc
+			SET tpc.TPC_SPORADICALLY_INVOICING = 0
+		]]>
+  </sql-query>
+
+  <query name="findByReference"><![CDATA[
+        select tpc from ThirdPartyContractEntity tpc where tpc.reference = :reference]]>
+  </query>
+
+</hibernate-mapping>

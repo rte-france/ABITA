@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+<hibernate-mapping package="com.abita.dao.historycontract.entity">
+  <class name="com.abita.dao.historycontract.entity.HistoryContractEntity" table="HISTORY_CONTRACT_DETAIL">
+    <id name="id" type="java.lang.Long" column="HCO_ID">
+      <generator class="sequence">
+        <param name="sequence">SEQ_HISTORY_CONTRACT</param>
+      </generator>
+    </id>
+    <property name="contractId" column="CON_ID" type="java.lang.Long" />
+    <property name="month" column="HCO_MONTH" type="java.lang.Integer" />
+    <property name="year" column="HCO_YEAR" type="java.lang.Integer" />
+    <property name="endValidityDate" column="HCO_END_VALIDITY_DATE" type="java.util.Date" />
+    <property name="marketRentPrice" column="HCO_MARKET_RENT_PRICE" type="java.math.BigDecimal" />
+    <property name="rentPriceLimit" column="HCO_RENT_PRICE_LIMIT" type="java.math.BigDecimal" />
+    <property name="garageRent" column="HCO_GARAGE_RENT" type="java.math.BigDecimal" />
+    <property name="gardenRent" column="HCO_GARDEN_RENT" type="java.math.BigDecimal" />
+    <property name="extraRent" column="HCO_EXTRA_RENT" type="java.math.BigDecimal" />
+    <property name="expectedChargeCost" column="HCO_EXPECTED_CHARGE_COST" type="java.math.BigDecimal" />
+    <property name="realEstateRentalValue" column="HCO_REAL_ESTATE_RENTAL_VALUE" type="java.math.BigDecimal" />
+    <property name="householdSize" column="HCO_HOUSEHOLD_SIZE" type="java.lang.Integer" />
+    <property name="rentTypologyTechnicalCode" column="HCO_RTP_TECHNICAL_CODE" type="java.lang.String" />
+    <property name="rentTypologyHousingIndex" column="HCO_RTP_HOUSING_INDEX" type="java.lang.String" />
+    <property name="fieldOfActivityLabel" column="HCO_FOA_LABEL" type="java.lang.String" />
+    <property name="addedWithdrawnRent" column="HCO_ADDED_WITHDRAWN_RENT" type="java.math.BigDecimal" />
+    <property name="terminationSavingAmount" column="HCO_TERMINATION_SAVING_AMOUNT" type="java.math.BigDecimal" />
+    <property name="temp" column="HCO_TEMP" type="java.lang.Boolean" />
+
+    <many-to-one name="housing" column="HHO_ID" class="com.abita.dao.historyhousing.entity.HistoryHousingEntity" />
+    <many-to-one name="tenant" column="HTE_ID" class="com.abita.dao.historytenant.entity.HistoryTenantEntity" />
+
+    <property name="lopRent" column="HCD_LOP_RENT" type="java.math.BigDecimal" insert="false" update="false" />
+    <property name="netAgentRent" column="HCD_NET_AGENT_RENT" type="java.math.BigDecimal" insert="false" update="false" />
+    <property name="shortTermContractDiscount" column="HCD_SHORTTERM_CONTRACT_DISCO" type="java.math.BigDecimal" insert="false" update="false" />
+    <property name="revisedSurfaceAreaRent" column="HCD_REVISED_SURFACE_AREA_RENT" type="java.math.BigDecimal" insert="false" update="false" />
+    <property name="benefit" column="HCD_CALCULATED_BENEFITS" type="java.math.BigDecimal" insert="false" update="false" />
+    <property name="nNCoef" column="HCD_N_N_COEF" type="java.math.BigDecimal" insert="false" update="false" />
+    <property name="withdrawnRent" column="HCD_WITHDRAWN_RENT" type="java.math.BigDecimal" insert="false" update="false" />
+  </class>
+
+  <query name="deleteOldContracts">DELETE FROM HistoryContractEntity hco WHERE hco.month &lt; :month AND hco.year &lt;= :year OR hco.year &lt; :year OR hco.temp is true </query>
+
+  <query name="deleteAllTemporaryContractHistorisations">DELETE FROM HistoryContractEntity hco WHERE hco.contractId = :id AND hco.temp is true </query>
+
+  <query name="findHistorizeContractByPrimaryKeys">SELECT hco FROM HistoryContractEntity hco WHERE hco.contractId = :id AND hco.month = :month AND hco.year= :year</query>
+
+  <query name="deleteHistoryContract">
+    	<![CDATA[ delete HistoryContractEntity h where h.contractId = :idContract ]]>
+  </query>
+
+</hibernate-mapping>

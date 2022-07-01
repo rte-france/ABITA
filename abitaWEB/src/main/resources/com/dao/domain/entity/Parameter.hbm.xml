@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.dao.domain.entity">
+
+	<class name="com.dao.domain.entity.Parameter" table="FWK_PARAMETER">
+
+		<id name="id" column="PRM_ID" unsaved-value="null">
+			<generator class="native">
+				<param name="sequence">SEQ_PRM_ID</param>
+			</generator>
+		</id>
+
+		<natural-id mutable="true">
+			<property name="name" length="20" column="PRM_NAME"/>
+		</natural-id>
+
+        <version name="version" column="PRM_VERSION"/>
+
+        <property name="displayName" column="PRM_DISPLAY_NAME"/>
+
+        <property name="comment" column="PRM_COMMENT"/>
+
+        <property name="initialValue" column="PRM_INITIAL_VALUE"/>
+
+        <property name="value" column="PRM_VALUE"/>
+
+        <property name="index" column="PRM_INDEX"/>
+
+        <property name="mutable" column="PRM_MUTABLE" />
+
+        <property name="mandatory" column="PRM_MANDATORY" />
+
+        <property name="type" column="PRM_TYPE" />
+
+	</class>
+
+    <query name="findParameterByName"><![CDATA[
+        from Parameter p where p.name = :name]]>
+    </query>
+
+</hibernate-mapping>
+

@@ -1,0 +1,13 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:abita="http://abita.com/facelets">
+
+	<ui:composition>
+		<p:calendar id="from" value="#{bean.filters.from}" label="#{logs['fwk.logs.filters.from.libelle']}">
+			<abita:beforeDateValidator boundComponentId="to"
+				summaryMessage="#{logs['com.fwk.web.logs.validators.BeforeDateValidator.summary']}"
+				detailMessage="#{logs['com.fwk.web.logs.validators.BeforeDateValidator.detail']}" />
+		</p:calendar>
+	</ui:composition>
+</html>

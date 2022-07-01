@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+<hibernate-mapping package="com.abita.dao.housing.entity">
+
+  <typedef name="housingStatutsEnum" class="com.dao.common.entity.GenericEnumUserType">
+    <param name="enumClass">com.abita.web.shared.HousingStatus</param>
+  </typedef>
+  <typedef name="housingReasonForExitEnum" class="com.dao.common.entity.GenericEnumUserType">
+    <param name="enumClass">com.abita.web.shared.ReasonForExit</param>
+  </typedef>
+  <typedef name="housingEnergyLabelEnum" class="com.dao.common.entity.GenericEnumUserType">
+    <param name="enumClass">com.abita.web.shared.EnergyLabel</param>
+  </typedef>
+  <typedef name="housingEtatFacadeEnum" class="com.dao.common.entity.GenericEnumUserType">
+    <param name="enumClass">com.abita.web.shared.Facade</param>
+  </typedef>
+  <typedef name="housingEtatCouvertureEnum" class="com.dao.common.entity.GenericEnumUserType">
+    <param name="enumClass">com.abita.web.shared.Couverture</param>
+  </typedef>
+  <typedef name="housingEtatFinitionsEnum" class="com.dao.common.entity.GenericEnumUserType">
+    <param name="enumClass">com.abita.web.shared.Finitions</param>
+  </typedef>
+  <typedef name="housingInsulationEnum" class="com.dao.common.entity.GenericEnumUserType">
+    <param name="enumClass">com.abita.web.shared.Insulation</param>
+  </typedef>
+  <typedef name="housingJoineryFrameEnum" class="com.dao.common.entity.GenericEnumUserType">
+    <param name="enumClass">com.abita.web.shared.JoineryFrame</param>
+  </typedef>
+  <typedef name="housingResponseSanitationStandardsEnum" class="com.dao.common.entity.GenericEnumUserType">
+    <param name="enumClass">com.abita.web.shared.Sanitationstd</param>
+  </typedef>
+  <typedef name="housingResponsePlomberieSanitaireEnum" class="com.dao.common.entity.GenericEnumUserType">
+    <param name="enumClass">com.abita.web.shared.Plomberie</param>
+  </typedef>
+  <typedef name="housingResponseVMCEnum" class="com.dao.common.entity.GenericEnumUserType">
+    <param name="enumClass">com.abita.web.shared.Vmc</param>
+  </typedef>
+  <typedef name="housingWallsEnum" class="com.dao.common.entity.GenericEnumUserType">
+    <param name="enumClass">com.abita.web.shared.Walls</param>
+  </typedef>
+  <typedef name="housingFuturOfHousingEnum" class="com.dao.common.entity.GenericEnumUserType">
+    <param name="enumClass">com.abita.web.shared.FuturOfHousing</param>
+  </typedef>
+
+  <class name="com.abita.dao.housing.entity.HousingEntity" table="HOUSING">
+    <id name="id" column="HOU_ID">
+      <generator class="sequence">
+        <param name="sequence">SEQ_HOUSING</param>
+      </generator>
+    </id>
+    <property name="reference" column="HOU_REFERENCE" type="java.lang.String" />
+    <property name="address" column="HOU_ADDRESS" type="java.lang.String" />
+    <property name="postalCode" column="HOU_POSTAL_CODE" type="java.lang.String" />
+    <property name="city" column="HOU_CITY" type="java.lang.String" />
+    <property name="registerDate" column="HOU_REGISTER_DATE" type="java.util.Date" />
+    <property name="unregisterDate" column="HOU_UNREGISTER_DATE" type="java.util.Date" />
+    <property name="reasonForExit" column="HOU_REASON_EXIT" type="housingReasonForExitEnum" />
+    <property name="generalComment" column="HOU_GENERAL_COMMENT" type="java.lang.String" />
+    <property name="realSurfaceArea" column="HOU_REAL_SURFACE_AREA" type="java.math.BigDecimal" />
+    <property name="revisedSurfaceArea" column="HOU_REVISED_SURFACE_AREA" type="java.math.BigDecimal" />
+    <property name="property" column="HOU_RTE_PROPERTY" type="java.lang.Boolean" />
+    <property name="gardenAvailable" column="HOU_GARDEN_AVAILABLE" type="java.lang.Boolean" />
+    <property name="garageAvailable" column="HOU_GARAGE_AVAILABLE" type="java.lang.Boolean" />
+    <property name="housingStatus" formula="(select decode(count(c.con_id),0,'EMPTY','OCCUPIED') from Contract c where c.hou_id = hou_id and TO_DATE(TO_CHAR(sysdate, 'DD/MM/YYYY'), 'DD/MM/YYYY') &gt;= c.CON_START_VALIDITY_DATE and (c.CON_END_VALIDITY_DATE is null OR TO_DATE(TO_CHAR(sysdate, 'DD/MM/YYYY'), 'DD/MM/YYYY') &lt;= c.CON_END_VALIDITY_DATE)) " type="housingStatutsEnum" />
+    <property name="roomCount" column="HOU_ROOM_COUNT" type="java.lang.Integer" />
+    <property name="core" column="HOU_CORE" type="java.lang.Boolean" />
+    <property name="year" column="HOU_YEAR_OF_CONSTRUCTION" type="java.lang.String" />
+    <property name="lastDaafDate" column="HOU_LAST_DAAF_DATE" type="java.util.Date" />
+    <property name="oiHousing" column="HOU_OI_HOUSING" type="java.lang.String" />
+    <property name="eotp" column="HOU_EOTP" type="java.lang.String" />
+    <property name="equippedKitchen" column="HOU_EQUIPPED_KITCHEN" type="java.lang.Boolean" />
+    <property name="kitchenDate" column="HOU_KITCHEN_DATE" type="java.util.Date" />
+    <property name="bathroom" column="HOU_BATHROOM" type="java.lang.Boolean" />
+    <property name="bathroomDate" column="HOU_BATHROOM_DATE" type="java.util.Date" />
+    <property name="dpe" column="HOU_DPE" type="java.lang.Boolean" />
+    <property name="dpeDate" column="HOU_DPE_DATE" type="java.util.Date" />
+    <property name="gas" column="HOU_GAS" type="java.lang.Boolean" />
+    <property name="gasDate" column="HOU_GAS_DATE" type="java.util.Date" />
+    <property name="gasAno" column="HOU_GAS_ANO" type="java.lang.Boolean" />
+    <property name="elect" column="HOU_ELECT" type="java.lang.Boolean" />
+    <property name="electDate" column="HOU_ELECT_DATE" type="java.util.Date" />
+    <property name="electAno" column="HOU_ELECT_ANO" type="java.lang.Boolean" />
+    <property name="asbestos" column="HOU_ASBESTOS" type="java.lang.Boolean" />
+    <property name="asbestosDate" column="HOU_ASBESTOS_DATE" type="java.util.Date" />
+    <property name="asbestosAno" column="HOU_ASBESTOS_ANO" type="java.lang.Boolean" />
+    <property name="lead" column="HOU_LEAD" type="java.lang.Boolean" />
+    <property name="leadDate" column="HOU_LEAD_DATE" type="java.util.Date" />
+    <property name="leadAno" column="HOU_LEAD_ANO" type="java.lang.Boolean" />
+    <property name="termite" column="HOU_TERMITE" type="java.lang.Boolean" />
+    <property name="termiteDate" column="HOU_TERMITE_DATE" type="java.util.Date" />
+    <property name="termiteAno" column="HOU_TERMITE_ANO" type="java.lang.Boolean" />
+    <property name="ernmt" column="HOU_ERNMT" type="java.lang.Boolean" />
+    <property name="ernmtDate" column="HOU_ERNMT_DATE" type="java.util.Date" />
+    <property name="carrez" column="HOU_CARREZ" type="java.lang.Boolean" />
+    <property name="carrezDate" column="HOU_CARREZ_DATE" type="java.util.Date" />
+    <property name="squareMeter" column="HOU_SQUARE_METER" type="java.lang.Integer" />
+
+    <property name="futurOfHousing" column="HOU_FUTUR_OF_HOUSING" type="housingFuturOfHousingEnum" />
+    <property name="dateFuturOfHousing" column="HOU_DATE_FUT_OF_HOUSING" type="java.lang.String" />
+    <property name="futurOfHousingPrice" column="HOU_PRICE" type="java.math.BigDecimal" />
+    <property name="lastVisitDate" column="HOU_DATE_LAST_VISIT" type="java.util.Date" />
+    <property name="sanitationstd" column="HOU_SANITATION_STANDARDS" type="housingResponseSanitationStandardsEnum" />
+    <property name="facade" column="HOU_FACADE" type="housingEtatFacadeEnum" />
+    <property name="couverture" column="HOU_COVER" type="housingEtatCouvertureEnum" />
+    <property name="insulation" column="HOU_INSULATION" type="housingInsulationEnum" />
+    <property name="walls" column="HOU_WALLS" type="housingWallsEnum" />
+    <property name="JoineryFrame" column="HOU_JOINERY_FRAME" type="housingJoineryFrameEnum" />
+    <property name="finitions" column="HOU_INTERIOR_FINISHES" type="housingEtatFinitionsEnum" />
+    <property name="vmc" column="HOU_VMC" type="housingResponseVMCEnum" />
+    <property name="plomberie" column="HOU_SANITARY_PLUMBING" type="housingResponsePlomberieSanitaireEnum" />
+    <property name="energyLabel" column="HOU_ENERGY_LABEL" type="housingEnergyLabelEnum" />
+    <property name="emissionGes" column="HOU_EMISSION_GES" type="java.math.BigDecimal" />
+    <property name="dateProgrammedSale" column="HOU_DATE_PROGRAMMED_SALE" type="java.lang.String" />
+    <property name="dateDemolition" column="HOU_DATE_PROGRAMMED_DEMOLITION" type="java.lang.String" />
+    <property name="coutDemolition" column="HOU_COST_DEMOLITION" type="java.math.BigDecimal" />
+    <property name="dateRenovation" column="HOU_RENOVATION_DATE" type="java.lang.String" />
+    <property name="coutRenovation" column="HOU_COST_RENOVATION" type="java.math.BigDecimal" />
+
+
+
+    <many-to-one name="housingNature" class="com.abita.dao.housingnature.entity.HousingNatureEntity" column="HNA_ID" />
+    <many-to-one name="thirdpartyContractManager" class="com.dao.user.entity.User" column="USR_ID" />
+    <many-to-one name="roomCategory" class="com.abita.dao.roomcategory.entity.RoomCategoryEntity" column="RCA_ID" />
+    <many-to-one name="agency" class="com.abita.dao.agency.entity.AgencyEntity" column="AGC_ID" />
+    <many-to-one name="sanitation" class="com.abita.dao.sanitation.entity.SanitationEntity" column="HOU_SANITATION" />
+    <many-to-one name="heatingType" class="com.abita.dao.heatingtype.entity.HeatingTypeEntity" column="HOU_HEATING_TYPE" />
+    <many-to-one name="airconditioner" class="com.abita.dao.airconditioner.entity.AirconditionerEntity" column="HOU_AIRCONDITIONER" />
+    <many-to-one name="rattachmentSite" class="com.abita.dao.site.entity.SiteEntity" column="SIT_ID" />
+  </class>
+
+  <query name="isRemovableHousing">
+    	<![CDATA[ select c.housing from ContractEntity c where c.housing = :idHousing ]]>
+  </query>
+
+  <query name="findHousingsByAgency">
+    	<![CDATA[ select h from HousingEntity h where h.agency = :idAgency ]]>
+  </query>
+
+  <query name="findHousingsByHeatingType">
+    <![CDATA[ select h from HousingEntity h where h.heatingType = :idHeatingType ]]>
+  </query>
+
+  <query name="findHousingsBySanitation">
+    <![CDATA[ select h from HousingEntity h where h.sanitation = :idSanitation ]]>
+  </query>
+
+  <query name="findHousingsByAirConditioner">
+    <![CDATA[ select h from HousingEntity h where h.airconditioner = :idAirconditioner ]]>
+  </query>
+
+
+  <query name="generateReference">
+    	<![CDATA[ SELECT LPAD(MAX(hou.reference) + 1, 4, 0) AS NB FROM HousingEntity hou ]]>
+  </query>
+
+</hibernate-mapping>

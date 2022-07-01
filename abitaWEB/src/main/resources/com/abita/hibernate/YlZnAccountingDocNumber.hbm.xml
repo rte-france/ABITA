@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+<hibernate-mapping package="com.abita.dao.ylznaccountingdocnumber.entity">
+  <class name="com.abita.dao.ylznaccountingdocnumber.entity.YlZnAccountingDocNumberEntity" table="YL_ZN_ACC_DOC_NBR">
+    <id name="id" type="java.lang.Long" column="YL_ZN_ADN_ID">
+      <generator class="sequence">
+        <param name="sequence">SEQ_YL_ZN_ACC_DOC_NBR</param>
+      </generator>
+    </id>
+    <property name="ylZnAdnPieceNumber" column="YL_ZN_ADN_PIECE_NUMBER" type="java.lang.Long" />
+    <property name="ylZnAdnPieceType" column="YL_ZN_ADN_PIECE_TYPE" type="java.lang.String" />
+    <property name="ylZnAdnPieceDate" column="YL_ZN_ADN_PIECE_DATE" type="java.util.Date" />
+    <property name="ylZnAdnCycleDate" column="YL_ZN_CYCLE_DATE" type="java.util.Date" />
+    <property name="ylZnAdnCancellationDate" column="YL_ZN_CANCELLATION_DATE" type="java.util.Date" />
+    <property name="ylZnAdnMensualRentAmount" column="YL_ZN_MENS_RENT_AMOUNT" type="java.math.BigDecimal" />
+    <property name="ylZnAdnMensualExpectedChargeCost" column="YL_ZN_MENS_EXP_CHARGE_COST" type="java.math.BigDecimal" />
+    <property name="ylZnAdnRentAmount" column="YL_ZN_RENT_AMOUNT" type="java.math.BigDecimal" />
+    <property name="ylZnAdnExpectedChargeCost" column="YL_ZN_EXP_CHARGE_COST" type="java.math.BigDecimal" />
+    <property name="ylZnAdnFinalRentAmount" column="YL_ZN_FINAL_RENT_AMOUNT" type="java.math.BigDecimal" />
+    <property name="ylZnAdnFinalExpectedChargeCost" column="YL_ZN_FINAL_EXP_CHARGE_COST" type="java.math.BigDecimal" />
+    <many-to-one name="thirdPartyContract" class="com.abita.dao.thirdpartycontract.entity.ThirdPartyContractEntity" column="TPC_ID" />
+  </class>
+
+  <query name="getYlZnCurrentMaxValPieceNumber"><![CDATA[
+        select max(ylZnAdnPieceNumber) as max from YlZnAccountingDocNumberEntity ylznadn]]>
+  </query>
+
+  <sql-query name="findLastGenerationByThirdPartyContractIdAndYearMonth">
+    <return alias="ylznadn" class="com.abita.dao.ylznaccountingdocnumber.entity.YlZnAccountingDocNumberEntity" />
+        <![CDATA[
+            SELECT {ylznadn.*}
+            FROM (
+                SELECT *
+                FROM yl_zn_acc_doc_nbr ylznadn
+                WHERE ylznadn.TPC_ID = :thirdPartyContractId
+                AND EXTRACT(month FROM ylznadn.YL_ZN_CYCLE_DATE) = :month
+                AND EXTRACT(year FROM ylznadn.YL_ZN_CYCLE_DATE) = :year
+                AND (ylznadn.YL_ZN_ADN_PIECE_TYPE = 'YL'
+                OR ylznadn.YL_ZN_ADN_PIECE_TYPE = 'YL_REGUL')
+                ORDER BY ylznadn.YL_ZN_ADN_ID DESC
+            ) ylznadn
+            WHERE ROWNUM <= 1
+        ]]>
+  </sql-query>
+
+  <sql-query name="findLastGenerationByThirdPartyContractId">
+    <return alias="ylznadn" class="com.abita.dao.ylznaccountingdocnumber.entity.YlZnAccountingDocNumberEntity" />
+        <![CDATA[
+            SELECT {ylznadn.*}
+            FROM (
+                SELECT *
+                FROM yl_zn_acc_doc_nbr ylznadn
+                WHERE ylznadn.TPC_ID = :thirdPartyContractId
+                AND (ylznadn.YL_ZN_ADN_PIECE_TYPE = 'YL'
+                OR ylznadn.YL_ZN_ADN_PIECE_TYPE = 'YL_REGUL')
+                ORDER BY ylznadn.YL_ZN_ADN_ID DESC
+            ) ylznadn
+            WHERE ROWNUM <= 1
+        ]]>
+  </sql-query>
+
+  <sql-query name="findGenerationsByThirdPartyContractIdFromYearMonth">
+    <return alias="ylznadn" class="com.abita.dao.ylznaccountingdocnumber.entity.YlZnAccountingDocNumberEntity" />
+        <![CDATA[
+			SELECT {ylznadn.*}
+			FROM YL_ZN_ACC_DOC_NBR ylznadn
+			WHERE (YL_ZN_ADN_PIECE_TYPE = 'YL'
+			OR YL_ZN_ADN_PIECE_TYPE = 'YL_REGUL')
+	        AND YL_ZN_CYCLE_DATE >= :date
+			AND YL_ZN_ADN_ID IN (
+				SELECT MAX(YL_ZN_ADN_ID)
+				FROM YL_ZN_ACC_DOC_NBR ylznadn_sub
+				WHERE ylznadn_sub.TPC_ID = :thirdPartyContractId
+				GROUP BY TO_CHAR(YL_ZN_CYCLE_DATE, 'YYYY-MM')
+			)
+			ORDER BY YL_ZN_ADN_ID DESC
+        ]]>
+  </sql-query>
+
+  <query name="deleteYlZnAccountingDocNumber">
+    	<![CDATA[ delete YlZnAccountingDocNumberEntity y where y.thirdPartyContract.id = :thirdPartyContractId ]]>
+  </query>
+
+</hibernate-mapping>

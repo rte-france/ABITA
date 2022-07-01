@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+<hibernate-mapping package="com.abita.dao.agency.entity">
+  <class name="com.abita.dao.agency.entity.AgencyEntity" table="AGENCY">
+    <id name="id" type="java.lang.Long" column="AGC_ID">
+      <generator class="sequence">
+        <param name="sequence">SEQ_AGENCY</param>
+      </generator>
+    </id>
+    <property name="name" column="AGC_NAME" type="java.lang.String" />
+  </class>
+
+  <sql-query name="findAllAgencies">
+    <return alias="AGC" class="com.abita.dao.agency.entity.AgencyEntity" />
+    <return-scalar column="NBHOU" type="integer" />
+    <return-scalar column="NBFOA" type="integer" />
+    SELECT AGC.*, COUNT(HOU.AGC_ID) AS NBHOU, COUNT(FOA.AGC_ID) AS NBFOA
+    FROM AGENCY AGC
+    LEFT OUTER JOIN
+    HOUSING HOU
+    ON HOU.AGC_ID = AGC.AGC_ID
+    LEFT OUTER JOIN
+    FIELD_OF_ACTIVITY FOA
+    ON FOA.AGC_ID = AGC.AGC_ID
+    GROUP BY AGC.AGC_ID,
+    AGC.AGC_NAME
+  </sql-query>
+
+</hibernate-mapping>

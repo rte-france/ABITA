@@ -1,0 +1,14 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+      xmlns:p="http://primefaces.org/ui">
+
+	<ui:composition>
+		<p:column id="colum_header_title" headerText="#{logs['fwk.logs.table.column.title.libelle']}"
+			filterBy="#{log.title}" filterMatchMode="contains"
+			sortBy="#{log.title}" styleClass="center-content column_header_title">
+			<h:outputText title="#{log.title}" value="#{fn:length(log.title) > 75 ? fn:substring(log.title, 0, 75).concat('...') : log.title}" />
+		</p:column>
+	</ui:composition>
+</html>

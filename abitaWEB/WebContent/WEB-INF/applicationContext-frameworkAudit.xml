@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.springframework.org/schema/beans"
+        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+
+	<!-- Audit service -->
+	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="placeholderPrefix" value="${activityRecord."/>
+	    <property name="locations">
+	        <value>classpath:activityRecord.properties</value>
+	    </property>
+	</bean>
+	<bean id="activityRecordNoTxService" class="com.services.auditservice.impl.DistantActivityRecordService">
+		<property name="distantLoggerService" ref="httpClientLoggerNoTxService" />
+		<property name="optionalParametersResolver" ref="optionalParametersResolver" />
+	</bean>
+	<bean id="httpClientLoggerNoTxService" class="com.services.auditservice.impl.HttpClientLoggerServiceImpl">
+		<property name="contextRoot" value="${activityRecord.audit.auditapplication.contextroot}" />
+	</bean>
+
+	<bean id="activityTracker" class="com.services.auditservice.impl.ActivityTrackerImpl" scope="singleton" >
+		<property name="dataAccess" ref="dataAccess" />
+	</bean>
+	<bean id="dataAccess" class="com.dao.audit.impl.ActivityTrackerDataAccessFileSystem" scope="singleton"/>
+
+</beans>

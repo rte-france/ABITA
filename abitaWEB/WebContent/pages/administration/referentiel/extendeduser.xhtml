@@ -1,0 +1,113 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:fn="http://java.sun.com/jsp/jstl/functions" xmlns:p="http://primefaces.org/ui">
+<ui:composition template="/templates/site/site.xhtml">
+  <ui:define name="title">
+    <h:outputText value="#{siteViewController.siteName}" />: <h:outputText value="#{access['admin.access.user.title']}" />
+  </ui:define>
+  <ui:define name="body-site">
+    <f:event listener="#{extendedUserController.init}" type="preRenderView" />
+    <h:form id="userListForm">
+      <h2 class="center">#{access['admin.access.user.title']}</h2>
+      <!-- CritÃ¨res de recherche d'utilisateurs -->
+      <ui:include src="includes/userssearch.xhtml" />
+      <p:panel header="#{access['admin.access.result']}" id="userlistpanelgrid">
+        <p:dataTable id="userListTable" var="userdm" rowKey="#{userdm.id}" value="#{extendedUserBean.extendedUserDTOList}" selection="#{extendedUserBean.selectedUser}" selectionMode="single" width="100%" emptyMessage="#{primefaces.datatableEmptyMessage}" rowIndexVar="rowIndex" rowStyleClass="#{extendedUserController.getStyleClass(rowIndex)}" widgetVar="usrLstTable" paginator="true" rows="25" paginatorPosition="bottom" pageLinks="5" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" currentPageReportTemplate="(Enregistrements : {startRecord} - {endRecord} sur {totalRecords}, Page: {currentPage}/{totalPages})" sortBy="#{userdm.login.toUpperCase()}">
+          <p:ajax event="rowSelect" listener="#{extendedUserController.prepareUserEdition}" update=":dialogForm:listgrp,:dialogForm:groupTable" oncomplete="dlg.show()">
+          </p:ajax>
+          <p:column sortBy="#{userdm.login.toUpperCase()}">
+            <f:facet name="header">
+              <h:outputText value="#{site.nni}" />
+            </f:facet>
+            <h:outputText value="#{userdm.login}" />
+          </p:column>
+          <p:column sortBy="#{userdm.firstName.toUpperCase()}">
+            <f:facet name="header">
+              <h:outputText value="#{access['user.list.first_name']}" />
+            </f:facet>
+            <h:outputText value="#{userdm.firstName}" />
+          </p:column>
+          <p:column sortBy="#{userdm.lastName.toUpperCase()}">
+            <f:facet name="header">
+              <h:outputText value="#{access['user.list.last_name']}" />
+            </f:facet>
+            <h:outputText value="#{userdm.lastName}" />
+          </p:column>
+          <p:column sortBy="#{userdm.email.toUpperCase()}">
+            <f:facet name="header">
+              <h:outputText value="#{access['user.list.email']}" />
+            </f:facet>
+            <h:outputText value="#{userdm.email}" />
+          </p:column>
+          <p:column sortBy="#{userdm.activated}">
+            <f:facet name="header">
+              <h:outputText value="#{access['user.list.activation.label']}" />
+            </f:facet>
+            <h:outputText value="#{access['user.list.activation.on']}" rendered="#{userdm.activated}" />
+            <h:outputText value="#{access['user.list.activation.off']}" rendered="#{!userdm.activated}" />
+          </p:column>
+          <p:column sortBy="#{userdm.groups.toUpperCase()}">
+            <f:facet name="header">
+              <h:outputText value="#{access['user.groups']}" />
+            </f:facet>
+            <h:outputText value=" #{userdm.groups}" />
+          </p:column>
+          <p:column sortBy="#{userdm.isThirdPartyContractManager}">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['housing.field.manager']}" />
+            </f:facet>
+            <h:outputText value="#{customProperties['information.yes']}" rendered="#{userdm.isThirdPartyContractManager}" />
+            <h:outputText value="#{customProperties['information.no']}" rendered="#{!userdm.isThirdPartyContractManager}" />
+          </p:column>
+          <p:column sortBy="#{userdm.agenciesToString.toUpperCase()}">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['administration.agency.column.label']}" />
+            </f:facet>
+            <h:outputText value="#{userdm.agenciesToString}" />
+          </p:column>
+        </p:dataTable>
+      </p:panel>
+    </h:form>
+    <h:form id="dialogForm">
+      <p:dialog header="#{access['admin.access.group.title']}" widgetVar="dlg" modal="true" closable="false">
+        <h:panelGrid id="listgrp" style="margin-left:auto;margin-right:auto" dynamic="true">
+          <h:panelGrid id="infoUser" style="margin-left:0" columns="2">
+            <h:outputLabel value="#{site.nni}" />
+            <h:outputText value="#{extendedUserBean.selectedUser.login}" />
+            <h:outputLabel value="#{access['user.list.first_name']}" />
+            <h:outputText value="#{extendedUserBean.selectedUser.firstName}" />
+            <h:outputLabel value=" #{access['user.list.last_name']}" />
+            <h:outputText value="#{extendedUserBean.selectedUser.lastName}" />
+          </h:panelGrid>
+          <h:panelGrid id="infoExtendedUser" style="margin-left:0" columns="2">
+            <p:selectBooleanCheckbox id="isThirdPartyContractManager" value="#{extendedUserBean.isThirdPartyContractManager}" itemLabel="#{customProperties['housing.field.manager']}" />
+          </h:panelGrid>
+          <p:dataTable id="groupTable" var="groupf" rowKey="#{groupf.name}" value="#{extendedUserBean.groupList}" selection="#{extendedUserBean.selectedGroupsAsArray}" selectionMode="multiple" emptyMessage="#{primefaces.datatableEmptyMessage}">
+            <p:column>
+              <f:facet name="header">
+                <h:outputText value="#{access['group.selection']}" />
+              </f:facet>
+              <h:outputText value="#{groupf.identifier}" />
+            </p:column>
+          </p:dataTable>
+          <p:dataTable id="agenceTable" var="agencyf" rowKey="#{agencyf}" value="#{extendedUserBean.agencyChoices}" selection="#{extendedUserBean.selectedAgency}" selectionMode="single" emptyMessage="#{primefaces.datatableEmptyMessage}">
+            <p:column>
+              <f:facet name="header">
+                <h:outputText value="#{customProperties['administration.agency.header']}" />
+              </f:facet>
+              <h:outputText value="#{agencyf.name}" />
+            </p:column>
+          </p:dataTable>
+          <div style="margin-left: auto; margin-right: auto">
+            <h:panelGroup>
+              <!-- [RM_MET_004] Trace du nombre de modifications d'utilisateurs -->
+              <p:commandButton id="btnUpdateUser" value="#{site.apply}" action="#{extendedUserController.updateExtendedUser}" oncomplete="countClicksNumber('#{security.userLogin}','update_user',null);dlg.hide();usrLstTable.unselectAllRows();" update=":userListForm:userListTable" />
+              <p:commandButton id="btnCancel" type="button" value="#{site.cancel}" onclick="dlg.hide()" />
+            </h:panelGroup>
+          </div>
+        </h:panelGrid>
+      </p:dialog>
+    </h:form>
+  </ui:define>
+</ui:composition>
+</html>

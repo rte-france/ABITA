@@ -1,0 +1,60 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:fn="http://java.sun.com/jsp/jstl/functions" xmlns:p="http://primefaces.org/ui">
+<ui:composition template="/templates/site/site.xhtml">
+  <ui:define name="title">
+    <h:outputText value="#{customProperties['page.title.prefix']}#{customProperties['administration.referentiel.roomcategory.title']}" />
+  </ui:define>
+  <ui:define name="body-site">
+    <h2 class="center">#{customProperties['administration.referentiel.roomcategory.title']}</h2>
+    <h:form id="frmRefRoomCategory" prependId="false" onkeypress="return event.keyCode != 13">
+      <p:outputPanel layout="block" id="roomCategoryListing">
+        <!-- Permet de désactiver l'action par défaut de la touche "Entrée" (Mantis 35) -->
+        <!-- Voir issue : https://code.google.com/p/primefaces/issues/detail?id=4204 -->
+        <p:commandButton style="display: none;" process="@none" update="@none" ajax="true" />
+        <p:dataTable id="roomCategoryDt" var="roomCategoryRow" value="#{roomCategoryController.roomCategoryBean.lstRoomCategory}" editable="true" emptyMessage="#{customProperties['no.data']}">
+          <p:ajax event="rowEdit" update=":messages :frmRefRoomCategory:roomCategoryDt" process="@this" />
+          <!-- Titre du tableau -->
+          <f:facet name="header">
+            <h:outputText value="#{customProperties['administration.referentiel.roomcategory.datatable.title']}" />
+          </f:facet>
+          <!-- Libellé -->
+          <p:column headerText="#{customProperties['administration.referentiel.roomcategory.column.label']}">
+            <h:outputText value="#{roomCategoryRow.label}" />
+          </p:column>
+          <!-- Pour les 10 premiers m² -->
+          <p:column headerText="#{customProperties['administration.referentiel.roomcategory.column.firstsqr']}">
+            <p:cellEditor>
+              <f:facet name="output">
+                <h:outputText value="#{roomCategoryRow.first10SqrMeterPrice}" />
+              </f:facet>
+              <f:facet name="input">
+                <p:inputText value="#{roomCategoryRow.first10SqrMeterPrice}" maxlength="10" label="#{customProperties['administration.referentiel.roomcategory.column.firstsqr']}" />
+              </f:facet>
+            </p:cellEditor>
+          </p:column>
+          <!-- Pour les m² suivants -->
+          <p:column headerText="#{customProperties['administration.referentiel.roomcategory.column.nextsqr']}">
+            <p:cellEditor>
+              <f:facet name="output">
+                <h:outputText value="#{roomCategoryRow.nextSqrMeterPrice}" />
+              </f:facet>
+              <f:facet name="input">
+                <p:inputText value="#{roomCategoryRow.nextSqrMeterPrice}" maxlength="10" label="#{customProperties['administration.referentiel.roomcategory.column.nextsqr']}" />
+              </f:facet>
+            </p:cellEditor>
+          </p:column>
+          <!-- Actions -->
+          <p:column headerText="#{customProperties['administration.referentiel.roomcategory.column.action']}" styleClass="action_column">
+            <p:rowEditor id="btnModify" rendered="#{roomCategoryRow.modifiable}" />
+          </p:column>
+        </p:dataTable>
+      </p:outputPanel>
+      <p:outputPanel layout="block" styleClass="action">
+        <p:commandButton id="btnValidate" value="#{customProperties['common.action.save']}" actionListener="#{roomCategoryController.saveData}" immediate="true" update=":messages" />
+        <p:commandButton id="btnCancel" value="#{customProperties['common.action.cancel']}" action="welcome" immediate="true" />
+      </p:outputPanel>
+    </h:form>
+  </ui:define>
+</ui:composition>
+</html>

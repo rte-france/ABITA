@@ -1,0 +1,62 @@
+create or replace PROCEDURE HISTORIZE_HOUSING (
+    PN$MONTH IN HISTORY_HOUSING.HHO_MONTH%TYPE,
+    PN$YEAR IN HISTORY_HOUSING.HHO_YEAR%TYPE
+) IS
+    CURSOR HousingData IS
+        SELECT
+    HOU.HOU_ID,
+    HOU.HOU_REVISED_SURFACE_AREA,
+    HOU.HOU_ROOM_COUNT,
+    HNA.HNA_NATURE_OF_LOCAL,
+    RCA.RCA_FIRST_10_SQR_METER_PRICE,
+    RCA.RCA_NEXT_SQR_METER_PRICE
+FROM HOUSING HOU
+LEFT JOIN HOUSING_NATURE HNA ON HOU.HNA_ID = HNA.HNA_ID
+INNER JOIN ROOM_CATEGORY RCA ON HOU.RCA_ID = RCA.RCA_ID;
+    LC$THP_NAME THIRD_PARTY.THP_NAME%TYPE;
+BEGIN
+    FOR oHousing IN HousingData LOOP
+
+        BEGIN
+	        SELECT THP_NAME INTO LC$THP_NAME FROM (
+	            SELECT THP_NAME
+	            FROM THIRD_PARTY THP
+	            INNER JOIN THIRD_PARTY_CONTRACT TPC ON THP.THP_ID = TPC.THP_ID
+	            INNER JOIN HOUSING HOU ON TPC.HOU_ID = HOU.HOU_ID
+	            WHERE HOU.HOU_ID = oHousing.HOU_ID
+	            AND TPC.TPC_CANCELLATION_DATE IS NULL
+	            ORDER BY TPC.TPC_START_VALIDITY_DATE DESC
+	        ) WHERE ROWNUM = 1;
+       EXCEPTION
+            WHEN NO_DATA_FOUND THEN
+                    LC$THP_NAME := NULL;
+        END;
+
+        INSERT INTO HISTORY_HOUSING (
+            HHO_ID,
+            HOU_ID,
+            HHO_MONTH,
+            HHO_YEAR,
+            HHO_REVISED_SURFACE_AREA,
+            HHO_ROOM_COUNT,
+            HHO_HNA_NATURE_OF_LOCAL,
+            HHO_THP_NAME,
+            HHO_RCA_1ST_10_SQR_METER_PRICE,
+            HHO_RCA_NEXT_SQR_METER_PRICE,
+            HHO_TEMP
+        )
+        VALUES(
+            SEQ_HISTORY_HOUSING.nextVal,
+            oHousing.HOU_ID,
+            PN$MONTH,
+            PN$YEAR,
+            oHousing.HOU_REVISED_SURFACE_AREA,
+            oHousing.HOU_ROOM_COUNT,
+            oHousing.HNA_NATURE_OF_LOCAL,
+            LC$THP_NAME,
+            oHousing.RCA_FIRST_10_SQR_METER_PRICE,
+            oHousing.RCA_NEXT_SQR_METER_PRICE,
+            0
+        );
+    END LOOP;
+END;

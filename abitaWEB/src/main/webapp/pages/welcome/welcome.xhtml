@@ -1,0 +1,46 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui">
+<f:metadata>
+	<f:viewParam name="page" value="#{loginViewController.page}" />
+</f:metadata>
+<ui:composition template="/templates/site/site.xhtml">
+	<ui:define name="title">
+		<h:outputText
+			value="#{siteViewController.siteName}: #{site['welcome.title']}" />
+	</ui:define>
+
+	<ui:define name="body-site">
+
+		<c:if test="#{security.logoutStatus}">
+			<p:panel header="#{site['login.title']}" styleClass="loginContainer">
+				<h:form id="loginForm">
+					<p:focus for="login" />
+					<h:panelGrid columns="2">
+						<h:outputText value="#{site.nni}" styleClass="label" />
+						<h:inputText tabindex="1" title="#{site.nni}" id="login"
+							required="true" requiredMessage="#{customProperties['welcome.form.login.REQUIRED']}"
+							value="#{loginViewController.login}"
+							alt="#{site.nni}" maxlength="8" />
+						<h:outputText value="#{site.passwd}" styleClass="label" />
+						<h:inputSecret tabindex="2" id="passwd"
+							required="true" requiredMessage="#{customProperties['welcome.form.mdp.REQUIRED']}"
+							value="#{loginViewController.passwd}" alt="#{site.passwd}" />
+					</h:panelGrid>
+					<br />
+					<p:commandButton id="processLogin" value="#{site.login}"
+						action="#{loginViewController.processLogin}" update=":messages"
+						alt="#{site.login}" icon="ui-icon-power" style="left:70px;" />
+				</h:form>
+			</p:panel>
+		</c:if>
+	</ui:define>
+
+</ui:composition>
+
+</html>
+

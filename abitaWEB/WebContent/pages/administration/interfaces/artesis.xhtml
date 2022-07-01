@@ -1,0 +1,28 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:fn="http://java.sun.com/jsp/jstl/functions" xmlns:p="http://primefaces.org/ui">
+<ui:composition template="/templates/site/site.xhtml">
+  <ui:define name="title">
+    <h:outputText value="#{customProperties['page.title.prefix']}#{customProperties['adm.menu.interface.artesis.title']}" />
+  </ui:define>
+  <ui:define name="body-site">
+    <div id="alert" class="ui-messages ui-widget">
+      <div class="ui-messages-info ui-corner-all">
+        <span class="ui-messages-info-icon"></span>
+        <ul>
+          <li><span class="ui-messages-info-summary"><h:outputText value="#{customProperties['administration.interface.artesis.form.upload.loading']}" /></span></li>
+        </ul>
+      </div>
+    </div>
+    <h2 class="center">#{customProperties['administration.interface.artesis.title']}</h2>
+    <h:form id="frmIntArtesis" prependId="false" onkeypress="return event.keyCode != 13" enctype="multipart/form-data">
+      <f:event type="preRenderView" listener="#{interfaceArtesisController.isBetweenGenerationsErrorMessage}" />
+      <p:fieldset legend="#{customProperties['administration.interface.artesis.fieldset']}">
+        <p:fileUpload label="#{customProperties['administration.interface.artesis.form.browse']}" mode="simple" value="#{interfaceArtesisController.interfaceArtesisBean.uploadedFile}" sizeLimit="#{interfaceArtesisController.uploadFileSizeLimit}" allowTypes="#{interfaceArtesisController.allowedExtensions}" invalidFileMessage="#{customProperties['administration.interface.artesis.form.upload.invalid_file_ext']}" invalidSizeMessage="#{customProperties['administration.interface.artesis.form.upload.invalid_file_size']}" update=":frmIntArtesis,:messages" />
+        <p:commandButton id="btnValidate" value="#{customProperties['administration.interface.artesis.form.browse']}" style="margin-left:1%" actionListener="#{interfaceArtesisController.onFileUpload}" ajax="false" onclick="alert()" disabled="#{contractController.isBetweenGenerations()}" />
+        <p:commandButton id="btnCancel" value="#{customProperties['common.action.cancel']}" style="margin-left:1%" action="welcome" immediate="true" />
+      </p:fieldset>
+    </h:form>
+  </ui:define>
+</ui:composition>
+</html>

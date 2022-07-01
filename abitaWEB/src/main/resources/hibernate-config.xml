@@ -1,0 +1,84 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+  <session-factory>
+    <!-- CONF PROD TOMCAT -->
+    <!-- <property name="connection.datasource">java:comp/env/jdbc/jndi/abita</property> -->
+    <!-- <property name="connection.driver_class">net.bull.javamelody.JdbcDriver</property> -->
+    <!-- <property name="connection.driver">oracle.jdbc.driver.OracleDriver</property> -->
+
+    <!-- SQL dialect -->
+    <property name="dialect">org.hibernate.dialect.Oracle10gDialect</property>
+    <property name="current_session_context_class">thread</property>
+
+    <!-- Echo all executed SQL to stdout -->
+    <property name="show_sql">false</property>
+    <property name="format_sql">true</property>
+    <property name="use_sql_comments">true</property>
+
+
+    <!-- FRAMEWORK -->
+    <!-- user -->
+    <mapping resource="com/dao/user/entity/User.hbm.xml" />
+    <mapping resource="com/dao/theme/entity/Theme.hbm.xml" />
+
+    <!-- param -->
+    <mapping resource="com/dao/domain/entity/Domain.hbm.xml" />
+    <mapping resource="com/dao/domain/entity/Parameter.hbm.xml" />
+
+    <!-- Batch -->
+    <mapping resource="com/dao/batch/entity/BatchHistorique.hbm.xml" />
+    <mapping resource="com/dao/batch/entity/BatchMessage.hbm.xml" />
+
+    <!-- Logs -->
+    <mapping resource="com/dao/actionlogs/entity/ActionLog.hbm.xml" />
+    <mapping resource="com/dao/actionlogs/entity/ActionLogMessage.hbm.xml" />
+
+    <!-- Mails -->
+    <mapping resource="com/dao/mailreporting/entity/MailReporting.hbm.xml" />
+
+
+    <!-- SPECIFIC APPLICATION -->
+    <mapping resource="com/abita/hibernate/AdjustmentRate.hbm.xml" />
+    <mapping resource="com/abita/hibernate/ChargeTax.hbm.xml" />
+    <mapping resource="com/abita/hibernate/Agency.hbm.xml" />
+    <mapping resource="com/abita/hibernate/CostCenter.hbm.xml" />
+    <mapping resource="com/abita/hibernate/DetailCron.hbm.xml" />
+    <mapping resource="com/abita/hibernate/AccountingCode.hbm.xml" />
+    <mapping resource="com/abita/hibernate/ExtendedUser.hbm.xml" />
+    <mapping resource="com/abita/hibernate/Field.hbm.xml" />
+    <mapping resource="com/abita/hibernate/FieldOfActivity.hbm.xml" />
+    <mapping resource="com/abita/hibernate/HousingNature.hbm.xml" />
+    <mapping resource="com/abita/hibernate/Sanitation.hbm.xml" />
+    <mapping resource="com/abita/hibernate/HeatingType.hbm.xml" />
+    <mapping resource="com/abita/hibernate/Airconditioner.hbm.xml" />
+    <mapping resource="com/abita/hibernate/PaymentCycle.hbm.xml" />
+    <mapping resource="com/abita/hibernate/PaymentMethod.hbm.xml" />
+    <mapping resource="com/abita/hibernate/RentTax.hbm.xml" />
+    <mapping resource="com/abita/hibernate/RentTypology.hbm.xml" />
+    <mapping resource="com/abita/hibernate/RoomCategory.hbm.xml" />
+    <mapping resource="com/abita/hibernate/Termination.hbm.xml" />
+    <mapping resource="com/abita/hibernate/ThirdParty.hbm.xml" />
+    <mapping resource="com/abita/hibernate/ThirdPartyContract.hbm.xml" />
+    <mapping resource="com/abita/hibernate/ThirdPartyTermination.hbm.xml" />
+    <mapping resource="com/abita/hibernate/Housing.hbm.xml" />
+    <mapping resource="com/abita/hibernate/TypeTenant.hbm.xml" />
+    <mapping resource="com/abita/hibernate/Site.hbm.xml" />
+    <mapping resource="com/abita/hibernate/Tenant.hbm.xml" />
+    <mapping resource="com/abita/hibernate/Benefit.hbm.xml" />
+    <mapping resource="com/abita/hibernate/Contract.hbm.xml" />
+    <mapping resource="com/abita/hibernate/TvaCode.hbm.xml" />
+    <mapping resource="com/abita/hibernate/YlZnAccountingDocNumber.hbm.xml" />
+    <mapping resource="com/abita/hibernate/NcNtAccountingDocNumber.hbm.xml" />
+    <mapping resource="com/abita/hibernate/RevaluationRents.hbm.xml" />
+    <mapping resource="com/abita/hibernate/HistoryTenant.hbm.xml" />
+    <mapping resource="com/abita/hibernate/HistoryHousing.hbm.xml" />
+    <mapping resource="com/abita/hibernate/HistoryBenefits.hbm.xml" />
+    <mapping resource="com/abita/hibernate/HistoryContract.hbm.xml" />
+    <mapping resource="com/abita/hibernate/HistoryAmount.hbm.xml" />
+    <mapping resource="com/abita/hibernate/HistoryReporting.hbm.xml" />
+    <mapping resource="com/abita/hibernate/RevisionThirdPartyContract.hbm.xml" />
+  </session-factory>
+</hibernate-configuration>

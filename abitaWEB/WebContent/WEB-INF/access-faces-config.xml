@@ -1,0 +1,190 @@
+<?xml version="1.0"?>
+<faces-config xmlns="http://java.sun.com/xml/ns/javaee"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_2_0.xsd"
+              version="2.0">
+
+    <managed-bean>
+        <description>Manage login''s form webcontent/templates/site/includes/login.xhtml</description>
+        <managed-bean-name>loginViewController</managed-bean-name>
+        <managed-bean-class>com.web.login.impl.LoginViewController</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+        <managed-property>
+            <property-name>accessServiceFacade</property-name>
+            <property-class>com.services.access.IAccessServiceFacade</property-class>
+            <value>#{accessServiceFacade}</value>
+        </managed-property>
+    </managed-bean>
+
+    <managed-bean>
+        <description>Manage user's list screen data</description>
+        <managed-bean-name>userListViewBean</managed-bean-name>
+        <managed-bean-class>com.web.userslist.data.UserListViewBean</managed-bean-class>
+        <managed-bean-scope>view</managed-bean-scope>
+    </managed-bean>
+
+    <managed-bean>
+        <description>Manage user s list screen webcontent/pages/access/user.xhtml</description>
+        <managed-bean-name>userListViewController</managed-bean-name>
+        <managed-bean-class>com.web.userslist.impl.UserListViewController</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+        <managed-property>
+            <property-name>parameterService</property-name>
+            <property-class>com.services.paramservice.ParameterService</property-class>
+            <value>#{parameterService}</value>
+        </managed-property>
+        <managed-property>
+            <property-name>userService</property-name>
+            <property-class>com.services.user.IUserService</property-class>
+            <value>#{userService}</value>
+        </managed-property>
+        <managed-property>
+        	<property-name>userListViewBean</property-name>
+        	<property-class>com.web.userslist.data.UserListViewBean</property-class>
+        	<value>#{userListViewBean}</value>
+        </managed-property>
+    </managed-bean>
+
+    <!-- Bean pour la gestion des logs -->
+    <!-- RM_LOG_001 - Accès à l'écran de consultation des logs -->
+
+    <managed-bean>
+        <description>Bean contenant les données pour le controller</description>
+        <managed-bean-name>actionLogsBean</managed-bean-name>
+        <managed-bean-class>com.web.logs.impl.ActionLogsBean</managed-bean-class>
+        <managed-bean-scope>view</managed-bean-scope>
+    </managed-bean>
+
+    <!-- Contrôleur pour la gestion des logs -->
+    <!-- RM_LOG_001 - Accès à l'écran de consultation des logs -->
+    <managed-bean>
+        <description>Contrôleur de la gestion des logs</description>
+        <managed-bean-name>actionLogController</managed-bean-name>
+        <managed-bean-class>com.web.logs.impl.ActionLogsController</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+
+        <!-- Bean -->
+        <managed-property>
+        	<property-name>actionLogsBean</property-name>
+        	<property-class>com.web.logs.impl.ActionLogsBean</property-class>
+        	<value>#{actionLogsBean}</value>
+        </managed-property>
+
+        <!-- Services -->
+        <managed-property>
+        	<property-name>actionLogService</property-name>
+        	<value>#{actionLogService}</value>
+        </managed-property>
+    </managed-bean>
+
+	<!-- =================================================================== -->
+	<!-- Consultation des envois de mails -->
+	<!-- =================================================================== -->
+	<managed-bean>
+		<managed-bean-name>mailViewBean</managed-bean-name>
+		<managed-bean-class>com.web.mails.impl.MailViewBean</managed-bean-class>
+		<managed-bean-scope>view</managed-bean-scope>
+	</managed-bean>
+
+	<managed-bean>
+		<managed-bean-name>mailViewController</managed-bean-name>
+		<managed-bean-class>com.web.mails.impl.MailViewController</managed-bean-class>
+		<managed-bean-scope>request</managed-bean-scope>
+
+		<managed-property>
+			<property-name>bean</property-name>
+			<property-class>com.web.mails.impl.MailViewBean</property-class>
+			<value>#{mailViewBean}</value>
+		</managed-property>
+
+		<managed-property>
+			<property-name>mailService</property-name>
+			<property-class>com.services.mailreporting.MailReportingService</property-class>
+			<value>#{mailReportingService}</value>
+		</managed-property>
+
+		<managed-property>
+			<property-name>bundle</property-name>
+			<property-class>java.util.ResourceBundle</property-class>
+			<value>#{mails}</value>
+		</managed-property>
+	</managed-bean>
+
+	<!-- Consultation des groupes -->
+	<managed-bean>
+		<managed-bean-name>groupBean</managed-bean-name>
+		<managed-bean-class>com.web.group.impl.GroupBean</managed-bean-class>
+		<managed-bean-scope>view</managed-bean-scope>
+	</managed-bean>
+
+	<managed-bean>
+		<managed-bean-name>groupController</managed-bean-name>
+		<managed-bean-class>com.web.group.impl.GroupController</managed-bean-class>
+		<managed-bean-scope>request</managed-bean-scope>
+
+		<managed-property>
+			<property-name>bean</property-name>
+			<value>#{groupBean}</value>
+		</managed-property>
+	</managed-bean>
+
+    <navigation-rule>
+        <description>
+            The menu navigation rules.All navigation rule''s menu  must be redirect. cf Flash Context.
+        </description>
+        <from-view-id>*</from-view-id>
+        <navigation-case>
+            <from-outcome>forbidden</from-outcome>
+            <to-view-id>/pages/welcome/welcome.xhtml</to-view-id>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>user</from-outcome>
+            <to-view-id>/pages/access/user.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>group</from-outcome>
+            <to-view-id>/pages/access/group.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>welcome</from-outcome>
+            <to-view-id>/pages/welcome/welcome.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+        <navigation-case>
+            <from-action>#{loginViewController.processLogin}</from-action>
+            <from-outcome>success</from-outcome>
+            <to-view-id>#{loginViewController.page}</to-view-id>
+            <redirect />
+        </navigation-case>
+        <navigation-case>
+            <from-action>#{loginViewController.processLogin}</from-action>
+            <from-outcome>failure</from-outcome>
+            <to-view-id>/pages/welcome/welcome.xhtml</to-view-id>
+        </navigation-case>
+        <navigation-case>
+            <from-action>#{loginViewController.processLogout}</from-action>
+            <from-outcome>success</from-outcome>
+            <to-view-id>/pages/welcome/welcome.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>parameter</from-outcome>
+            <to-view-id>/pages/param/parameter.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+		<!-- RM_LOG_001 - Accès à l'écran de consultation des logs -->
+        <navigation-case>
+            <from-outcome>logs</from-outcome>
+            <to-view-id>/pages/logs/logs.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+		<!-- RM_MAI_001 -->
+        <navigation-case>
+            <from-outcome>mails</from-outcome>
+            <to-view-id>/pages/mails/mails.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+</faces-config>

@@ -1,0 +1,333 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+<hibernate-mapping package="com.abita.dao.contract.entity">
+  <class name="com.abita.dao.contract.entity.ContractEntity" table="CONTRACT_DETAIL">
+    <id name="id" type="java.lang.Long" column="CON_ID">
+      <generator class="sequence">
+        <param name="sequence">SEQ_CONTRACT</param>
+      </generator>
+    </id>
+    <property name="contractReference" column="CON_REFERENCE" type="java.lang.String" />
+    <property name="signature" column="CON_SIGNATURE" type="java.lang.Boolean" />
+    <property name="startValidityDate" column="CON_START_VALIDITY_DATE" type="java.util.Date" />
+    <property name="endValidityDate" column="CON_END_VALIDITY_DATE" type="java.util.Date" />
+    <property name="marketRentPrice" column="CON_MARKET_RENT_PRICE" type="java.math.BigDecimal" />
+    <property name="rentPriceLimit" column="CON_RENT_PRICE_LIMIT" type="java.math.BigDecimal" />
+    <property name="garageRent" column="CON_GARAGE_RENT" type="java.math.BigDecimal" />
+    <property name="gardenRent" column="CON_GARDEN_RENT" type="java.math.BigDecimal" />
+    <property name="extraRent" column="CON_EXTRA_RENT" type="java.math.BigDecimal" />
+    <property name="expectedChargeCost" column="CON_EXPECTED_CHARGE_COST" type="java.math.BigDecimal" />
+    <property name="insuranceReimbursement" column="CON_INSURANCE_REIMBURSEMENT" type="java.math.BigDecimal" />
+    <property name="insuranceCertificateEndDate" column="CON_INSURANCE_CERTIF_END_DATE" type="java.util.Date" />
+    <property name="housingTaxReimbursement" column="CON_HOUSING_TAX_REIMBURSEMENT" type="java.math.BigDecimal" />
+    <property name="garbageReimbursement" column="CON_GARBAGE_REIMBURSEMENT" type="java.math.BigDecimal" />
+    <property name="annualClearanceCharges" column="CON_ANNUAL_CLEARANCE_CHARGES" type="java.math.BigDecimal" />
+    <property name="garbageInvoicing" column="CON_GARBAGE_INVOICING" type="java.math.BigDecimal" />
+    <property name="waterInvoicing" column="CON_WATER_INVOICING" type="java.math.BigDecimal" />
+    <property name="otherInvoicingLabel" column="CON_OTHER_INVOICING_LABEL" type="java.lang.String" />
+    <property name="otherInvoicingAmount" column="CON_OTHER_INVOICING_AMOUNT" type="java.math.BigDecimal" />
+    <property name="plainAddedWithdrawnRent" column="CON_ADDED_WITHDRAWN_RENT" type="java.math.BigDecimal" />
+    <property name="lastWithdrawnDate" column="CON_LAST_WITHDRAWN_DATE" type="java.util.Date" />
+    <property name="terminationSavings" column="CON_TERMINATION_SAVINGS" type="java.lang.Boolean" />
+    <property name="plainTerminationSavingAmount" column="CON_TERMINATION_SAVING_AMOUNT" type="java.math.BigDecimal" />
+    <property name="terminationSavingsPayment" column="CON_TERM_SAVINGS_PAYMENT" type="java.lang.Boolean" />
+    <property name="terminationSavingsPaymentDate" column="CON_TERM_SAVINGS_PAYMENT_DATE" type="java.util.Date" />
+    <property name="lastSavingDate" column="CON_LAST_SAVING_DATE" type="java.util.Date" />
+    <property name="realEstateRentalValue" column="CON_REAL_ESTATE_RENTAL_VALUE" type="java.math.BigDecimal" />
+    <property name="householdSize" column="CON_HOUSEHOLD_SIZE" type="java.lang.Integer" />
+    <property name="retroactivitysMonths" column="CON_RETROACTIVITYS_MONTHS" type="java.lang.Integer" />
+
+    <property name="lopRent" column="CON_LOP_RENT" type="java.math.BigDecimal" />
+
+    <many-to-one name="housing" column="HOU_ID" class="com.abita.dao.housing.entity.HousingEntity" />
+    <many-to-one name="tenant" column="TEN_ID" class="com.abita.dao.tenant.entity.TenantEntity" />
+    <many-to-one name="rentTypology" column="RTP_ID" class="com.abita.dao.renttypology.entity.RentTypologyEntity" />
+    <many-to-one name="termination" column="TER_ID" class="com.abita.dao.termination.entity.TerminationEntity" />
+    <many-to-one name="fieldOfActivity" column="FIE_ID" class="com.abita.dao.fieldofactivity.entity.FieldOfActivityEntity" />
+    <many-to-one name="costCenter" column="CCE_ID" class="com.abita.dao.costcenter.entity.CostCenterEntity" />
+    <many-to-one name="paymentMethod" column="PME_ID" class="com.abita.dao.paymentmethod.entity.PaymentMethodEntity" />
+
+    <property name="fixedNetAgentRent" column="CON_NET_AGENT_RENT" type="java.math.BigDecimal" />
+    <property name="fixedWithdrawnRent" column="CON_WITHDRAWN_RENT" type="java.math.BigDecimal" />
+    <property name="fixedShortTermContractDiscount" column="CON_SHORTTERM_CONTRACT_DISCO" type="java.math.BigDecimal" />
+
+    <many-to-one name="fixedAgency" column="CON_AGC_ID_FIX" class="com.abita.dao.agency.entity.AgencyEntity" />
+    <property name="fixedRevisedSurfaceArea" column="CON_REVISED_SURF_AREA_FIX" type="java.math.BigDecimal" />
+    <property name="fixedRevisedSurfaceAreaRent" column="CON_REVISED_SURF_AREA_RENT_FIX" type="java.math.BigDecimal" />
+    <property name="fixedNNCoef" column="CON_N_N_COEF_FIX" type="java.math.BigDecimal" />
+    <property name="fixedLopRent" column="CON_LOP_RENT_FIX" type="java.math.BigDecimal" />
+    <property name="fixedBenefit" column="CON_BENEFITS_FIX" type="java.math.BigDecimal" />
+    <property name="closedContract" column="CON_CLOSED" type="java.lang.Boolean" />
+
+    <property name="netAgentRent" column="COD_NET_AGENT_RENT" type="java.math.BigDecimal" insert="false" update="false" />
+    <property name="withdrawnRent" column="COD_WITHDRAWN_RENT" type="java.math.BigDecimal" insert="false" update="false" />
+    <property name="shortTermContractDiscount" column="COD_SHORTTERM_CONTRACT_DISCO" type="java.math.BigDecimal" insert="false" update="false" />
+
+    <property name="revisedSurfaceArea" column="COD_REVISED_SURFACE_AREA" type="java.math.BigDecimal" insert="false" update="false" />
+    <property name="revisedSurfaceAreaRent" column="COD_REVISED_SURFACE_AREA_RENT" type="java.math.BigDecimal" insert="false" update="false" />
+    <property name="benefit" column="COD_CALCULATED_BENEFITS" type="java.math.BigDecimal" insert="false" update="false" />
+    <property name="addedWithdrawnRent" column="COD_ADDED_WITHDRAWN_RENT" type="java.math.BigDecimal" insert="false" update="false" />
+    <property name="terminationSavingAmount" column="COD_TERMINATION_SAVING_AMOUNT" type="java.math.BigDecimal" insert="false" update="false" />
+    <property name="nNCoef" column="COD_N_N_COEF" type="java.math.BigDecimal" insert="false" update="false" />
+
+    <property name="computedLopRent" column="COD_LOP_RENT" type="java.math.BigDecimal" insert="false" update="false" />
+
+
+  </class>
+
+  <sql-query name="Contract.SqlComparatorStartAndEndDate">
+    <return-scalar column="housingCount" type="int" />
+    <return-scalar column="tenantCount" type="int" />
+        <![CDATA[WITH
+           HOUS AS (
+                   SELECT CON_ID
+                   FROM CONTRACT_DETAIL
+                   WHERE HOU_ID = :housingId
+                   AND ((con_start_validity_date between :dateBegin AND :dateEnd)
+                   OR (con_end_validity_date between :dateBegin AND :dateEnd)
+                   OR (con_start_validity_date <= :dateBegin and con_end_validity_date >= :dateEnd)
+                   OR (con_end_validity_date is null AND (con_start_validity_date <= :dateEnd)))
+           ),
+           TENT AS (
+                   SELECT CON_ID
+                   FROM CONTRACT_DETAIL
+                   WHERE TEN_ID = :tenantId
+                   AND ((con_start_validity_date between :dateBegin AND :dateEnd)
+                   OR (con_end_validity_date between :dateBegin AND :dateEnd)
+                   OR (con_start_validity_date <= :dateBegin and con_end_validity_date >= :dateEnd)
+                   OR (con_end_validity_date is null AND (con_start_validity_date <= :dateEnd)))
+           )
+        SELECT count(H.con_id) as housingCount, count(T.con_id) as tenantCount
+        FROM CONTRACT_DETAIL C
+        LEFT JOIN TENT T ON c.CON_id = t.CON_id
+        LEFT JOIN HOUS H ON c.CON_ID = h.CON_ID
+        WHERE c.con_id <> :contractId]]>
+  </sql-query>
+
+  <sql-query name="Contract.SqlComparatorStartDate">
+    <return-scalar column="housingCount" type="int" />
+    <return-scalar column="tenantCount" type="int" />
+        <![CDATA[WITH
+           HOUS AS (
+                   SELECT CON_ID
+                   FROM CONTRACT_DETAIL
+                   WHERE HOU_ID = :housingId
+                   AND ((con_end_validity_date is null)
+                   OR (con_end_validity_date >= :dateBegin))
+           ),
+           TENT AS (
+                   SELECT CON_ID
+                   FROM CONTRACT_DETAIL
+                   WHERE TEN_ID = :tenantId
+                   AND ((con_end_validity_date is null)
+                   OR (con_end_validity_date >= :dateBegin))
+           )
+        SELECT count(H.con_id) as housingCount, count(T.con_id) as tenantCount
+        FROM CONTRACT_DETAIL C
+        LEFT JOIN TENT T ON c.CON_id = t.CON_id
+        LEFT JOIN HOUS H ON c.CON_ID = h.CON_ID
+        WHERE c.con_id <> :contractId]]>
+  </sql-query>
+
+  <query name="findConflictUnregisterDateBeforeEndValidity"><![CDATA[
+        SELECT COUNT(con)FROM ContractEntity con WHERE con.housing = :idHousing AND ((:unregisterDate <= con.endValidityDate) OR (con.endValidityDate = null))]]>
+  </query>
+
+  <query name="countContractsInHousing">
+   <![CDATA[ SELECT COUNT(con)FROM ContractEntity con WHERE con.housing = :idHousing ]]>
+  </query>
+
+  <query name="findContractByTenant"><![CDATA[
+        select distinct con from ContractEntity con where con.tenant = :idTenant ]]>
+  </query>
+
+  <query name="findContractByHousing"><![CDATA[
+        select distinct con  from ContractEntity con where con.housing = :idHousing ]]>
+  </query>
+
+  <sql-query name="findContractsInProgressOfSalariedTenant">
+    <return alias="con" class="com.abita.dao.contract.entity.ContractEntity" />
+        <![CDATA[SELECT {con.*}
+                FROM Contract_Detail con
+                INNER JOIN tenant ten on ten.ten_id = con.ten_id
+                INNER JOIN TYPE_TENANT TTE ON TTE.TTE_ID = TEN.TTE_ID
+                WHERE (TTE.TTE_NT_HEADER_LABEL = 'Quittance'
+                OR TTE.TTE_NT_HEADER_LABEL = 'AGENT_RETRAITE')
+                AND con.CON_start_Validity_Date <= :endDate
+                AND (con.CON_end_Validity_Date >= :startDate OR con.CON_end_Validity_Date IS NULL)
+                ORDER BY ten.ten_reference, con.con_id]]>
+  </sql-query>
+
+  <sql-query name="findContractsInProgressToRegularizeOfSalariedTenant">
+    <return alias="con" class="com.abita.dao.contract.entity.ContractEntity" />
+        <![CDATA[SELECT {con.*}
+                FROM Contract_Detail con
+                INNER JOIN tenant ten on ten.ten_id = con.ten_id
+                INNER JOIN TYPE_TENANT TTE ON TTE.TTE_ID = TEN.TTE_ID
+                WHERE (TTE.TTE_NT_HEADER_LABEL = 'Quittance'
+                OR TTE.TTE_NT_HEADER_LABEL = 'AGENT_RETRAITE')
+                AND con.CON_RETROACTIVITYS_MONTHS != 0
+                ORDER BY ten.ten_reference]]>
+  </sql-query>
+
+  <sql-query name="findContractsWithRetainedSalary">
+    <return alias="con" class="com.abita.dao.contract.entity.ContractEntity" />
+        <![CDATA[SELECT {con.*}
+                FROM Contract_Detail con
+                INNER JOIN tenant ten on ten.ten_id = con.ten_id
+                INNER JOIN TYPE_TENANT TTE ON TTE.TTE_ID = TEN.TTE_ID
+                INNER JOIN PAYMENT_METHOD PME ON PME.PME_ID = CON.PME_ID
+                WHERE (TTE.TTE_NT_HEADER_LABEL = 'Quittance'
+                OR TTE.TTE_NT_HEADER_LABEL = 'AGENT_RETRAITE')
+                AND PME.PME_LABEL = 'Retenue sur salaire'
+                AND con.CON_start_Validity_Date <= :endDate
+                ORDER BY ten.ten_reference]]>
+  </sql-query>
+
+  <sql-query name="findContractsInProgressWithoutInternalCompensation">
+    <return alias="con" class="com.abita.dao.contract.entity.ContractEntity" />
+        <![CDATA[SELECT {con.*}
+                FROM Contract_Detail con
+                INNER JOIN PAYMENT_METHOD PME ON PME.PME_ID = CON.PME_ID
+                WHERE con.CON_start_Validity_Date <= :endDate
+                  AND (con.CON_end_Validity_Date >= :startDate OR con.CON_end_Validity_Date IS NULL)
+                  AND PME.PME_LABEL <> 'Compensation interne'
+                  ORDER BY CON.TEN_ID, CON.CON_ID]]>
+  </sql-query>
+
+  <sql-query name="findContractsWithoutInternalCompensation">
+    <return alias="con" class="com.abita.dao.contract.entity.ContractEntity" />
+        <![CDATA[SELECT {con.*}
+                FROM Contract_Detail con
+                INNER JOIN PAYMENT_METHOD PME ON PME.PME_ID = CON.PME_ID
+                WHERE con.CON_start_Validity_Date <= :endDate
+                  AND PME.PME_LABEL <> 'Compensation interne'
+                  ORDER BY CON.TEN_ID, CON.CON_ID]]>
+  </sql-query>
+
+  <sql-query name="findContractsInProgressAndToRegularizeWithoutInternalCompensation">
+    <return alias="con" class="com.abita.dao.contract.entity.ContractEntity" />
+        <![CDATA[SELECT {con.*}
+                FROM Contract_Detail con
+                INNER JOIN PAYMENT_METHOD PME ON PME.PME_ID = CON.PME_ID
+                WHERE PME.PME_LABEL <> 'Compensation interne'
+                  ORDER BY CON.TEN_ID, CON.CON_ID]]>
+  </sql-query>
+
+  <sql-query name="findContractsInProgress">
+    <return alias="con" class="com.abita.dao.contract.entity.ContractEntity" />
+        <![CDATA[SELECT {con.*}
+                FROM Contract_Detail con
+                INNER JOIN tenant ten ON ten.ten_id = con.ten_id
+                WHERE con.CON_start_Validity_Date <= :endDate
+                  AND (con.CON_end_Validity_Date >= :startDate OR con.CON_end_Validity_Date IS NULL)]]>
+  </sql-query>
+
+  <sql-query name="findContractsInProgressWithoutRetroactivity">
+    <return alias="con" class="com.abita.dao.contract.entity.ContractEntity" />
+        <![CDATA[SELECT {con.*}
+                FROM Contract_Detail con
+                INNER JOIN tenant ten ON ten.ten_id = con.ten_id
+                WHERE con.CON_start_Validity_Date <= :endDate
+                  AND (con.CON_end_Validity_Date >= :startDate OR con.CON_end_Validity_Date IS NULL)
+                  AND con.CON_RETROACTIVITYS_MONTHS = 0]]>
+  </sql-query>
+
+  <sql-query name="updateSporadicallyInvoicingContracts">
+        <![CDATA[UPDATE Contract_Detail con
+                SET con.CON_WATER_INVOICING = NULL,
+                con.CON_GARBAGE_INVOICING = NULL,
+                con.CON_INSURANCE_REIMBURSEMENT = NULL,
+                con.CON_HOUSING_TAX_REIMBURSEMENT = NULL,
+                con.CON_GARBAGE_REIMBURSEMENT = NULL,
+                con.CON_ANNUAL_CLEARANCE_CHARGES = NULL,
+                con.CON_OTHER_INVOICING_LABEL = NULL,
+                con.CON_OTHER_INVOICING_AMOUNT = NULL]]>
+  </sql-query>
+
+  <sql-query name="updateResetAddedWithdrawnRentContracts">
+        <![CDATA[UPDATE CONTRACT_DETAIL CON
+                SET con.CON_ADDED_WITHDRAWN_RENT = 0
+                , con.CON_LAST_WITHDRAWN_DATE = TRUNC(SYSDATE, 'YEAR')]]>
+  </sql-query>
+
+  <sql-query name="updateLopRent">
+        <![CDATA[UPDATE CONTRACT_DETAIL CON
+                SET CON.CON_LOP_RENT = CON.COD_LOP_RENT
+                WHERE con.CON_start_Validity_Date <= :endDate
+                AND (con.CON_end_Validity_Date >= :startDate
+                 OR con.CON_end_Validity_Date IS NULL)]]>
+  </sql-query>
+
+  <sql-query name="findContractsWithRentToUpgrade">
+    <return alias="con" class="com.abita.dao.contract.entity.ContractEntity" />
+        <![CDATA[SELECT {con.*}
+                 FROM CONTRACT_DETAIL con
+                    INNER JOIN HOUSING hou
+                        ON con.hou_id = hou.hou_id
+                        INNER JOIN HOUSING_NATURE hna
+                            ON hou.hna_id = hna.hna_id
+                 WHERE (hou.hou_garden_available = 1
+                 OR hou.hou_garage_available = 1)
+                 AND (hna.hna_label = 'Maison'
+                 OR hna.hna_label = 'Bâtiment'
+                 OR hna.hna_label = 'Appartement'
+                 OR hna.hna_label = 'Célibatorium'
+                 OR hna.hna_label = 'Autre')
+                 AND (con.con_end_validity_date >= :date
+                 OR con.con_end_validity_date IS NULL)]]>
+  </sql-query>
+
+  <query name="findByContractReference"><![CDATA[
+        select con from ContractEntity con where con.contractReference = :contractReference]]>
+  </query>
+
+  <sql-query name="findContractsInProgressToRegularizeWithoutInternalCompensation">
+    <return alias="con" class="com.abita.dao.contract.entity.ContractEntity" />
+        <![CDATA[SELECT {con.*}
+                FROM Contract_Detail con
+                INNER JOIN PAYMENT_METHOD PME ON PME.PME_ID = CON.PME_ID
+                WHERE PME.PME_LABEL <> 'Compensation interne'
+                AND con.CON_RETROACTIVITYS_MONTHS != 0
+                ORDER BY CON.TEN_ID]]>
+  </sql-query>
+
+  <sql-query name="findContractsToRegularizeWithRetainedSalary">
+    <return alias="con" class="com.abita.dao.contract.entity.ContractEntity" />
+        <![CDATA[SELECT {con.*}
+                FROM Contract_Detail con
+                INNER JOIN tenant ten on ten.ten_id = con.ten_id
+                INNER JOIN TYPE_TENANT TTE ON TTE.TTE_ID = TEN.TTE_ID
+                INNER JOIN PAYMENT_METHOD PME ON PME.PME_ID = CON.PME_ID
+                WHERE (TTE.TTE_NT_HEADER_LABEL = 'Quittance'
+                OR TTE.TTE_NT_HEADER_LABEL = 'AGENT_RETRAITE')
+                AND PME.PME_LABEL = 'Retenue sur salaire'
+                AND con.CON_RETROACTIVITYS_MONTHS != 0
+                ORDER BY ten.ten_reference]]>
+  </sql-query>
+
+  <sql-query name="findContractsToHistorize">
+    <return alias="con" class="com.abita.dao.contract.entity.ContractEntity" />
+        <![CDATA[SELECT {con.*}
+                FROM Contract_Detail con
+                WHERE con.CON_RETROACTIVITYS_MONTHS > 0]]>
+  </sql-query>
+
+  <sql-query name="findContractsToUpdateDataRetroactivity">
+    <return alias="con" class="com.abita.dao.contract.entity.ContractEntity" />
+        <![CDATA[SELECT {con.*}
+                FROM Contract_Detail con
+                WHERE con.CON_RETROACTIVITYS_MONTHS != 0]]>
+  </sql-query>
+
+  <query name="resetContractsToRegularize">
+    update ContractEntity
+    set retroactivitysMonths = 0
+  </query>
+
+
+  <query name="findCurrentContractOfOneHousing"><![CDATA[
+        select con from ContractEntity con where con.housing = :idHousing and con.startValidityDate <= :endDate and (con.endValidityDate >= :startDate OR con.endValidityDate  IS NULL)]]>
+  </query>
+
+</hibernate-mapping>

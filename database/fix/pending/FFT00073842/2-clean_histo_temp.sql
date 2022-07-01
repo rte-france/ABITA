@@ -1,0 +1,3 @@
+-- Nettoyage des données de vérification pour la FFT00073842
+DROP PROCEDURE HISTORIZE_TENANT_2018;
+DROP TABLE HISTORY_TENANT_2018;

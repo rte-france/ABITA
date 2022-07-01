@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.dao.actionlogs.entity.ActionLog" table="FWK_ACTION_LOG">
+		<id column="ACT_ID" type="java.lang.Long" name="id" unsaved-value="null">
+			<generator class="sequence">
+				<param name="sequence">SEQ_ACT_ID</param>
+			</generator>
+		</id>
+
+		<property name="date" type="java.util.Date" column="ACT_DATE" not-null="true"/>
+
+		<property name="title" type="java.lang.String" column="ACT_TITLE" length="255" not-null="true"/>
+
+		<property name="origin" type="java.lang.String" column="ACT_ORIGIN" length="100" not-null="true"/>
+
+		<many-to-one name="user" class="com.dao.user.entity.User" fetch="join" lazy="false" not-null="false">
+			<column name="USR_ID" />
+		</many-to-one>
+
+		<property name="status" type="java.lang.String" column="ACT_STATUS" length="255" not-null="true"/>
+
+		<set name="messages" cascade="all" order-by="ALM_ID" lazy="true">
+			<key column="ACT_ID" />
+			<one-to-many class="com.dao.actionlogs.entity.ActionLogMessage" />
+		</set>
+	</class>
+
+	<query name="getActionLogCount"><![CDATA[
+		select count(log) from ActionLog log
+	]]></query>
+</hibernate-mapping>

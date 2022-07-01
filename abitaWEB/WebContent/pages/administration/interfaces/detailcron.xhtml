@@ -1,0 +1,70 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:fn="http://java.sun.com/jsp/jstl/functions" xmlns:p="http://primefaces.org/ui">
+<ui:composition template="/templates/site/site.xhtml">
+  <ui:define name="title">
+    <h:outputText value="#{customProperties['page.title.prefix']}#{customProperties['adm.interface.detailcron.title']}" />
+  </ui:define>
+  <ui:define name="body-site">
+    <h2 class="center">#{customProperties['adm.interface.detailcron.title']}</h2>
+    <h:form id="frmCron" prependId="false">
+      <p:tabView value="#{detailCronController.detailCronBean.cronsMonth}" var="cron">
+        <p:tab title="#{cron.monthName}">
+          <p:fieldset legend="#{customProperties['adm.interface.detailcron.gcp']}">
+            <p>
+              <!-- YL -->
+              <h:outputLabel for="ylzn" value="#{customProperties['adm.interface.detailcron.gcp.yl']}" />
+              <p:spinner id="ylzn" value="#{cron.ylZnDay}" min="1" max="31" size="1" maxlength="2" disabled="#{security.access('consultation', 'utilisateur')}" />
+              <p:calendar value="#{cron.ylZnTime}" pattern="#{customProperties['pattern.time']}" timeOnly="true" converterMessage="#{customProperties['interface.detailcron.gcp.yl.error.format']}" disabled="#{security.access('consultation', 'utilisateur')}" styleClass="calendar" />
+            </p>
+            <p>
+              <!-- NC -->
+              <h:outputLabel for="nc" value="#{customProperties['adm.interface.detailcron.gcp.nc']}" />
+              <p:spinner id="nc" value="#{cron.ncDay}" min="1" max="31" size="1" maxlength="2" disabled="#{security.access('consultation', 'utilisateur')}" />
+              <p:calendar value="#{cron.ncTime}" pattern="#{customProperties['pattern.time']}" timeOnly="true" converterMessage="#{customProperties['interface.detailcron.gcp.nc.error.format']}" disabled="#{security.access('consultation', 'utilisateur')}" styleClass="calendar" />
+            </p>
+            <p>
+              <!-- NT -->
+              <h:outputLabel for="nt" value="#{customProperties['adm.interface.detailcron.gcp.nt']}" />
+              <p:spinner id="nt" value="#{cron.ntDay}" min="1" max="31" size="1" maxlength="2" disabled="#{security.access('consultation', 'utilisateur')}" />
+              <p:calendar value="#{cron.ntTime}" pattern="#{customProperties['pattern.time']}" timeOnly="true" converterMessage="#{customProperties['interface.detailcron.gcp.nt.error.format']}" disabled="#{security.access('consultation', 'utilisateur')}" styleClass="calendar" />
+            </p>
+          </p:fieldset>
+          <p:fieldset legend="#{customProperties['adm.interface.detailcron.artesis']}">
+            <p>
+              <!-- NNI -->
+              <h:outputLabel for="nni" value="#{customProperties['adm.interface.detailcron.artesis.nni']}" />
+              <p:spinner id="nni" value="#{cron.nniDay}" min="1" max="31" size="1" maxlength="2" disabled="#{security.access('consultation', 'utilisateur')}" />
+              <p:calendar value="#{cron.nniTime}" pattern="#{customProperties['pattern.time']}" timeOnly="true" converterMessage="#{customProperties['interface.detailcron.artesis.nni.error.format']}" disabled="#{security.access('consultation', 'utilisateur')}" styleClass="calendar" />
+            </p>
+            <p>
+              <!-- Données agent -->
+              <h:outputLabel for="userdata" value="#{customProperties['adm.interface.detailcron.artesis.userdata']}" />
+              <p:spinner id="userdata" value="#{cron.userdataDay}" min="1" max="31" size="1" maxlength="2" disabled="#{security.access('consultation', 'utilisateur')}" />
+              <p:calendar value="#{cron.userdataTime}" pattern="#{customProperties['pattern.time']}" timeOnly="true" converterMessage="#{customProperties['interface.detailcron.artesis.userdata.error.format']}" disabled="#{security.access('consultation', 'utilisateur')}" styleClass="calendar" />
+            </p>
+            <p>
+              <!-- Retenue sur paie -->
+              <h:outputLabel for="salaryretained" value="#{customProperties['adm.interface.detailcron.artesis.salaryretained']}" />
+              <p:spinner id="salaryretained" value="#{cron.salaryretainedDay}" min="1" max="31" size="1" maxlength="2" disabled="#{security.access('consultation', 'utilisateur')}" />
+              <p:calendar value="#{cron.salaryretainedTime}" pattern="#{customProperties['pattern.time']}" timeOnly="true" converterMessage="#{customProperties['interface.detailcron.artesis.salaryretained.error.format']}" disabled="#{security.access('consultation', 'utilisateur')}" styleClass="calendar" />
+            </p>
+            <p>
+              <!-- Avantage en nature -->
+              <h:outputLabel for="fringebenefits" value="#{customProperties['adm.interface.detailcron.artesis.fringebenefits']}" />
+              <p:spinner id="fringebenefits" value="#{cron.fringebenefitsDay}" min="1" max="31" size="1" maxlength="2" disabled="#{security.access('consultation', 'utilisateur')}" />
+              <p:calendar value="#{cron.fringebenefitsTime}" pattern="#{customProperties['pattern.time']}" timeOnly="true" converterMessage="#{customProperties['interface.detailcron.artesis.fringebenefits.error.format']}" disabled="#{security.access('consultation', 'utilisateur')}" styleClass="calendar" />
+            </p>
+          </p:fieldset>
+        </p:tab>
+      </p:tabView>
+      <p:outputPanel layout="block" styleClass="action">
+        <p:commandButton id="btnValidate" value="#{customProperties['detailcron.action.save']}" validateClient="true" actionListener="#{detailCronController.saveData}" update=":messages" rendered="#{security.access('administrateur')}" />
+        <p:commandButton id="btnCancel" value="#{customProperties['detailcron.action.cancel']}" action="welcome" immediate="true" rendered="#{security.access('administrateur')}" />
+      </p:outputPanel>
+      <!-- Surcharge de la V3.2 de primefaces pour réparer le composant spinner -->
+      <h:outputScript library="javascript" name="spinner.js" />
+    </h:form>
+  </ui:define>
+</ui:composition>
+</html>

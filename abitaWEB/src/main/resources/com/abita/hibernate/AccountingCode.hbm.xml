@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+<hibernate-mapping package="com.abita.dao.accountingcode.entity">
+  <class name="com.abita.dao.accountingcode.entity.AccountingCodeEntity" table="ACCOUNTING_CODE">
+    <id name="id" type="java.lang.Long" column="ACC_ID">
+      <generator class="sequence">
+        <param name="sequence">SEQ_ACCOUNTING_CODE</param>
+      </generator>
+    </id>
+    <property name="code" column="ACC_CODE" type="java.lang.String" />
+    <property name="label" column="ACC_LABEL" type="java.lang.String" />
+    <property name="technicalCode" column="ACC_TECHNICAL_CODE" type="java.lang.String" />
+  </class>
+</hibernate-mapping>

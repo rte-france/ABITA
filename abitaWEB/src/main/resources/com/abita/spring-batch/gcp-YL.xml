@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p" xmlns:util="http://www.springframework.org/schema/util" xmlns:batch="http://www.springframework.org/schema/batch" xmlns="http://www.springframework.org/schema/beans" xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx" xmlns:context="http://www.springframework.org/schema/context" xmlns:task="http://www.springframework.org/schema/task"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+						http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch-3.0.xsd
+      					http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+      					http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
+      					http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+      					http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+
+  <!-- RUNNER -->
+  <bean id="YLRunner" class="com.abita.services.batch.RunScheduledBatch">
+    <property name="label" value="${gcp.yl.name}" />
+    <property name="jobLauncher" ref="jobLauncher" />
+    <property name="job" ref="YLJob" />
+  </bean>
+
+  <batch:job id="YLJob">
+    <batch:step id="yl_1" parent="stepYL" />
+  </batch:job>
+
+  <batch:step id="stepYL">
+    <batch:tasklet>
+      <batch:chunk reader="GCPYLEntryBlockReader" writer="YLWritter" chunk-completion-policy="completionPolicy" />
+    </batch:tasklet>
+  </batch:step>
+
+  <bean id="GCPYLEntryBlockReader" class="com.abita.dao.batch.gcp.reader.GCPYLEntryBlockReader">
+    <property name="gcpThirdPartyServiceFacade" ref="gcpThirdPartyServiceFacade" />
+  </bean>
+
+  <bean id="YLEntryWriter" class="com.abita.dao.batch.gcp.writer.YLZNFlatFileWriter" init-method="afterPropertiesSet">
+    <property name="fieldExtractorHeader" ref="GCPEntryHeaderExtractor" />
+    <property name="fieldExtractorLine" ref="GCPEntryLineExtractor" />
+    <property name="parameterService" ref="parameterService" />
+    <property name="headerFormat" value="${gcp.header.format}" />
+    <property name="lineFormat" value="${gcp.line.format}" />
+    <property name="filenameKey">
+      <util:constant static-field="com.abita.dao.batch.constant.BatchConstants.BATCH_GCP_YL_ZN_FRAGMENT_FILE_NAME" />
+    </property>
+    <property name="encoding" value="${batch.encoding}" />
+  </bean>
+
+  <bean id="YLWritter" class="com.abita.dao.batch.gcp.writer.GCPSplitWriter" scope="step">
+    <property name="delegate" ref="YLEntryWriter" />
+    <property name="parameterService" ref="parameterService" />
+    <property name="jobInstanceId" value="#{jobParameters['dateId']}" />
+  </bean>
+
+  <bean class="com.abita.dao.batch.gcp.extractor.GCPEntryHeaderExtractor" name="GCPEntryHeaderExtractor" />
+  <bean class="com.abita.dao.batch.gcp.extractor.GCPEntryLineExtractor" name="GCPEntryLineExtractor" />
+
+</beans>

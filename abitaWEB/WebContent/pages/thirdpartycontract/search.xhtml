@@ -1,0 +1,371 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:fn="http://java.sun.com/jsp/jstl/functions" xmlns:p="http://primefaces.org/ui">
+<ui:composition template="/templates/site/site.xhtml">
+  <ui:define name="title">
+    <h:outputText value="#{customProperties['page.title.prefix']}#{customProperties['thirdpartycontract.search.title']}" />
+  </ui:define>
+  <ui:define name="body-site">
+    <h2 class="center">#{customProperties['thirdpartycontract.search.title']}</h2>
+    <h:form id="frmSearchThirdPartyContract" prependId="false">
+      <p:fieldset legend="#{customProperties['thirdpartycontract.creation.fieldset']}">
+        <p>
+          <!-- Référence du contrat tiers-->
+          <h:outputLabel for="refThirdPartyContract" value="#{customProperties['thirdpartycontract.field.refthirdpartycontract']}" styleClass="label" />
+          <p:inputText id="refThirdPartyContract" value="#{thirdPartyContractSearchController.thirdPartyContractSearchBean.thirdPartyContractCriteria.reference}" label="#{customProperties['thirdpartycontract.field.refthirdpartycontract']}" />
+        </p>
+        <p>
+          <!-- Référence du tiers -->
+          <h:outputLabel for="refThirdParty" value="#{customProperties['thirdpartycontract.field.refthirdparty']}" styleClass="label" />
+          <p:inputText id="refThirdParty" value="#{thirdPartyContractSearchController.thirdPartyContractSearchBean.thirdPartyContractCriteria.thirdParty}" maxlength="19" label="#{customProperties['thirdpartycontract.field.refthirdparty']}" />
+        </p>
+        <p>
+          <!-- Référence du logement -->
+          <h:outputLabel for="refHousing" value="#{customProperties['thirdpartycontract.field.refhousing']}" styleClass="label" />
+          <p:inputText id="refHousing" value="#{thirdPartyContractSearchController.thirdPartyContractSearchBean.thirdPartyContractCriteria.housingReference}" maxlength="19" label="#{customProperties['thirdpartycontract.field.refhousing']}" />
+        </p>
+        <div class="ddl">
+          <!-- Domaine d'activité -->
+          <h:outputLabel for="fieldOfActivity" value="#{customProperties['thirdpartycontract.field.fieldofactivity']}" styleClass="label" />
+          <p:selectOneMenu id="fieldOfActivity" value="#{thirdPartyContractSearchController.thirdPartyContractSearchBean.thirdPartyContractCriteria.fieldOfActivity}" converter="abita.converter.dto" styleClass="dropdownlist">
+            <f:attribute name="converter-values" value="#{thirdPartyContractController.allFieldOfActivity}" />
+            <f:selectItem itemLabel="#{msg['dropdownlist.empty']}" value="#{null}" />
+            <f:selectItems value="#{thirdPartyContractController.allFieldOfActivity}" var="fieldOfActivityItem" itemLabel="#{fieldOfActivityItem.label} #{fieldOfActivityItem.gmr}" />
+          </p:selectOneMenu>
+        </div>
+        <div class="ddl">
+          <!-- Agence -->
+          <h:outputLabel for="agency" value="#{customProperties['housing.field.agency']}" styleClass="label" />
+          <p:selectOneMenu id="agency" value="#{thirdPartyContractSearchController.thirdPartyContractSearchBean.housingCriteria.agency}" converter="abita.converter.dto" styleClass="dropdownlist">
+            <f:attribute name="converter-values" value="#{thirdPartyContractSearchController.agencies}" />
+            <f:selectItem itemLabel="#{msg['dropdownlist.empty']}" value="#{null}" />
+            <f:selectItems value="#{thirdPartyContractSearchController.agencies}" var="agency" itemLabel="#{agency.name}" />
+          </p:selectOneMenu>
+        </div>
+        <div class="ddl">
+          <!-- Centre coût -->
+          <h:outputLabel for="costCenter" value="#{customProperties['thirdpartycontract.field.costcenter']}" styleClass="label" />
+          <p:selectOneMenu id="costCenter" value="#{thirdPartyContractSearchController.thirdPartyContractSearchBean.thirdPartyContractCriteria.costCenter}" converter="abita.converter.dto" styleClass="dropdownlist">
+            <f:attribute name="converter-values" value="#{thirdPartyContractController.allCostCenter}" />
+            <f:selectItem itemLabel="#{msg['dropdownlist.empty']}" value="#{null}" />
+            <f:selectItems value="#{thirdPartyContractController.allCostCenter}" var="costCenterItem" itemLabel="#{costCenterItem.label}" />
+          </p:selectOneMenu>
+        </div>
+        <p>
+          <!-- Durée du contrat -->
+          <h:outputLabel for="contractPeriod" value="#{customProperties['thirdpartycontract.field.contractperiod']}" styleClass="label" />
+          <p:inputText id="contractPeriod" value="#{thirdPartyContractSearchController.thirdPartyContractSearchBean.thirdPartyContractCriteria.contractPeriod}" maxlength="5" label="#{customProperties['thirdpartycontract.field.contractperiod']}" />
+        </p>
+        <p>
+          <!-- Durée du préavis -->
+          <h:outputLabel for="noticePeriod" value="#{customProperties['thirdpartycontract.field.noticeperiod']}" styleClass="label"></h:outputLabel>
+          <p:inputText id="noticePeriod" value="#{thirdPartyContractSearchController.thirdPartyContractSearchBean.thirdPartyContractCriteria.noticePeriod}" maxlength="5" label="#{customProperties['thirdpartycontract.field.noticeperiod']}" />
+        </p>
+        <p>
+          <!-- Date de début de validité -->
+          <h:outputLabel for="startValidity_date" value="#{customProperties['thirdpartycontract.field.startvalidity']}" styleClass="label" />
+          <p:calendar id="startValidity_date" value="#{thirdPartyContractSearchController.thirdPartyContractSearchBean.thirdPartyContractCriteria.startValidity}" locale="fr" pattern="#{customProperties['pattern.date']}" navigator="true" maxlength="10">
+          </p:calendar>
+        </p>
+        <p>
+          <!-- Date de début de paiement fournisseur -->
+          <h:outputLabel for="startSupplierPayment_date" value="#{customProperties['thirdpartycontract.field.startsupplierpaymentdate']}" styleClass="label" />
+          <p:calendar id="startSupplierPayment_date" value="#{thirdPartyContractSearchController.thirdPartyContractSearchBean.thirdPartyContractCriteria.startSupplierPaymentDate}" locale="fr" pattern="#{customProperties['pattern.date']}" navigator="true" maxlength="10">
+          </p:calendar>
+        </p>
+        <p>
+          <!-- Montant du loyer mensuel -->
+          <h:outputLabel for="rentAmount" value="#{customProperties['thirdpartycontract.field.rentamount']}" styleClass="label" />
+          <p:inputText id="rentAmount" value="#{thirdPartyContractSearchController.thirdPartyContractSearchBean.thirdPartyContractCriteria.rentAmount}" maxlength="10" label="#{customProperties['thirdpartycontract.field.rentamount']}" />
+        </p>
+        <p>
+          <!-- Montant des charges prévisionnelles mensuelles -->
+          <h:outputLabel for="expectedChargeCost" value="#{customProperties['thirdpartycontract.field.expectedchargecost']}" styleClass="label" />
+          <p:inputText id="expectedChargeCost" value="#{thirdPartyContractSearchController.thirdPartyContractSearchBean.thirdPartyContractCriteria.expectedChargeCost}" maxlength="10" label="#{customProperties['thirdpartycontract.field.expectedchargecost']}" />
+        </p>
+        <p>
+          <!-- Montant du dépot de garantie -->
+          <h:outputLabel for="guaranteedDepositAmount" value="#{customProperties['thirdpartycontract.field.guaranteeddepositamount']}" styleClass="label" />
+          <p:inputText id="guaranteedDepositAmount" value="#{thirdPartyContractSearchController.thirdPartyContractSearchBean.thirdPartyContractCriteria.guaranteedDepositAmount}" maxlength="10" label="#{customProperties['thirdpartycontract.field.guaranteeddepositamount']}" />
+        </p>
+        <p>
+          <!-- Montant des frais d'agence -->
+          <h:outputLabel for="realEstateAgencyFee" value="#{customProperties['thirdpartycontract.field.realestateagencyfee']}" styleClass="label" />
+          <p:inputText id="realEstateAgencyFee" value="#{thirdPartyContractSearchController.thirdPartyContractSearchBean.thirdPartyContractCriteria.realEstateAgencyFee}" maxlength="10" label="#{customProperties['thirdpartycontract.field.realestateagencyfee']}" />
+        </p>
+        <div class="ddl">
+          <!-- Périodicité du paiement -->
+          <h:outputLabel for="paymentCycle" value="#{customProperties['thirdpartycontract.field.paymentcycle']}" styleClass="label" />
+          <p:selectOneMenu id="paymentCycle" value="#{thirdPartyContractSearchController.thirdPartyContractSearchBean.thirdPartyContractCriteria.paymentCycle}" converter="abita.converter.dto" styleClass="dropdownlist">
+            <f:attribute name="converter-values" value="#{thirdPartyContractController.allPaymentCycle}" />
+            <f:selectItem itemLabel="#{msg['dropdownlist.empty']}" value="#{null}" />
+            <f:selectItems value="#{thirdPartyContractController.allPaymentCycle}" var="paymentCycleItem" itemLabel="#{paymentCycleItem.label}" />
+          </p:selectOneMenu>
+        </div>
+        <div class="ddl">
+          <!-- Terme échu / échoir -->
+          <h:outputLabel for="term" value="#{customProperties['thirdpartycontract.field.term']}" styleClass="label" />
+          <p:selectOneMenu id="term" value="#{thirdPartyContractSearchController.thirdPartyContractSearchBean.expiryDate}" styleClass="radio">
+            <f:selectItem itemLabel="#{customProperties['confirm.all']}" noSelectionOption="true" />
+            <f:selectItem itemLabel="#{customProperties['thirdpartycontract.field.expirydate']}" itemValue="#{true}" />
+            <f:selectItem itemLabel="#{customProperties['thirdpartycontract.field.falldue']}" itemValue="#{false}" />
+          </p:selectOneMenu>
+        </div>
+        <p>
+          <!-- Charge ponctuelle -->
+          <h:outputLabel for="sporadicallyInvoicing" value="#{customProperties['thirdpartycontract.field.sporadicallyinvoicing']}" styleClass="label" />
+          <p:inputText id="sporadicallyInvoicing" value="#{thirdPartyContractSearchController.thirdPartyContractSearchBean.thirdPartyContractCriteria.sporadicallyInvoicing}" maxlength="10" label="#{customProperties['thirdpartycontract.field.sporadicallyinvoicing']}" />
+        </p>
+        <p>
+          <!-- Date de résiliation du contrat -->
+          <h:outputLabel for="cancellation_date" value="#{customProperties['thirdpartycontract.field.cancellationdate']}" styleClass="label" />
+          <p:calendar id="cancellation_date" value="#{thirdPartyContractSearchController.thirdPartyContractSearchBean.thirdPartyContractCriteria.cancellationDate}" locale="fr" pattern="#{customProperties['pattern.date']}" navigator="true" maxlength="10">
+          </p:calendar>
+        </p>
+        <div class="ddl">
+          <!-- Motif de résiliation-->
+          <h:outputLabel for="thirdPartyTermination" value="#{customProperties['thirdpartycontract.field.thirdpartytermination']}" styleClass="label" />
+          <p:selectOneMenu id="thirdPartyTermination" value="#{thirdPartyContractSearchController.thirdPartyContractSearchBean.thirdPartyContractCriteria.thirdPartyTermination}" converter="abita.converter.dto" styleClass="dropdownlist">
+            <f:attribute name="converter-values" value="#{thirdPartyContractController.allThirdPartyTermination}" />
+            <f:selectItem itemLabel="#{msg['dropdownlist.empty']}" value="#{null}" />
+            <f:selectItems value="#{thirdPartyContractController.allThirdPartyTermination}" var="terminationItem" itemLabel="#{terminationItem.label}" />
+          </p:selectOneMenu>
+        </div>
+        <div class="ddl">
+          <!-- Remboursement du dépot de garantie -->
+          <h:outputLabel for="guaranteedDepositRefund" value="#{customProperties['thirdpartycontract.field.guaranteeddepositrefund']}" styleClass="label" />
+          <p:selectOneMenu id="guaranteedDepositRefund" value="#{thirdPartyContractSearchController.thirdPartyContractSearchBean.guaranteedDepositRefund}" styleClass="radio">
+            <f:selectItem itemLabel="#{customProperties['confirm.all']}" noSelectionOption="true" />
+            <f:selectItem itemLabel="#{customProperties['confirm.yes']}" itemValue="#{true}" />
+            <f:selectItem itemLabel="#{customProperties['confirm.no']}" itemValue="#{false}" />
+          </p:selectOneMenu>
+        </div>
+      </p:fieldset>
+      <p:outputPanel layout="block" styleClass="action">
+        <p:commandButton id="btnValidate" value="#{customProperties['thirdparty.action.search']}" actionListener="#{thirdPartyContractSearchController.searchData}" update=":messages :frmSearchThirdPartyContract:result" />
+        <p:commandButton id="btnCancel" value="#{customProperties['thirdparty.action.cancel']}" action="#{thirdPartyContractSearchController.cancel}" immediate="true" />
+      </p:outputPanel>
+      <p:outputPanel id="result" layout="block">
+        <p:dataTable id="resultTab" value="#{thirdPartyContractSearchController.thirdPartyContractSearchBean.thirdPartyContractList}" var="thirdPartyContract" emptyMessage="#{customProperties['no.data']}" rendered="#{thirdPartyContractSearchController.thirdPartyContractSearchBean.thirdPartyContractList != null}" paginator="true" rows="100" sortBy="#{thirdPartyContract.id}" paginatorPosition="bottom" pageLinks="5" rowsPerPageTemplate="#{thirdPartyContractSearchController.paginationTemplate}" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" currentPageReportTemplate="(Enregistrements : {startRecord} - {endRecord} sur {totalRecords}, Page: {currentPage}/{totalPages})">
+          <!-- 						selection="#{thirdPartySearchController.thirdPartySearchBean.thirdpartySelected}" selectionMode="single" rowKey="#{thirdParty.id}"> -->
+          <!-- 						<p:ajax event="rowSelect" listener="#{thirdPartySearchController.onRowSelect}" /> -->
+          <!-- Référence du contrat tiers -->
+          <p:column sortBy="#{thirdPartyContract.reference}" styleClass="multi_line">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['thirdpartycontract.field.refthirdpartycontract']}" />
+            </f:facet>
+            <p:commandLink value="#{thirdPartyContract.reference}" actionListener="#{thirdPartyContractSearchController.redirectConsult}">
+              <f:attribute name="data_id" value="#{thirdPartyContract.id}" />
+            </p:commandLink>
+          </p:column>
+          <!-- Référence du tiers -->
+          <p:column sortBy="#{thirdPartyContract.thirdParty.id}" styleClass="multi_line small_label">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['thirdpartycontract.field.refthirdparty']}" />
+            </f:facet>
+            <h:outputText value="#{thirdPartyContract.thirdParty.id}" />
+          </p:column>
+          <!-- Référence du logement -->
+          <p:column sortBy="#{thirdPartyContract.housing.reference}" styleClass="multi_line long_label">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['thirdpartycontract.field.refhousing']}" />
+            </f:facet>
+            <h:outputText value="#{thirdPartyContract.housing.reference}" />
+          </p:column>
+          <!-- Domaine d'activité -->
+          <p:column sortBy="#{thirdPartyContract.fieldOfActivity.label}" styleClass="multi_line small_label">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['thirdpartycontract.field.fieldofactivity']}" />
+            </f:facet>
+            <h:outputText value="#{thirdPartyContract.fieldOfActivity.label} #{thirdPartyContract.fieldOfActivity.gmr}" />
+          </p:column>
+          <!-- Agence -->
+          <p:column sortBy="#{thirdPartyContract.agencyDisplay.name}" styleClass="multi_line small_label">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['housing.field.agency']}" />
+            </f:facet>
+            <h:outputText value="#{thirdPartyContract.agencyDisplay.name}" />
+          </p:column>
+          <!-- Centre coût -->
+          <p:column sortBy="#{thirdPartyContract.costCenter.label}" styleClass="multi_line small_label">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['thirdpartycontract.field.costcenter']}" />
+            </f:facet>
+            <h:outputText value="#{thirdPartyContract.costCenter.label}" />
+          </p:column>
+          <!-- Durée du contrat -->
+          <p:column sortBy="#{thirdPartyContract.contractPeriod}" styleClass="multi_line small_label">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['thirdpartycontract.field.contractperiod']}" />
+            </f:facet>
+            <h:outputText value="#{thirdPartyContract.contractPeriod}" />
+          </p:column>
+          <!-- Durée du préavis -->
+          <p:column sortBy="#{thirdPartyContract.sortedNoticePeriod}" styleClass="multi_line small_label">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['thirdpartycontract.field.noticeperiod']}" />
+            </f:facet>
+            <h:outputText value="#{thirdPartyContract.noticePeriod}" />
+          </p:column>
+          <!-- Date de début de validité -->
+          <p:column sortBy="#{thirdPartyContract.startValidity}" styleClass="multi_line">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['thirdpartycontract.field.startvalidity']}" />
+            </f:facet>
+            <h:outputText value="#{thirdPartyContract.startValidity}">
+              <f:convertDateTime pattern="#{customProperties['pattern.date']}" />
+            </h:outputText>
+          </p:column>
+          <!-- Date de début du paiement fournisseur -->
+          <p:column sortBy="#{thirdPartyContract.startSupplierPaymentDate}" styleClass="multi_line very_long_label">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['thirdpartycontract.field.startsupplierpaymentdate']}" />
+            </f:facet>
+            <h:outputText value="#{thirdPartyContract.startSupplierPaymentDate}">
+              <f:convertDateTime pattern="#{customProperties['pattern.date']}" />
+            </h:outputText>
+          </p:column>
+          <!-- Montant du loyer mensuel -->
+          <p:column sortBy="#{thirdPartyContract.rentAmount}" styleClass="multi_line long_label">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['thirdpartycontract.field.rentamount']}" />
+            </f:facet>
+            <h:outputText value="#{thirdPartyContract.rentAmount}" />
+          </p:column>
+          <!-- 					Montant de la revision du loyer mensuel -->
+          <p:column sortBy="#{thirdPartyContract.revisedRentAmount}" styleClass="multi_line long_label">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['thirdpartycontract.field.revisedrentamount']}" />
+            </f:facet>
+            <h:outputText value="#{thirdPartyContract.revisedRentAmount}" />
+          </p:column>
+          <!-- 					Date d'effet de la revision du loyer mensuel -->
+          <p:column sortBy="#{thirdPartyContract.revisedRentDate}" styleClass="multi_line">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['thirdpartycontract.field.revisedrentdate']}" />
+            </f:facet>
+            <h:outputText value="#{thirdPartyContract.revisedRentDate}">
+              <f:convertDateTime pattern="#{customProperties['pattern.date']}" />
+            </h:outputText>
+          </p:column>
+          <!-- 					Date d'effet de la revision du loyer mensuel -->
+          <p:column sortBy="#{thirdPartyContract.lastRevisedRent}" styleClass="multi_line">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['thirdpartycontract.field.lastrevisedrentdate']}" />
+            </f:facet>
+            <h:outputText value="#{thirdPartyContract.lastRevisedRent}">
+              <f:convertDateTime pattern="#{customProperties['pattern.date']}" />
+            </h:outputText>
+          </p:column>
+          <!-- Montant des charges prévisionnelles mensuelles -->
+          <p:column sortBy="#{thirdPartyContract.expectedChargeCost}" styleClass="multi_line">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['thirdpartycontract.field.expectedchargecost']}" />
+            </f:facet>
+            <h:outputText value="#{thirdPartyContract.expectedChargeCost}" />
+          </p:column>
+          <!-- 					Montant de la revision des charges prévisionnelles mensuelles -->
+          <p:column sortBy="#{thirdPartyContract.revisedExpectedChargeCostAmount}" styleClass="multi_line">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['thirdpartycontract.field.revisedexpectedchargecostamount']}" />
+            </f:facet>
+            <h:outputText value="#{thirdPartyContract.revisedExpectedChargeCostAmount}" />
+          </p:column>
+          <!-- 					Date d'effet de la revision des charges prévisionnelles mensuelles -->
+          <p:column sortBy="#{thirdPartyContract.revisedExpectedChargeCostDate}" styleClass="multi_line">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['thirdpartycontract.field.revisedexpectedchargecostdate']}" />
+            </f:facet>
+            <h:outputText value="#{thirdPartyContract.revisedExpectedChargeCostDate}">
+              <f:convertDateTime pattern="#{customProperties['pattern.date']}" />
+            </h:outputText>
+          </p:column>
+          <!-- 					Date d'effet de la revision des charges prévisionnelles mensuelles -->
+          <p:column sortBy="#{thirdPartyContract.lastRevisedExpectedChargeCost}" styleClass="multi_line">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['thirdpartycontract.field.lastrevisedexpectedchargecostdate']}" />
+            </f:facet>
+            <h:outputText value="#{thirdPartyContract.lastRevisedExpectedChargeCost}">
+              <f:convertDateTime pattern="#{customProperties['pattern.date']}" />
+            </h:outputText>
+          </p:column>
+          <!-- Loyer à payer -->
+          <p:column sortBy="#{thirdPartyContract.rentToCharge}" styleClass="multi_line very_long_label">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['thirdpartycontract.field.renttocharge']}" />
+            </f:facet>
+            <h:outputText value="#{thirdPartyContract.rentToCharge}" />
+          </p:column>
+          <!-- Montant du dépot de garantie -->
+          <p:column sortBy="#{thirdPartyContract.sortedGuaranteedDepositAmount}" styleClass="multi_line long_label">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['thirdpartycontract.field.guaranteeddepositamount']}" />
+            </f:facet>
+            <h:outputText value="#{thirdPartyContract.guaranteedDepositAmount}" />
+          </p:column>
+          <!-- Montant des frais d'agence -->
+          <p:column sortBy="#{thirdPartyContract.sortedRealEstateAgencyFee}" styleClass="multi_line long_label">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['thirdpartycontract.field.realestateagencyfee']}" />
+            </f:facet>
+            <h:outputText value="#{thirdPartyContract.realEstateAgencyFee}" />
+          </p:column>
+          <!-- Périodicité du paiement -->
+          <p:column sortBy="#{thirdPartyContract.paymentCycle.label}" styleClass="multi_line">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['thirdpartycontract.field.paymentcycle']}" />
+            </f:facet>
+            <h:outputText value="#{thirdPartyContract.paymentCycle.label}" />
+          </p:column>
+          <!-- Terme échu / échoir -->
+          <p:column sortBy="#{thirdPartyContract.sortedExpiryDate}" styleClass="small_label">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['thirdpartycontract.field.term']}" />
+            </f:facet>
+            <h:outputText value="#{customProperties['thirdpartycontract.field.expirydate']}" rendered="#{thirdPartyContract.expiryDate != null ? thirdPartyContract.expiryDate : false}" />
+            <h:outputText value="#{customProperties['thirdpartycontract.field.falldue']}" rendered="#{thirdPartyContract.expiryDate != null ? !thirdPartyContract.expiryDate : false}" />
+          </p:column>
+          <!-- Charge ponctuelle -->
+          <p:column sortBy="#{thirdPartyContract.sortedSporadicallyInvoicing}" styleClass="multi_line">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['thirdpartycontract.field.sporadicallyinvoicing']}" />
+            </f:facet>
+            <h:outputText value="#{thirdPartyContract.sporadicallyInvoicing}" />
+          </p:column>
+          <!-- Date de résiliation du contrat -->
+          <p:column sortBy="#{thirdPartyContract.sortedCancellationDate}" styleClass="multi_line long_label hybride">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['thirdpartycontract.field.cancellationdate']}" />
+            </f:facet>
+            <h:outputText value="#{thirdPartyContract.cancellationDate}">
+              <f:convertDateTime pattern="#{customProperties['pattern.date']}" />
+            </h:outputText>
+          </p:column>
+          <!-- Motif de résiliation -->
+          <p:column sortBy="#{thirdPartyContract.sortedThirdPartyTermination}" styleClass="multi_line">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['thirdpartycontract.field.thirdpartytermination']}" />
+            </f:facet>
+            <h:outputText value="#{thirdPartyContract.thirdPartyTermination.label}">
+              <f:convertDateTime pattern="#{customProperties['pattern.date']}" />
+            </h:outputText>
+          </p:column>
+          <!-- Remboursement du dépot de garantie -->
+          <p:column sortBy="#{thirdPartyContract.guaranteedDepositRefund}" styleClass="multi_line long_label hybride">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['thirdpartycontract.field.guaranteeddepositrefund']}" />
+            </f:facet>
+            <h:outputText value="#{customProperties['confirm.yes']}" rendered="#{thirdPartyContract.guaranteedDepositRefund != null ? thirdPartyContract.guaranteedDepositRefund : false}" />
+            <h:outputText value="#{customProperties['confirm.no']}" rendered="#{thirdPartyContract.guaranteedDepositRefund != null ? !thirdPartyContract.guaranteedDepositRefund : false}" />
+          </p:column>
+        </p:dataTable>
+        <div id="btn_actions">
+          <p:commandButton id="btnexport" value="#{customProperties['common.action.export']}" immediate="true" ajax="false" rendered="#{thirdPartyContractSearchController.thirdPartyContractSearchBean.thirdPartyContractList.size() > 0}">
+            <p:dataExporter type="xls" target="resultTab" fileName="export_contrats_tiers" postProcessor="#{thirdPartyContractSearchController.postProcessXLS}" />
+          </p:commandButton>
+        </div>
+      </p:outputPanel>
+    </h:form>
+  </ui:define>
+</ui:composition>
+</html>

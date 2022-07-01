@@ -1,0 +1,1347 @@
+<?xml version="1.0"?>
+<faces-config xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
+      http://java.sun.com/xml/ns/javaee/web-facesconfig_2_0.xsd" version="2.0">
+
+  <!-- ==================================================================== -->
+  <!-- BUNDLES -->
+  <!-- ==================================================================== -->
+  <application>
+    <message-bundle>com.abita.bundle.jsf</message-bundle>
+    <resource-bundle>
+      <description>custom messages Module bundle</description>
+      <base-name>specificApplicationProperties</base-name>
+      <var>customProperties</var>
+    </resource-bundle>
+  </application>
+
+  <application>
+    <message-bundle>com.abita.bundle.jsf</message-bundle>
+    <resource-bundle>
+      <description>Validation messages Module bundle</description>
+      <base-name>ValidationMessages</base-name>
+      <var>validationMessageProperties</var>
+    </resource-bundle>
+  </application>
+
+
+  <!-- ==================================================================== -->
+  <!-- CONVERTERS -->
+  <!-- ==================================================================== -->
+  <converter>
+    <converter-id>fwk.converter.stringselectitem</converter-id>
+    <converter-class>com.web.common.converters.StringSelectItemConverter</converter-class>
+  </converter>
+
+  <converter>
+    <converter-id>abita.converter.dto</converter-id>
+    <converter-class>com.abita.web.converter.DTOConverter</converter-class>
+  </converter>
+
+  <converter>
+    <converter-id>abita.converter.tenantdto</converter-id>
+    <converter-class>com.abita.web.converter.DTOTenantConverter</converter-class>
+  </converter>
+
+  <converter>
+    <converter-id>abita.converter.housingdto</converter-id>
+    <converter-class>com.abita.web.converter.DTOHousingConverter</converter-class>
+  </converter>
+
+
+  <!-- ==================================================================== -->
+  <!-- VALIDATORS -->
+  <!-- ==================================================================== -->
+  <validator>
+    <validator-id>bigDecimalBetweenLimits</validator-id>
+    <validator-class>com.web.common.validators.BetweenLimitsValidatorForSalaryRangeDecorator</validator-class>
+  </validator>
+  <validator>
+    <validator-id>salaryRangeValidator</validator-id>
+    <validator-class>com.web.common.validators.SalaryRangeDecoratorProxyValidator</validator-class>
+  </validator>
+  <validator>
+    <validator-id>specificThirdPartyContractStartValidityValidator</validator-id>
+    <validator-class>com.web.common.validators.SpecificThirdPartyContractStartValidityValidator</validator-class>
+  </validator>
+  <validator>
+    <validator-id>specificThirdPartyContractCancellationDateValidator</validator-id>
+    <validator-class>com.web.common.validators.SpecificThirdPartyContractCancellationDateValidator</validator-class>
+  </validator>
+    <validator>
+    <validator-id>sameAgencyValidator</validator-id>
+    <validator-class>com.web.common.validators.SameAgencyValidator</validator-class>
+  </validator>
+
+
+  <!-- ==================================================================== -->
+  <!-- BEANS -->
+  <!-- ==================================================================== -->
+  <managed-bean>
+    <description>Bean gérant l'administration des utilisateurs étendus</description>
+    <display-name>extendedUserBean</display-name>
+    <managed-bean-name>extendedUserBean</managed-bean-name>
+    <managed-bean-class>com.abita.web.admin.extendeduser.beans.ExtendedUserBean</managed-bean-class>
+    <managed-bean-scope>view</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <description>Bean gérant l'administration de l'archivages</description>
+    <display-name>archivesBean</display-name>
+    <managed-bean-name>archivesBean</managed-bean-name>
+    <managed-bean-class>com.abita.web.admin.archives.beans.ArchivesBean</managed-bean-class>
+    <managed-bean-scope>view</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <description>Bean gérant l'administration des centres coûts</description>
+    <display-name>costcenterBean</display-name>
+    <managed-bean-name>costcenterBean</managed-bean-name>
+    <managed-bean-class>com.abita.web.admin.costcenter.beans.CostCenterBean</managed-bean-class>
+    <managed-bean-scope>view</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <description>Bean gérant l'administration des codes comptables</description>
+    <display-name>accountingCodeBean</display-name>
+    <managed-bean-name>accountingCodeBean</managed-bean-name>
+    <managed-bean-class>com.abita.web.admin.accountingcode.beans.AccountingCodeBean</managed-bean-class>
+    <managed-bean-scope>view</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <description>Bean gérant l'administration des centres coûts</description>
+    <display-name>fieldOfActivityBean</display-name>
+    <managed-bean-name>fieldOfActivityBean</managed-bean-name>
+    <managed-bean-class>com.abita.web.admin.fieldofactivity.beans.FieldOfActivityBean</managed-bean-class>
+    <managed-bean-scope>view</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <description>Bean gérant l'administration des centres coûts</description>
+    <display-name>benefitBean</display-name>
+    <managed-bean-name>benefitBean</managed-bean-name>
+    <managed-bean-class>com.abita.web.admin.benefit.beans.BenefitBean</managed-bean-class>
+    <managed-bean-scope>view</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <description>Bean used to manage third party information for creation of this</description>
+    <display-name>thirdPartyBean</display-name>
+    <managed-bean-name>thirdPartyBean</managed-bean-name>
+    <managed-bean-class>com.abita.web.thirdparty.bean.ThirdPartyBean</managed-bean-class>
+    <managed-bean-scope>view</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <description>Bean used to manage third party information for search of this</description>
+    <display-name>thirdPartySearchBean</display-name>
+    <managed-bean-name>thirdPartySearchBean</managed-bean-name>
+    <managed-bean-class>com.abita.web.thirdparty.bean.ThirdPartySearchBean</managed-bean-class>
+    <managed-bean-scope>view</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <description>Bean gérant le logement</description>
+    <display-name>housingBean</display-name>
+    <managed-bean-name>housingBean</managed-bean-name>
+    <managed-bean-class>com.abita.web.housing.bean.HousingBean</managed-bean-class>
+    <managed-bean-scope>view</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <description>Bean gérant la recherche des logements</description>
+    <display-name>housingSearchBean</display-name>
+    <managed-bean-name>housingSearchBean</managed-bean-name>
+    <managed-bean-class>com.abita.web.housing.bean.HousingSearchBean</managed-bean-class>
+    <managed-bean-scope>view</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <description>Bean used to manage third party information contract for creation of this</description>
+    <display-name>thirdPartyContractBean</display-name>
+    <managed-bean-name>thirdPartyContractBean</managed-bean-name>
+    <managed-bean-class>com.abita.web.thirdpartycontract.bean.ThirdPartyContractBean</managed-bean-class>
+    <managed-bean-scope>view</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <description>Bean used to manage third party contract information for search of this</description>
+    <display-name>thirdPartyContractSearchBean</display-name>
+    <managed-bean-name>thirdPartyContractSearchBean</managed-bean-name>
+    <managed-bean-class>com.abita.web.thirdpartycontract.bean.ThirdPartyContractSearchBean</managed-bean-class>
+    <managed-bean-scope>view</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <description>Bean gérant l'occupant</description>
+    <display-name>tenantBean</display-name>
+    <managed-bean-name>tenantBean</managed-bean-name>
+    <managed-bean-class>com.abita.web.tenant.bean.TenantBean</managed-bean-class>
+    <managed-bean-scope>view</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <description>Bean gérant la recherche des occupants</description>
+    <display-name>tenantSearchBean</display-name>
+    <managed-bean-name>tenantSearchBean</managed-bean-name>
+    <managed-bean-class>com.abita.web.tenant.bean.TenantSearchBean</managed-bean-class>
+    <managed-bean-scope>view</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <description>bean gérant la création d'un contrat occupant</description>
+    <display-name>contractBean</display-name>
+    <managed-bean-name>contractBean</managed-bean-name>
+    <managed-bean-class>com.abita.web.contract.bean.ContractBean</managed-bean-class>
+    <managed-bean-scope>view</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <description>bean gérant la recherche d'un contrat occupant</description>
+    <display-name>contractSearchBean</display-name>
+    <managed-bean-name>contractSearchBean</managed-bean-name>
+    <managed-bean-class>com.abita.web.contract.bean.ContractSearchBean</managed-bean-class>
+    <managed-bean-scope>view</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <description>Bean gérant l'administration des codes TVA</description>
+    <display-name>tvaCodeBean</display-name>
+    <managed-bean-name>tvaCodeBean</managed-bean-name>
+    <managed-bean-class>com.abita.web.admin.tvacode.beans.TvaCodeBean</managed-bean-class>
+    <managed-bean-scope>view</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <description>Bean gérant l'administration des catégories de local</description>
+    <display-name>roomCategoryBean</display-name>
+    <managed-bean-name>roomCategoryBean</managed-bean-name>
+    <managed-bean-class>com.abita.web.admin.roomcategory.beans.RoomCategoryBean</managed-bean-class>
+    <managed-bean-scope>view</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <description>Bean gérant l'administration de la gestion manuelle des fichiers Artesis</description>
+    <display-name>interfaceArtesisBean</display-name>
+    <managed-bean-name>interfaceArtesisBean</managed-bean-name>
+    <managed-bean-class>com.abita.web.admin.interfaces.artesis.bean.InterfaceArtesisBean</managed-bean-class>
+    <managed-bean-scope>view</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <description>Bean gérant l'administration de la gestion de l'interface de téléchargement des pièces comptables GCP</description>
+    <display-name>interfaceGCPDownloadingBean</display-name>
+    <managed-bean-name>interfaceGCPDownloadingBean</managed-bean-name>
+    <managed-bean-class>com.abita.web.admin.interfaces.gcpdownloading.beans.InterfaceGCPDownloadingBean</managed-bean-class>
+    <managed-bean-scope>view</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <description>Bean gérant l'administration de la gestion de l'interface de téléchargement des fichiers Artesis</description>
+    <display-name>interfaceArtesisDownloadingBean</display-name>
+    <managed-bean-name>interfaceArtesisDownloadingBean</managed-bean-name>
+    <managed-bean-class>com.abita.web.admin.interfaces.artesisdownloading.beans.InterfaceArtesisDownloadingBean</managed-bean-class>
+    <managed-bean-scope>view</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <description>Bean gérant l'administration des détail du CRON</description>
+    <display-name>detailCronBean</display-name>
+    <managed-bean-name>detailCronBean</managed-bean-name>
+    <managed-bean-class>com.abita.web.admin.detailcron.bean.DetailCronBean</managed-bean-class>
+    <managed-bean-scope>view</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <description>Bean gérant l'administration de la gestion de l'interface de téléchargement des PDF de quittancement de loyer</description>
+    <display-name>interfacePDFQuittancementBean</display-name>
+    <managed-bean-name>interfacePDFQuittancementBean</managed-bean-name>
+    <managed-bean-class>com.abita.web.admin.interfaces.pdfquittancement.beans.InterfacePDFQuittancementBean</managed-bean-class>
+    <managed-bean-scope>view</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <description>Bean gérant la revalorisation des loyers</description>
+    <display-name>revaluationRentsBean</display-name>
+    <managed-bean-name>revaluationRentsBean</managed-bean-name>
+    <managed-bean-class>com.abita.web.admin.revaluationrents.beans.RevaluationRentsBean</managed-bean-class>
+    <managed-bean-scope>view</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <description>Bean gérant les agences</description>
+    <display-name>agencyBean</display-name>
+    <managed-bean-name>agencyBean</managed-bean-name>
+    <managed-bean-class>com.abita.web.admin.agency.beans.AgencyBean</managed-bean-class>
+    <managed-bean-scope>view</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <description>Bean gérant les sites</description>
+    <display-name>siteBean</display-name>
+    <managed-bean-name>siteBean</managed-bean-name>
+    <managed-bean-class>com.abita.web.admin.site.beans.SiteBean</managed-bean-class>
+    <managed-bean-scope>view</managed-bean-scope>
+  </managed-bean>
+
+  <!-- ==================================================================== -->
+  <!-- CONTROLLERS -->
+  <!-- ==================================================================== -->
+  <managed-bean>
+    <description>Contrôleur pour l'administration des utilisateurs étendus</description>
+    <managed-bean-name>extendedUserController</managed-bean-name>
+    <managed-bean-class>com.abita.web.admin.extendeduser.ExtendedUserController</managed-bean-class>
+    <managed-bean-scope>view</managed-bean-scope>
+    <managed-property>
+      <property-name>extendedUserBean</property-name>
+      <value>#{extendedUserBean}</value>
+    </managed-property>
+    <managed-property>
+      <property-name>extendedUserService</property-name>
+      <value>#{extendedUserService}</value>
+    </managed-property>
+    <managed-property>
+      <property-name>agencyService</property-name>
+      <value>#{agencyService}</value>
+    </managed-property>
+  </managed-bean>
+
+  <managed-bean>
+    <description>Contrôleur pour l'administration de l'archivage</description>
+    <managed-bean-name>archivesController</managed-bean-name>
+    <managed-bean-class>com.abita.web.admin.archives.ArchivesController</managed-bean-class>
+    <managed-bean-scope>view</managed-bean-scope>
+    <managed-property>
+      <property-name>archivesBean</property-name>
+      <value>#{archivesBean}</value>
+    </managed-property>
+    <managed-property>
+      <property-name>parameterService</property-name>
+      <value>#{parameterService}</value>
+    </managed-property>
+  </managed-bean>
+
+  <managed-bean>
+    <description>Contrôleur pour l'administration des centres coûts</description>
+    <managed-bean-name>costcenterController</managed-bean-name>
+    <managed-bean-class>com.abita.web.admin.costcenter.CostCenterController</managed-bean-class>
+    <managed-bean-scope>view</managed-bean-scope>
+    <managed-property>
+      <property-name>costcenterBean</property-name>
+      <value>#{costcenterBean}</value>
+    </managed-property>
+    <managed-property>
+      <property-name>costcenterService</property-name>
+      <value>#{costcenterService}</value>
+    </managed-property>
+  </managed-bean>
+
+  <managed-bean>
+    <description>Contrôleur pour l'administration des codes comptables</description>
+    <managed-bean-name>accountingCodeController</managed-bean-name>
+    <managed-bean-class>com.abita.web.admin.accountingcode.AccountingCodeController</managed-bean-class>
+    <managed-bean-scope>view</managed-bean-scope>
+    <managed-property>
+      <property-name>accountingCodeBean</property-name>
+      <value>#{accountingCodeBean}</value>
+    </managed-property>
+    <managed-property>
+      <property-name>accountingCodeService</property-name>
+      <value>#{accountingCodeService}</value>
+    </managed-property>
+  </managed-bean>
+
+  <managed-bean>
+    <description>Contrôleur pour l'administration des domaines d'activité</description>
+    <managed-bean-name>fieldOfActivityController</managed-bean-name>
+    <managed-bean-class>com.abita.web.admin.fieldofactivity.FieldOfActivityController</managed-bean-class>
+    <managed-bean-scope>view</managed-bean-scope>
+    <managed-property>
+      <property-name>fieldOfActivityBean</property-name>
+      <value>#{fieldOfActivityBean}</value>
+    </managed-property>
+    <managed-property>
+      <property-name>fieldOfActivityService</property-name>
+      <value>#{fieldOfActivityService}</value>
+    </managed-property>
+        <managed-property>
+      <property-name>agencyService</property-name>
+      <value>#{agencyService}</value>
+    </managed-property>
+  </managed-bean>
+
+  <managed-bean>
+    <description>Contrôleur pour l'administration des barèmes pour les avantages en nature</description>
+    <managed-bean-name>benefitController</managed-bean-name>
+    <managed-bean-class>com.abita.web.admin.benefit.BenefitController</managed-bean-class>
+    <managed-bean-scope>view</managed-bean-scope>
+    <managed-property>
+      <property-name>benefitBean</property-name>
+      <value>#{benefitBean}</value>
+    </managed-property>
+    <managed-property>
+      <property-name>benefitService</property-name>
+      <value>#{benefitService}</value>
+    </managed-property>
+    <managed-property>
+      <property-name>contractServiceFacade</property-name>
+      <value>#{contractServiceFacade}</value>
+    </managed-property>
+  </managed-bean>
+
+  <managed-bean>
+    <description>Contrôleur pour la revalorisation des loyers</description>
+    <managed-bean-name>revaluationRentsController</managed-bean-name>
+    <managed-bean-class>com.abita.web.admin.revaluationrents.RevaluationRentsController</managed-bean-class>
+    <managed-bean-scope>view</managed-bean-scope>
+    <managed-property>
+      <property-name>revaluationRentsBean</property-name>
+      <value>#{revaluationRentsBean}</value>
+    </managed-property>
+    <managed-property>
+      <property-name>revaluationRentsService</property-name>
+      <value>#{revaluationRentsService}</value>
+    </managed-property>
+    <managed-property>
+      <property-name>contractServiceFacade</property-name>
+      <value>#{contractServiceFacade}</value>
+    </managed-property>
+  </managed-bean>
+
+  <managed-bean>
+    <description>Contrôleur pour les agences</description>
+    <managed-bean-name>agencyController</managed-bean-name>
+    <managed-bean-class>com.abita.web.admin.agency.AgencyController</managed-bean-class>
+    <managed-bean-scope>view</managed-bean-scope>
+    <managed-property>
+      <property-name>agencyBean</property-name>
+      <value>#{agencyBean}</value>
+    </managed-property>
+    <managed-property>
+      <property-name>agencyService</property-name>
+      <value>#{agencyService}</value>
+    </managed-property>
+  </managed-bean>
+
+  <managed-bean>
+    <description>Contrôleur pour les sites</description>
+    <managed-bean-name>siteController</managed-bean-name>
+    <managed-bean-class>com.abita.web.admin.site.SiteController</managed-bean-class>
+    <managed-bean-scope>view</managed-bean-scope>
+    <managed-property>
+      <property-name>siteBean</property-name>
+      <value>#{siteBean}</value>
+    </managed-property>
+    <managed-property>
+      <property-name>siteService</property-name>
+      <value>#{siteService}</value>
+    </managed-property>
+    <managed-property>
+      <property-name>agencyService</property-name>
+      <value>#{agencyService}</value>
+    </managed-property>
+  </managed-bean>
+
+  <managed-bean>
+    <description>The third party controller</description>
+    <display-name>thirdPartyController</display-name>
+    <managed-bean-name>thirdPartyController</managed-bean-name>
+    <managed-bean-class>com.abita.web.thirdparty.impl.ThirdPartyController</managed-bean-class>
+    <managed-bean-scope>request</managed-bean-scope>
+    <managed-property>
+      <property-name>thirdPartyBean</property-name>
+      <value>#{thirdPartyBean}</value>
+    </managed-property>
+    <managed-property>
+      <property-name>thirdPartyService</property-name>
+      <value>#{thirdPartyService}</value>
+    </managed-property>
+  </managed-bean>
+
+  <managed-bean>
+    <description>The third party search controller</description>
+    <display-name>thirdPartySearchController</display-name>
+    <managed-bean-name>thirdPartySearchController</managed-bean-name>
+    <managed-bean-class>com.abita.web.thirdparty.impl.ThirdPartySearchController</managed-bean-class>
+    <managed-bean-scope>request</managed-bean-scope>
+    <managed-property>
+      <property-name>thirdPartySearchBean</property-name>
+      <value>#{thirdPartySearchBean}</value>
+    </managed-property>
+    <managed-property>
+      <property-name>thirdPartyService</property-name>
+      <value>#{thirdPartyService}</value>
+    </managed-property>
+  </managed-bean>
+
+  <managed-bean>
+    <description>Controlleur pour les logements</description>
+    <display-name>housingController</display-name>
+    <managed-bean-name>housingController</managed-bean-name>
+    <managed-bean-class>com.abita.web.housing.impl.HousingController</managed-bean-class>
+    <managed-bean-scope>request</managed-bean-scope>
+    <managed-property>
+      <property-name>housingBean</property-name>
+      <value>#{housingBean}</value>
+    </managed-property>
+    <managed-property>
+      <property-name>housingServiceFacade</property-name>
+      <value>#{housingServiceFacade}</value>
+    </managed-property>
+    <managed-property>
+      <property-name>historyHousingService</property-name>
+      <value>#{historyHousingService}</value>
+    </managed-property>
+    <managed-property>
+      <property-name>contractServiceFacade</property-name>
+      <value>#{contractServiceFacade}</value>
+    </managed-property>
+    <managed-property>
+      <property-name>thirdPartyContractServiceFacade</property-name>
+      <value>#{thirdPartyContractServiceFacade}</value>
+    </managed-property>
+    <managed-property>
+      <property-name>housingNatureService</property-name>
+      <value>#{housingNatureService}</value>
+    </managed-property>
+    <managed-property>
+      <property-name>sanitationService</property-name>
+      <value>#{sanitationService}</value>
+    </managed-property>
+    <managed-property>
+      <property-name>airconditionerService</property-name>
+      <value>#{airconditionerService}</value>
+    </managed-property>
+    <managed-property>
+      <property-name>heatingTypeService</property-name>
+      <value>#{heatingTypeService}</value>
+    </managed-property>
+    <managed-property>
+      <property-name>extendedUserService</property-name>
+      <value>#{extendedUserService}</value>
+    </managed-property>
+    <managed-property>
+      <property-name>roomCategoryService</property-name>
+      <value>#{roomCategoryService}</value>
+    </managed-property>
+    <managed-property>
+      <property-name>agencyService</property-name>
+      <value>#{agencyService}</value>
+    </managed-property>
+    <managed-property>
+      <property-name>siteService</property-name>
+      <value>#{siteService}</value>
+    </managed-property>
+  </managed-bean>
+
+  <managed-bean>
+    <description>Controlleur pour la recherche des logements</description>
+    <display-name>housingSearchController</display-name>
+    <managed-bean-name>housingSearchController</managed-bean-name>
+    <managed-bean-class>com.abita.web.housing.impl.HousingSearchController</managed-bean-class>
+    <managed-bean-scope>request</managed-bean-scope>
+    <managed-property>
+      <property-name>housingSearchBean</property-name>
+      <value>#{housingSearchBean}</value>
+    </managed-property>
+    <managed-property>
+      <property-name>housingServiceFacade</property-name>
+      <value>#{housingServiceFacade}</value>
+    </managed-property>
+    <managed-property>
+      <property-name>housingNatureService</property-name>
+      <value>#{housingNatureService}</value>
+    </managed-property>
+    <managed-property>
+      <property-name>sanitationService</property-name>
+      <value>#{sanitationService}</value>
+    </managed-property>
+    <managed-property>
+      <property-name>airconditionerService</property-name>
+      <value>#{airconditionerService}</value>
+    </managed-property>
+    <managed-property>
+      <property-name>heatingTypeService</property-name>
+      <value>#{heatingTypeService}</value>
+    </managed-property>
+    <managed-property>
+      <property-name>extendedUserService</property-name>
+      <value>#{extendedUserService}</value>
+    </managed-property>
+    <managed-property>
+      <property-name>roomCategoryService</property-name>
+      <value>#{roomCategoryService}</value>
+    </managed-property>
+    <managed-property>
+      <property-name>typeTenantService</property-name>
+      <value>#{typeTenantService}</value>
+    </managed-property>
+    <managed-property>
+      <property-name>fieldOfActivityService</property-name>
+      <value>#{fieldOfActivityService}</value>
+    </managed-property>
+    <managed-property>
+      <property-name>agencyService</property-name>
+      <value>#{agencyService}</value>
+    </managed-property>
+    <managed-property>
+      <property-name>siteService</property-name>
+      <value>#{siteService}</value>
+    </managed-property>
+  </managed-bean>
+
+  <managed-bean>
+    <description>The third party contract controller</description>
+    <display-name>thirdPartyContractController</display-name>
+    <managed-bean-name>thirdPartyContractController</managed-bean-name>
+    <managed-bean-class>com.abita.web.thirdpartycontract.impl.ThirdPartyContractController</managed-bean-class>
+    <managed-bean-scope>request</managed-bean-scope>
+    <managed-property>
+      <property-name>thirdPartyContractBean</property-name>
+      <value>#{thirdPartyContractBean}</value>
+    </managed-property>
+    <managed-property>
+      <property-name>thirdPartyContractServiceFacade</property-name>
+      <value>#{thirdPartyContractServiceFacade}</value>
+    </managed-property>
+    <managed-property>
+      <property-name>thirdPartyService</property-name>
+      <value>#{thirdPartyService}</value>
+    </managed-property>
+    <managed-property>
+      <property-name>housingServiceFacade</property-name>
+      <value>#{housingServiceFacade}</value>
+    </managed-property>
+    <managed-property>
+      <property-name>fieldOfActivityService</property-name>
+      <value>#{fieldOfActivityService}</value>
+    </managed-property>
+    <managed-property>
+      <property-name>costCenterService</property-name>
+      <value>#{costcenterService}</value>
+    </managed-property>
+    <managed-property>
+      <property-name>paymentCycleService</property-name>
+      <value>#{paymentCycleService}</value>
+    </managed-property>
+    <managed-property>
+      <property-name>thirdPartyTerminationService</property-name>
+      <value>#{thirdPartyTerminationService}</value>
+    </managed-property>
+    <managed-property>
+      <property-name>extendedUserService</property-name>
+      <value>#{extendedUserService}</value>
+    </managed-property>
+  </managed-bean>
+
+  <managed-bean>
+    <description>The third party search contract controller</description>
+    <display-name>thirdPartyContractSearchController</display-name>
+    <managed-bean-name>thirdPartyContractSearchController</managed-bean-name>
+    <managed-bean-class>com.abita.web.thirdpartycontract.impl.ThirdPartyContractSearchController</managed-bean-class>
+    <managed-bean-scope>request</managed-bean-scope>
+    <managed-property>
+      <property-name>thirdPartyContractSearchBean</property-name>
+      <value>#{thirdPartyContractSearchBean}</value>
+    </managed-property>
+    <managed-property>
+      <property-name>thirdPartyContractServiceFacade</property-name>
+      <value>#{thirdPartyContractServiceFacade}</value>
+    </managed-property>
+    <managed-property>
+      <property-name>agencyService</property-name>
+      <value>#{agencyService}</value>
+    </managed-property>
+  </managed-bean>
+
+  <managed-bean>
+    <description>Controlleur pour les occupants</description>
+    <display-name>tenantController</display-name>
+    <managed-bean-name>tenantController</managed-bean-name>
+    <managed-bean-class>com.abita.web.tenant.impl.TenantController</managed-bean-class>
+    <managed-bean-scope>request</managed-bean-scope>
+    <managed-property>
+      <property-name>tenantBean</property-name>
+      <value>#{tenantBean}</value>
+    </managed-property>
+    <managed-property>
+      <property-name>tenantServiceFacade</property-name>
+      <value>#{tenantServiceFacade}</value>
+    </managed-property>
+    <managed-property>
+      <property-name>historyTenantService</property-name>
+      <value>#{historyTenantService}</value>
+    </managed-property>
+    <managed-property>
+      <property-name>contractServiceFacade</property-name>
+      <value>#{contractServiceFacade}</value>
+    </managed-property>
+    <managed-property>
+      <property-name>typeTenantService</property-name>
+      <value>#{typeTenantService}</value>
+    </managed-property>
+  </managed-bean>
+
+  <managed-bean>
+    <description>Controlleur pour la recherche des occupants</description>
+    <display-name>tenantSearchController</display-name>
+    <managed-bean-name>tenantSearchController</managed-bean-name>
+    <managed-bean-class>com.abita.web.tenant.impl.TenantSearchController</managed-bean-class>
+    <managed-bean-scope>request</managed-bean-scope>
+    <managed-property>
+      <property-name>tenantSearchBean</property-name>
+      <value>#{tenantSearchBean}</value>
+    </managed-property>
+    <managed-property>
+      <property-name>tenantServiceFacade</property-name>
+      <value>#{tenantServiceFacade}</value>
+    </managed-property>
+    <managed-property>
+      <property-name>typeTenantService</property-name>
+      <value>#{typeTenantService}</value>
+    </managed-property>
+    <managed-property>
+      <property-name>housingNatureService</property-name>
+      <value>#{housingNatureService}</value>
+    </managed-property>
+    <managed-property>
+      <property-name>extendedUserService</property-name>
+      <value>#{extendedUserService}</value>
+    </managed-property>
+    <managed-property>
+      <property-name>roomCategoryService</property-name>
+      <value>#{roomCategoryService}</value>
+    </managed-property>
+    <managed-property>
+      <property-name>agencyService</property-name>
+      <value>#{agencyService}</value>
+    </managed-property>
+    <managed-property>
+      <property-name>siteService</property-name>
+      <value>#{siteService}</value>
+    </managed-property>
+  </managed-bean>
+
+  <managed-bean>
+    <description>Controlleur pour les contrats occupants</description>
+    <display-name>contractController</display-name>
+    <managed-bean-name>contractController</managed-bean-name>
+    <managed-bean-class>com.abita.web.contract.impl.ContractController</managed-bean-class>
+    <managed-bean-scope>view</managed-bean-scope>
+    <managed-property>
+      <property-name>contractBean</property-name>
+      <value>#{contractBean}</value>
+    </managed-property>
+    <managed-property>
+      <property-name>contractServiceFacade</property-name>
+      <value>#{contractServiceFacade}</value>
+    </managed-property>
+    <managed-property>
+      <property-name>tenantServiceFacade</property-name>
+      <value>#{tenantServiceFacade}</value>
+    </managed-property>
+    <managed-property>
+      <property-name>housingServiceFacade</property-name>
+      <value>#{housingServiceFacade}</value>
+    </managed-property>
+    <managed-property>
+      <property-name>costCenterService</property-name>
+      <value>#{costcenterService}</value>
+    </managed-property>
+    <managed-property>
+      <property-name>terminationService</property-name>
+      <value>#{terminationService}</value>
+    </managed-property>
+    <managed-property>
+      <property-name>fieldOfActivityService</property-name>
+      <value>#{fieldOfActivityService}</value>
+    </managed-property>
+    <managed-property>
+      <property-name>paymentMethodService</property-name>
+      <value>#{paymentMethodService}</value>
+    </managed-property>
+    <managed-property>
+      <property-name>rentTypologyService</property-name>
+      <value>#{rentTypologyService}</value>
+    </managed-property>
+    <managed-property>
+      <property-name>detailCronService</property-name>
+      <value>#{detailCronService}</value>
+    </managed-property>
+    <managed-property>
+      <property-name>historyContractServiceFacade</property-name>
+      <value>#{historyContractServiceFacade}</value>
+    </managed-property>
+    <managed-property>
+      <property-name>extendedUserService</property-name>
+      <value>#{extendedUserService}</value>
+    </managed-property>
+  </managed-bean>
+
+  <managed-bean>
+    <description>Controlleur pour la recherche des contrats occupants</description>
+    <display-name>contractSearchController</display-name>
+    <managed-bean-name>contractSearchController</managed-bean-name>
+    <managed-bean-class>com.abita.web.contract.impl.ContractSearchController</managed-bean-class>
+    <managed-bean-scope>request</managed-bean-scope>
+    <managed-property>
+      <property-name>contractSearchBean</property-name>
+      <value>#{contractSearchBean}</value>
+    </managed-property>
+    <managed-property>
+      <property-name>tenantSearchBean</property-name>
+      <value>#{tenantSearchBean}</value>
+    </managed-property>
+    <managed-property>
+      <property-name>housingSearchBean</property-name>
+      <value>#{housingSearchBean}</value>
+    </managed-property>
+    <managed-property>
+      <property-name>contractServiceFacade</property-name>
+      <value>#{contractServiceFacade}</value>
+    </managed-property>
+    <managed-property>
+      <property-name>agencyService</property-name>
+      <value>#{agencyService}</value>
+    </managed-property>
+  </managed-bean>
+
+  <managed-bean>
+    <description>Validateur pour les dates de debut de validité des contrats occupants</description>
+    <display-name>specificContractStartValidityValidator</display-name>
+    <managed-bean-name>specificContractStartValidityValidator</managed-bean-name>
+    <managed-bean-class>com.web.common.validators.SpecificContractStartValidityValidator</managed-bean-class>
+    <managed-bean-scope>request</managed-bean-scope>
+    <managed-property>
+      <property-name>contractServiceFacade</property-name>
+      <value>#{contractServiceFacade}</value>
+    </managed-property>
+  </managed-bean>
+
+  <managed-bean>
+    <description>Validateur pour les dates de fin de validité des contrats occupants</description>
+    <display-name>specificContractEndValidityValidator</display-name>
+    <managed-bean-name>specificContractEndValidityValidator</managed-bean-name>
+    <managed-bean-class>com.web.common.validators.SpecificContractEndValidityValidator</managed-bean-class>
+    <managed-bean-scope>request</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <description>Validateur pour les dates de sortie des logements</description>
+    <display-name>unregisterDateAfterEndValidityDateValidator</display-name>
+    <managed-bean-name>unregisterDateAfterEndValidityDateValidator</managed-bean-name>
+    <managed-bean-class>com.web.common.validators.UnregisterDateAfterEndValidityDateValidator</managed-bean-class>
+    <managed-bean-scope>request</managed-bean-scope>
+    <managed-property>
+      <property-name>contractServiceFacade</property-name>
+      <value>#{contractServiceFacade}</value>
+    </managed-property>
+  </managed-bean>
+
+
+  <managed-bean>
+    <description>Validateur pour la date de dernière maintenance DAAF</description>
+    <display-name>lastDaafDateBetweenRegisterAndUnregisterDate</display-name>
+    <managed-bean-name>lastDaafDateBetweenRegisterAndUnregisterDate</managed-bean-name>
+    <managed-bean-class>com.web.common.validators.LastDaafDateBetweenRegisterAndUnregisterDate</managed-bean-class>
+    <managed-bean-scope>request</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <description>Contrôleur pour l'administration des codes TVA</description>
+    <managed-bean-name>tvaCodeController</managed-bean-name>
+    <managed-bean-class>com.abita.web.admin.tvacode.TvaCodeController</managed-bean-class>
+    <managed-bean-scope>view</managed-bean-scope>
+    <managed-property>
+      <property-name>tvaCodeBean</property-name>
+      <value>#{tvaCodeBean}</value>
+    </managed-property>
+    <managed-property>
+      <property-name>tvaCodeService</property-name>
+      <value>#{tvaCodeService}</value>
+    </managed-property>
+  </managed-bean>
+
+  <managed-bean>
+    <description>Contrôleur pour l'administration des catégories de local</description>
+    <managed-bean-name>roomCategoryController</managed-bean-name>
+    <managed-bean-class>com.abita.web.admin.roomcategory.RoomCategoryController</managed-bean-class>
+    <managed-bean-scope>view</managed-bean-scope>
+    <managed-property>
+      <property-name>roomCategoryBean</property-name>
+      <value>#{roomCategoryBean}</value>
+    </managed-property>
+    <managed-property>
+      <property-name>roomCategoryService</property-name>
+      <value>#{roomCategoryService}</value>
+    </managed-property>
+    <managed-property>
+      <property-name>contractServiceFacade</property-name>
+      <value>#{contractServiceFacade}</value>
+    </managed-property>
+  </managed-bean>
+
+  <managed-bean>
+    <description>Contrôleur pour l'administration de la gestion manuelle des fichiers artesis</description>
+    <managed-bean-name>interfaceArtesisController</managed-bean-name>
+    <managed-bean-class>com.abita.web.admin.interfaces.artesis.InterfaceArtesisController</managed-bean-class>
+    <managed-bean-scope>view</managed-bean-scope>
+    <managed-property>
+      <property-name>interfaceArtesisBean</property-name>
+      <value>#{interfaceArtesisBean}</value>
+    </managed-property>
+    <managed-property>
+      <property-name>agentDataRunner</property-name>
+      <value>#{agentDataRunner}</value>
+    </managed-property>
+    <managed-property>
+      <property-name>parameterService</property-name>
+      <value>#{parameterService}</value>
+    </managed-property>
+    <managed-property>
+      <property-name>detailCronService</property-name>
+      <value>#{detailCronService}</value>
+    </managed-property>
+  </managed-bean>
+
+  <managed-bean>
+    <description>Contrôleur pour l'administration de l'interface de téléchargement des pièces comptables GCP</description>
+    <managed-bean-name>interfaceGCPDownloadingController</managed-bean-name>
+    <managed-bean-class>com.abita.web.admin.interfaces.gcpdownloading.InterfaceGCPDownloadingController</managed-bean-class>
+    <managed-bean-scope>view</managed-bean-scope>
+    <managed-property>
+      <property-name>interfaceGCPDownloadingBean</property-name>
+      <value>#{interfaceGCPDownloadingBean}</value>
+    </managed-property>
+    <managed-property>
+      <property-name>parameterService</property-name>
+      <value>#{parameterService}</value>
+    </managed-property>
+  </managed-bean>
+
+  <managed-bean>
+    <description>Contrôleur pour l'administration de l'interface de téléchargement des fichiers Artesis</description>
+    <managed-bean-name>interfaceArtesisDownloadingController</managed-bean-name>
+    <managed-bean-class>com.abita.web.admin.interfaces.artesisdownloading.InterfaceArtesisDownloadingController</managed-bean-class>
+    <managed-bean-scope>view</managed-bean-scope>
+    <managed-property>
+      <property-name>interfaceArtesisDownloadingBean</property-name>
+      <value>#{interfaceArtesisDownloadingBean}</value>
+    </managed-property>
+    <managed-property>
+      <property-name>parameterService</property-name>
+      <value>#{parameterService}</value>
+    </managed-property>
+  </managed-bean>
+
+  <managed-bean>
+    <description>Contrôleur pour l'administration des détail du CRON</description>
+    <managed-bean-name>detailCronController</managed-bean-name>
+    <managed-bean-class>com.abita.web.admin.detailcron.DetailCronController</managed-bean-class>
+    <managed-bean-scope>view</managed-bean-scope>
+    <managed-property>
+      <property-name>detailCronBean</property-name>
+      <value>#{detailCronBean}</value>
+    </managed-property>
+    <managed-property>
+      <property-name>detailCronService</property-name>
+      <value>#{detailCronService}</value>
+    </managed-property>
+  </managed-bean>
+
+  <managed-bean>
+    <description>Contrôleur pour l'administration de l'interface de téléchargement des PDF de quittancement des loyers</description>
+    <managed-bean-name>interfacePDFQuittancementController</managed-bean-name>
+    <managed-bean-class>com.abita.web.admin.interfaces.pdfquittancement.InterfacePDFQuittancementController</managed-bean-class>
+    <managed-bean-scope>view</managed-bean-scope>
+    <managed-property>
+      <property-name>interfacePDFQuittancementBean</property-name>
+      <value>#{interfacePDFQuittancementBean}</value>
+    </managed-property>
+    <managed-property>
+      <property-name>parameterService</property-name>
+      <value>#{parameterService}</value>
+    </managed-property>
+  </managed-bean>
+
+
+  <!-- ==================================================================== -->
+  <!-- NAVIGATION -->
+  <!-- ==================================================================== -->
+  <!-- Tiers -->
+  <navigation-rule>
+    <from-view-id>*</from-view-id>
+    <navigation-case>
+      <from-outcome>tp_create</from-outcome>
+      <to-view-id>/pages/thirdparty/creation.xhtml</to-view-id>
+      <redirect>
+        <view-param>
+          <name>create</name>
+          <value>1</value>
+        </view-param>
+      </redirect>
+    </navigation-case>
+  </navigation-rule>
+
+  <navigation-rule>
+    <from-view-id>/pages/thirdparty/*</from-view-id>
+    <navigation-case>
+      <from-outcome>GO_TO_CONSULTATION</from-outcome>
+      <to-view-id>/pages/thirdparty/consultation.xhtml</to-view-id>
+      <redirect />
+    </navigation-case>
+    <navigation-case>
+      <from-outcome>GO_TO_MODIFICATION</from-outcome>
+      <to-view-id>/pages/thirdparty/modification.xhtml</to-view-id>
+      <redirect />
+    </navigation-case>
+    <navigation-case>
+      <from-outcome>EXIT_THIRD_PARTY</from-outcome>
+      <to-view-id>/pages/welcome/welcome.xhtml</to-view-id>
+      <redirect />
+    </navigation-case>
+  </navigation-rule>
+
+  <navigation-rule>
+    <from-view-id>*</from-view-id>
+    <navigation-case>
+      <from-outcome>tp_search</from-outcome>
+      <to-view-id>/pages/thirdparty/search.xhtml</to-view-id>
+      <redirect />
+    </navigation-case>
+  </navigation-rule>
+
+
+  <!-- Logement -->
+  <navigation-rule>
+    <from-view-id>*</from-view-id>
+    <navigation-case>
+      <from-outcome>h_create</from-outcome>
+      <to-view-id>/pages/housing/creation.xhtml</to-view-id>
+      <redirect>
+        <view-param>
+          <name>create</name>
+          <value>1</value>
+        </view-param>
+      </redirect>
+    </navigation-case>
+  </navigation-rule>
+
+  <navigation-rule>
+    <from-view-id>/pages/housing/*</from-view-id>
+    <navigation-case>
+      <from-outcome>GO_TO_CONSULTATION</from-outcome>
+      <to-view-id>/pages/housing/consultation.xhtml</to-view-id>
+      <redirect />
+    </navigation-case>
+    <navigation-case>
+      <from-outcome>GO_TO_MODIFICATION</from-outcome>
+      <to-view-id>/pages/housing/modification.xhtml</to-view-id>
+      <redirect />
+    </navigation-case>
+    <navigation-case>
+      <from-outcome>EXIT_HOUSING</from-outcome>
+      <to-view-id>/pages/welcome/welcome.xhtml</to-view-id>
+      <redirect />
+    </navigation-case>
+  </navigation-rule>
+
+  <navigation-rule>
+    <from-view-id>*</from-view-id>
+    <navigation-case>
+      <from-outcome>h_search</from-outcome>
+      <to-view-id>/pages/housing/search.xhtml</to-view-id>
+      <redirect />
+    </navigation-case>
+  </navigation-rule>
+
+
+  <!-- Occupant -->
+  <navigation-rule>
+    <from-view-id>*</from-view-id>
+    <navigation-case>
+      <from-outcome>t_create</from-outcome>
+      <to-view-id>/pages/tenant/creation.xhtml</to-view-id>
+      <redirect>
+        <view-param>
+          <name>create</name>
+          <value>1</value>
+        </view-param>
+      </redirect>
+    </navigation-case>
+  </navigation-rule>
+
+  <navigation-rule>
+    <from-view-id>/pages/tenant/*</from-view-id>
+    <navigation-case>
+      <from-outcome>GO_TO_CONSULTATION</from-outcome>
+      <to-view-id>/pages/tenant/consultation.xhtml</to-view-id>
+      <redirect />
+    </navigation-case>
+    <navigation-case>
+      <from-outcome>GO_TO_MODIFICATION</from-outcome>
+      <to-view-id>/pages/tenant/modification.xhtml</to-view-id>
+      <redirect />
+    </navigation-case>
+    <navigation-case>
+      <from-outcome>EXIT_TENANT</from-outcome>
+      <to-view-id>/pages/welcome/welcome.xhtml</to-view-id>
+      <redirect />
+    </navigation-case>
+  </navigation-rule>
+
+  <navigation-rule>
+    <from-view-id>*</from-view-id>
+    <navigation-case>
+      <from-outcome>t_search</from-outcome>
+      <to-view-id>/pages/tenant/search.xhtml</to-view-id>
+      <redirect />
+    </navigation-case>
+  </navigation-rule>
+
+
+  <!-- Contrat Tiers -->
+  <navigation-rule>
+    <from-view-id>*</from-view-id>
+    <navigation-case>
+      <from-outcome>tpc_create</from-outcome>
+      <to-view-id>/pages/thirdpartycontract/creation.xhtml</to-view-id>
+      <redirect>
+        <view-param>
+          <name>create</name>
+          <value>1</value>
+        </view-param>
+      </redirect>
+    </navigation-case>
+  </navigation-rule>
+
+  <navigation-rule>
+    <from-view-id>/pages/thirdpartycontract/*</from-view-id>
+    <navigation-case>
+      <from-outcome>GO_TO_CONSULTATION</from-outcome>
+      <to-view-id>/pages/thirdpartycontract/consultation.xhtml</to-view-id>
+      <redirect />
+    </navigation-case>
+    <navigation-case>
+      <from-outcome>GO_TO_MODIFICATION</from-outcome>
+      <to-view-id>/pages/thirdpartycontract/modification.xhtml</to-view-id>
+      <redirect />
+    </navigation-case>
+    <navigation-case>
+      <from-outcome>EXIT_THIRD_PARTY_CONTRACT</from-outcome>
+      <to-view-id>/pages/welcome/welcome.xhtml</to-view-id>
+      <redirect />
+    </navigation-case>
+  </navigation-rule>
+
+  <navigation-rule>
+    <from-view-id>*</from-view-id>
+    <navigation-case>
+      <from-outcome>tpc_search</from-outcome>
+      <to-view-id>/pages/thirdpartycontract/search.xhtml</to-view-id>
+      <redirect />
+    </navigation-case>
+  </navigation-rule>
+
+  <!-- Contrat Occupant -->
+  <navigation-rule>
+    <from-view-id>*</from-view-id>
+    <navigation-case>
+      <from-outcome>tc_create</from-outcome>
+      <to-view-id>/pages/contract/creation.xhtml</to-view-id>
+      <redirect>
+        <view-param>
+          <name>create</name>
+          <value>1</value>
+        </view-param>
+      </redirect>
+    </navigation-case>
+  </navigation-rule>
+
+  <navigation-rule>
+    <from-view-id>/pages/contract/*</from-view-id>
+    <navigation-case>
+      <from-outcome>GO_TO_CONSULTATION</from-outcome>
+      <to-view-id>/pages/contract/consultation.xhtml</to-view-id>
+      <redirect />
+    </navigation-case>
+    <navigation-case>
+      <from-outcome>GO_TO_MODIFICATION</from-outcome>
+      <to-view-id>/pages/contract/modification.xhtml</to-view-id>
+      <redirect />
+    </navigation-case>
+    <navigation-case>
+      <from-outcome>EXIT_TENANT_CONTRACT</from-outcome>
+      <to-view-id>/pages/welcome/welcome.xhtml</to-view-id>
+      <redirect />
+    </navigation-case>
+  </navigation-rule>
+
+  <navigation-rule>
+    <from-view-id>*</from-view-id>
+    <navigation-case>
+      <from-outcome>tc_search</from-outcome>
+      <to-view-id>/pages/contract/search.xhtml</to-view-id>
+      <redirect />
+    </navigation-case>
+  </navigation-rule>
+
+  <!-- Administration -->
+  <navigation-rule>
+    <from-view-id>*</from-view-id>
+    <navigation-case>
+      <from-outcome>adm_users</from-outcome>
+      <to-view-id>/pages/administration/referentiel/extendeduser.xhtml</to-view-id>
+      <redirect />
+    </navigation-case>
+  </navigation-rule>
+
+  <navigation-rule>
+    <from-view-id>*</from-view-id>
+    <navigation-case>
+      <from-outcome>adm_ref_costcenter</from-outcome>
+      <to-view-id>/pages/administration/referentiel/costcenter.xhtml</to-view-id>
+      <redirect />
+    </navigation-case>
+  </navigation-rule>
+
+  <navigation-rule>
+    <from-view-id>*</from-view-id>
+    <navigation-case>
+      <from-outcome>adm_ref_fieldofactivity</from-outcome>
+      <to-view-id>/pages/administration/referentiel/fieldofactivity.xhtml</to-view-id>
+      <redirect />
+    </navigation-case>
+  </navigation-rule>
+
+  <navigation-rule>
+    <from-view-id>*</from-view-id>
+    <navigation-case>
+      <from-outcome>adm_ref_benefit</from-outcome>
+      <to-view-id>/pages/administration/referentiel/benefit.xhtml</to-view-id>
+      <redirect />
+    </navigation-case>
+  </navigation-rule>
+
+  <navigation-rule>
+    <from-view-id>*</from-view-id>
+    <navigation-case>
+      <from-outcome>adm_ref_accountingcode</from-outcome>
+      <to-view-id>/pages/administration/referentiel/accountingcode.xhtml</to-view-id>
+      <redirect />
+    </navigation-case>
+  </navigation-rule>
+
+  <navigation-rule>
+    <from-view-id>*</from-view-id>
+    <navigation-case>
+      <from-outcome>adm_ref_tvacode</from-outcome>
+      <to-view-id>/pages/administration/referentiel/tvacode.xhtml</to-view-id>
+      <redirect />
+    </navigation-case>
+  </navigation-rule>
+
+  <navigation-rule>
+    <from-view-id>*</from-view-id>
+    <navigation-case>
+      <from-outcome>adm_ref_roomcategory</from-outcome>
+      <to-view-id>/pages/administration/referentiel/roomcategory.xhtml</to-view-id>
+      <redirect />
+    </navigation-case>
+  </navigation-rule>
+
+  <navigation-rule>
+    <from-view-id>*</from-view-id>
+    <navigation-case>
+      <from-outcome>adm_ref_revaluationrents</from-outcome>
+      <to-view-id>/pages/administration/referentiel/revaluationrents.xhtml</to-view-id>
+      <redirect />
+    </navigation-case>
+  </navigation-rule>
+
+  <navigation-rule>
+    <from-view-id>*</from-view-id>
+    <navigation-case>
+      <from-outcome>adm_ref_agency</from-outcome>
+      <to-view-id>/pages/administration/referentiel/agency.xhtml</to-view-id>
+      <redirect />
+    </navigation-case>
+  </navigation-rule>
+
+  <navigation-rule>
+    <from-view-id>*</from-view-id>
+    <navigation-case>
+      <from-outcome>adm_ref_site</from-outcome>
+      <to-view-id>/pages/administration/referentiel/site.xhtml</to-view-id>
+      <redirect />
+    </navigation-case>
+  </navigation-rule>
+
+  <navigation-rule>
+    <from-view-id>*</from-view-id>
+    <navigation-case>
+      <from-outcome>adm_archive</from-outcome>
+      <to-view-id>/pages/administration/archives.xhtml</to-view-id>
+      <redirect />
+    </navigation-case>
+  </navigation-rule>
+
+  <navigation-rule>
+    <from-view-id>*</from-view-id>
+    <navigation-case>
+      <from-outcome>adm_int_artesis</from-outcome>
+      <to-view-id>/pages/administration/interfaces/artesis.xhtml</to-view-id>
+      <redirect />
+    </navigation-case>
+  </navigation-rule>
+
+  <navigation-rule>
+    <from-view-id>*</from-view-id>
+    <navigation-case>
+      <from-outcome>adm_int_gcpdownloading</from-outcome>
+      <to-view-id>/pages/administration/interfaces/gcpdownloading.xhtml</to-view-id>
+      <redirect />
+    </navigation-case>
+  </navigation-rule>
+
+  <navigation-rule>
+    <from-view-id>*</from-view-id>
+    <navigation-case>
+      <from-outcome>adm_int_artesisdownloading</from-outcome>
+      <to-view-id>/pages/administration/interfaces/artesisdownloading.xhtml</to-view-id>
+      <redirect />
+    </navigation-case>
+  </navigation-rule>
+
+  <navigation-rule>
+    <from-view-id>*</from-view-id>
+    <navigation-case>
+      <from-outcome>adm_int_cron</from-outcome>
+      <to-view-id>/pages/administration/interfaces/detailcron.xhtml</to-view-id>
+      <redirect />
+    </navigation-case>
+  </navigation-rule>
+
+  <navigation-rule>
+    <from-view-id>*</from-view-id>
+    <navigation-case>
+      <from-outcome>adm_int_quittancement</from-outcome>
+      <to-view-id>/pages/administration/interfaces/pdfquittancement.xhtml</to-view-id>
+      <redirect />
+    </navigation-case>
+  </navigation-rule>
+
+
+  <!-- ==================================================================== -->
+  <!-- Cycle de vie -->
+  <!-- ==================================================================== -->
+  <lifecycle>
+    <phase-listener>com.abita.web.common.MultiPageMessagesSupport</phase-listener>
+  </lifecycle>
+
+
+
+
+</faces-config>
+
+

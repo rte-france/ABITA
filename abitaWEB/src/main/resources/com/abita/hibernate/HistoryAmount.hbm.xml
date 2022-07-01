@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+<hibernate-mapping package="com.abita.dao.historyamount.entity">
+  <class name="com.abita.dao.historyamount.entity.HistoryAmountEntity" table="HISTORY_AMOUNT">
+    <id name="id" type="java.lang.Long" column="HAM_ID">
+      <generator class="sequence">
+        <param name="sequence">SEQ_HISTORY_AMOUNT</param>
+      </generator>
+    </id>
+    <property name="contractId" column="CON_ID" type="java.lang.Long" />
+    <property name="generationType" column="HAM_TYPE" type="java.lang.String" />
+    <property name="monthGeneration" column="HAM_MONTH" type="java.lang.Integer" />
+    <property name="yearGeneration" column="HAM_YEAR" type="java.lang.Integer" />
+    <property name="monthRetroactivity" column="HAM_RETROACTIVITY_MONTH" type="java.lang.Integer" />
+    <property name="yearRetroactivity" column="HAM_RETROACTIVITY_YEAR" type="java.lang.Integer" />
+    <property name="details" column="HAM_DETAILS" type="java.lang.String" />
+  </class>
+
+  <query name="deleteHistoryAmount">
+    	<![CDATA[ delete HistoryAmountEntity h where h.contractId = :idContract ]]>
+  </query>
+</hibernate-mapping>

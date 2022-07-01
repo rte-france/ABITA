@@ -1,0 +1,28 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+			"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+        >
+<h:head>
+</h:head>
+<h:body>
+
+	<ui:composition>
+
+		<h:form id="loginFormo">
+			<h:panelGrid id="logoutPanel" columns="3"
+				rendered="#{security.loginStatus}" class="header-login">
+				<h:outputText value="#{site.welcome}" styleClass="login-msg" />
+				<h:outputText value="#{security.currentUser.firstName}"
+					styleClass="login-msg" />
+				<h:outputText value="#{security.currentUser.lastName}"
+					styleClass="login-msg" />
+			</h:panelGrid>
+		</h:form>
+
+	</ui:composition>
+</h:body>
+</html>
+

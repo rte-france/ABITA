@@ -1,0 +1,801 @@
+
+body {
+    color: #303030;
+    font: 76% Verdana, Tahoma, Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+}
+
+body * {
+    font-size: 12px;
+}
+
+form .content {
+    border: 1px solid #DADADA;
+    background-color: #F8F8F8;
+}
+
+.fieldset {
+    border: #115FAF 1px solid;
+    margin-top: 5px;
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    font-weight: bold;
+    color: #0090CE;
+    padding: 3px 5px 3px 5px;
+}
+
+a {
+    color: #505050;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #808080;
+    text-decoration: underline;
+}
+
+/** A class for horizontal alignment */
+.horizontalCentered {
+    margin: 0 auto;
+}
+
+.large {
+    width: 100%;
+}
+
+/*** Main container ***/
+
+#container {
+    color: #303030;
+    margin: 0;
+    padding: 0;
+    text-align: left;
+    width: 100%;
+}
+
+.fondRTE {
+    background-size: cover;
+    background: url("#{resource['images:bg-header.jpg']}") no-repeat left bottom;
+}
+
+.loginContainer {
+    margin: 18px auto;
+    width: 270px;
+}
+
+.groupButton {
+    margin-top: 4px;
+    margin-right: 3px;
+    margin-left: 70%;
+}
+
+.dialogForm {
+    padding: 0px 20px 10px 10px;
+}
+
+.title1 {
+    margin-bottom: 10px;
+    text-decoration: underline;
+}
+
+.indent {
+    margin-left: 4px;
+}
+
+.navitemrow {
+    background-color: #F8F8F8;
+}
+
+.navitemrowhover {
+    background-color: #ffffff;
+}
+
+.textarea {
+    width: 290px
+}
+
+/*** Header section ***/
+
+.topnav {
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    height: 22px;
+}
+
+#loginnav {
+    position: relative;
+    margin-bottom: 0px;
+    padding: 0px;
+    bottom: 0px;
+    height: 20px;
+}
+
+.topnav img {
+    margin-left: 10px;
+}
+
+.topnav a, a:link, a:visited, a:active {
+    text-align: left;
+    text-decoration: none;
+    color: #0090CE;
+    /* margin-left:2px;	*/
+}
+
+.topnav a:hover {
+    text-decoration: underline;
+    color: #0090CE;
+}
+
+#header-tab {
+    height: 100px;
+    background-repeat: no-repeat;
+}
+
+.title-appli {
+    color: #0090CE;
+    font-family: Impact;
+    font-size: 24px;
+    padding-left: 20px;
+    padding-top: 10px;
+}
+
+.subtitle-appli {
+    color: #0090CE;
+    font-family: Impact;
+    font-size: 20px;
+    padding-left: 20px;
+
+}
+
+#message_error {
+    color: #8B0000;
+    font-family: Impact;
+    font-size: 20px;
+    padding-left: 20px;
+
+}
+
+#header {
+    height: 115px;
+}
+
+.header-login {
+    position: absolute;
+    top: 27px;
+    right: 10px;
+    height: 18px;
+}
+
+.header-locale {
+    position: absolute;
+    right: 10px;
+    top: 75px;
+    border: 0;
+}
+
+.login-msg {
+    font-family: Tahoma, Arial, sans-serif;
+    font-size: 12px;
+    color: #0090CE;
+}
+
+.stitle {
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    font-weight: bold;
+    background: #DADADA top left repeat-x;
+    color: #0090CE;
+    text-decoration: none;
+    border: 1px solid #DADADA;
+}
+
+.link-button {
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    font-weight: bold;
+    background: #DADADA top left repeat-x;
+    color: #0090CE;
+    border: 1px solid #CAE4EF;
+    padding: 0px 10px 3px 10px;
+    height: 18px;
+    cursor: hand;
+}
+
+.button {
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    font-weight: bold;
+    color: #0090CE;
+    border: 1px solid #DADADA;
+    padding: 3px 10px 3px 10px;
+}
+
+.label {
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    font-weight: bold;
+    color: #0090CE;
+    padding: 3px 10px 3px 10px;
+}
+
+.field {
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    font-weight: bold;
+    background: #DADADA top left repeat-x;
+    color: #0090CE;
+    text-decoration: none;
+    border: 1px solid #DADADA;
+}
+
+.field-solid {
+    padding: 1px 3px;
+    background: #fff;
+    border: 1px solid #B5B8C8;
+}
+
+.thin-label {
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    color: #0090CE;
+}
+
+#header a, a:link, a:visited, a:active {
+    text-decoration: none;
+    color: #0090CE;
+}
+
+#header a:hover {
+    text-decoration: underline;
+    color: #0090CE;
+}
+
+.logout-button {
+    width: 24px;
+    height: 24px;
+}
+
+/*** Horizontal menu ***/
+#mainmenu {
+    height: 37px;
+}
+
+#mainmenu .ui-widget-content {
+    border: 0;
+}
+
+#mainmenu .wijmo-wijmenu .wijmo-wijmenu-link {
+    font-weight: 700;
+
+}
+
+.buttonspanelgrid {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#headermenu {
+    margin: 0;
+    padding: 0;
+
+}
+
+#menuForm, #localeForm {
+    margin: 0;
+    padding: 0;
+    heigth: 37px;
+}
+
+#version {
+    position: relative;
+    float: right;
+    padding-top: 0px;
+    margin-top: 0px;
+    vertical-align: top;
+}
+
+/*** Content wrap ***/
+#wrap {
+    clear: both;
+    font-size: 0.9em;
+    padding: 0;
+    color: #5b5b5b;
+    background: #fff;
+    height: 100%;
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+/*** Content ***/
+#content {
+    background-color: inherit;
+}
+
+#content a, a:link, a:visited, a:active {
+    text-decoration: none;
+    color: #0090CE;
+}
+
+#content a:hover {
+    text-decoration: underline;
+    color: #0090CE;
+}
+
+#content a, a:link, a:visited, a:active {
+    text-decoration: none;
+    color: #0090CE;
+}
+
+#content a:hover {
+    text-decoration: underline;
+    color: #0090CE;
+}
+
+/*** Fragment ***/
+.fragment {
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+
+    border: 1px solid #DADADA;
+}
+
+.fragment-title {
+    font-weight: bold;
+    background: #DADADA top left repeat-x;
+    color: #0090CE;
+    padding: 3px 0px 4px 10px;
+    border: 0px;
+}
+
+.fragment-content {
+    padding: 0px 10px 3px 5px;
+    background-color: #ffffff;
+    border-top: 1px solid #DADADA;
+}
+
+/*** Sidebars ***/
+#leftside, #rightside {
+    clear: both;
+    margin: 0;
+    width: 165px;
+}
+
+/*** left side **/
+#leftside {
+    float: left;
+}
+
+/*** right side ***/
+#rightside {
+    float: right;
+}
+
+/*** Footer ***/
+#footer {
+    border-top: 1px;
+    border-top-style: dashed;
+    border-bottom: 1px dashed;
+    clear: both;
+    color: #d0d0d0;
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    font-weight: bold;
+    margin: 0;
+    text-align: center;
+    width: 100%;
+    position: inherit;
+    bottom: 0;
+}
+
+#footer a {
+    color: #d0d0d0;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.footerLabel {
+    color: #d0d0d0;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+/*** Table ***/
+.standardTable {
+    font-family: Arial, Geneva, sans-serif;
+    font-size: 12px;
+    color: #000000;
+    padding: 2;
+    border-style: solid;
+    border-width: 1px;
+}
+
+.standardTable_Header {
+    background: #DADADA top left repeat-x;
+    color: #0090CE;
+    text-align: center;
+    border: none;
+    font-weight: bold;
+    font-size: 12px;
+}
+
+.standardTable_Header_long {
+    BORDER-RIGHT: medium none;
+    BORDER-TOP: medium none;
+    FONT-WEIGHT: bold;
+    FONT-SIZE: 12px;
+    BACKGROUND: #dadada repeat-x left top;
+    BORDER-LEFT: medium none;
+    COLOR: #0090CE;
+    BORDER-BOTTOM: medium none;
+    TEXT-ALIGN: center;
+    height: 40px;
+}
+
+.standardTable_SortHeader {
+    background: #DADADA top left repeat-x;
+    color: #0090CE;
+    text-align: center;
+    border: none;
+    font-weight: bold;
+    font-size: 12px;
+}
+
+.standardTable_Footer {
+    background: #DADADA top left repeat-x;
+}
+
+.standardTable_Row1 {
+    background-color: inherit;
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    color: #0090CE;
+}
+
+.standardTable_Row2 {
+    background-color: #D8EBF1;
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    color: #0090CE;
+}
+
+.standardTable_Column {
+    text-align: left;
+}
+
+.standardTable_ColumnCentered {
+    text-align: center;
+}
+
+/*** Tree2 ***/
+.nodeFolder {
+    font-size: 12px;
+    font-family: Arial, sans-serif;
+    text-decoration: none;
+    color: #0090CE;
+}
+
+.document {
+    color: #0090CE;
+    font-size: 12px;
+    font-family: Arial, sans-serif;
+    text-decoration: none
+}
+
+.documentSelected {
+    color: #ffffff;
+    background-color: #0090CE;
+    font-size: 12px;
+    font-family: Arial, sans-serif;
+    text-decoration: none;
+}
+
+/*** Paginator ***/
+.paginator {
+    color: #0090CE;
+    font-size: 12px;
+    font-family: Arial, sans-serif;
+    font-weight: bold;
+}
+
+/*** Tabbed Pane ***/
+.editorPane_activeTab {
+    background: #E7E7E7 top left repeat-x !important;
+    font-family: Arial, sans-serif !important;
+    font-size: 10px !important;
+    font-weight: bold !important;
+    border-color: #ffffff !important;
+    border-right: 1px solid !important;
+}
+
+.editorPane_activeTab input {
+    font-family: Tahoma, sans-serif !important;
+    font-weight: bold !important;
+    color: #0090CE !important;
+}
+
+.editorPane_inactiveTab {
+    background: transparent repeat-x 0 -201px !important;
+    border-style: solid !important;
+    border-width: 1px !important;
+    border-color: #DADADA !important;
+    border-top: 0px;
+!important;
+    font-family: Arial, sans-serif !important;
+    font-size: 10px !important;
+    font-weight: bold !important;
+    color: #0090CE !important;
+    margin-left: 2em;
+    margin-right: 2em;
+}
+
+.editorPane_inactiveTab input {
+    font-family: Tahoma, sans-serif !important;
+    font-weight: bold !important;
+    color: gray !important;
+}
+
+.editorPane_subStyle {
+    background-color: #F8F8F8 !important;
+    border-style: solid !important;
+    border-width: 1px !important;
+    border-color: #F8F8F8 !important;
+}
+
+.editorPane_tabContent {
+    background-color: #F8F8F8 !important;
+    border-style: solid !important;
+    border-right-width: 1px !important;
+    border-left-width: 1px !important;
+    border-bottom-width: 1px !important;
+    border-top-width: 1px !important;
+    border-color: #F8F8F8 !important;
+    font-family: Verdana, Geneva, sans-serif !important;
+    font-size: 10px !important;
+    margin: 0;
+    padding: 0;
+}
+
+.myFaces_panelTabbedPane {
+    background-color: #F8F8F8 !important;
+    border-style: solid !important;
+    border-width: 0px !important;
+    border-color: #F8F8F8 !important;
+    color: #0090CE !important;
+}
+
+.editorPane_inactiveTab input {
+    padding: 0;
+    font-family: Verdana, Geneva, sans-serif;
+    font-size: 10px;
+    background-color: transparent !important;
+    color: #000000;
+    border: 0;
+
+}
+
+.editorPane_activeTab input {
+    padding: 0;
+    font-family: verdana;
+    font-size: 12px;
+    background-color: transparent !important;
+    color: #FFFFFF;
+    border: 0;
+}
+
+/*** Dojo Html editor container ***/
+.contentEditor {
+    background-color: #fff;
+    border: 1px solid #DADADA;
+}
+
+/*** Calendar component ***/
+
+.yearMonthHeader {
+    background-color: #DDDDDD !important;
+    color: #000000 !important;
+    text-align: center !important;
+    border: none !important;
+    font-weight: bold !important;
+}
+
+.weekHeader {
+    background-color: #E7E7E7 !important;
+    color: #000000 !important;
+    text-align: center !important;
+    border: none !important;
+}
+
+.currentDayCell {
+    background-color: #DDDDDD !important;
+    color: #000000 !important;
+    border: none !important;
+}
+
+.highlighted {
+    background-color: #C6D3EF;
+}
+
+/*** Various classes ***/
+
+.validation {
+    color: #D20038;
+    font-family: Arial, Geneva, sans-serif;
+    font-size: 10pt;
+    font-weight: bold;
+}
+
+.thumbnail {
+    background: #fafbfc;
+    border: 1px solid #b0b0b0;
+    margin: 0 0 10px 10px;
+    padding: 5px;
+}
+
+.searchform {
+    margin: 0;
+}
+
+.searchbox {
+    background: #f0f0f0;
+    border: 1px solid #b0b0b0;
+    margin: 0 4px 0 0;
+    width: 100px;
+}
+
+.searchbutton {
+    background: #f0f0f0;
+    border: 1px solid #b0b0b0;
+}
+
+.clearingdiv {
+    clear: both;
+    height: 10px;
+    width: 1px;
+}
+
+.hide {
+    display: none;
+}
+
+/*** Text format ***/
+
+.intro {
+    font-size: 1.1em;
+    font-weight: bold;
+    letter-spacing: -1px;
+}
+
+.small {
+    font-size: 0.8em;
+}
+
+.large {
+    font-size: 1.4em;
+}
+
+.center {
+    text-align: center;
+}
+
+.right {
+    text-align: right;
+}
+
+tr.styleClassUserActivated {
+    color: #222222;
+}
+
+tr.styleClassUserDesactivated {
+    color: #C0C0C0;
+}
+
+#userListForm .searchUserPanel tr, #userListForm .searchUserPanel tr td {
+    border: none !important;
+    border-style: hidden !important;
+}
+
+#userListForm .searchUserPanel tr td {
+    vertical-align: top;
+}
+
+#userListForm .label_search {
+    font-weight: bold;
+}
+
+.OK a {
+    color: green !important;
+}
+
+.KO a {
+    color: red !important;
+}
+
+.IN_PROGRESS a {
+    font-style: italic;
+}
+
+.message-padding {
+    padding: 20px;
+}
+
+/** Pour des p:panelGrid sans bordures */
+.ui-panelgrid.no-border tr[role="row"].ui-widget-content {
+    border: none;
+}
+
+.ui-panelgrid.no-border tr[role="row"].ui-widget-content td[role="gridcell"] {
+    border: none;
+}
+
+/* Mantis 0000465 */
+/* Correction du padding des fieldset sur IE10 */
+/* Pas de ciblage du navigateur afin d'harmoniser le comportement */
+.ui-fieldset {
+    padding-top: 0px !important;
+}
+
+/* Mantis 0000450 */
+/* Correction double clic des boutons du composant Primefaces fileUpload */
+html.ie10 .fileupload-buttonbar .ui-button input {
+    position: fixed !important;
+}
+
+html.ie10 .ui-fieldset {
+    padding-top: 1px !important;
+}
+
+html.ie10 .ui-fieldset-content > .ui-fileupload {
+    margin-top: 1px;
+}
+
+/*
+	Autre technique :
+
+	@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+		.ui-fieldset {
+			padding-top: 1px !important;
+		}
+	
+		.ui-fieldset-content > .ui-fileupload {
+			margin-top: 1px;
+		}
+	}
+*/
+
+/* Mantis 0000460 */
+/* Masquage de la croix de réinitialisation des champs de saisie */
+*::-ms-clear {
+    display: none;
+}
+
+/** Pour des p:panelGrid sans bordures */
+.ui-panelgrid.no-border tr[role="row"].ui-widget-content {
+    border: none;
+}
+
+.ui-panelgrid.no-border tr[role="row"].ui-widget-content td[role="gridcell"] {
+    border: none;
+}
+
+.ui-fieldset-content > .ui-datatable {
+    padding-top: 1px;
+}
+
+.ui-fieldset-content > .ui-fileupload {
+    margin-top: 1px;
+}
+
+/* on devrait utiliser un reset css */
+img.no-border {
+    border: none;
+}
+
+.logs-button-bar {
+    padding-top: 20px;
+}
+
+/*** End of file ***/
+
+

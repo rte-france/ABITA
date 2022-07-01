@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+<hibernate-mapping package="com.abita.dao.historyhousing.entity">
+  <class name="com.abita.dao.historyhousing.entity.HistoryHousingEntity" table="HISTORY_HOUSING">
+    <id name="id" type="java.lang.Long" column="HHO_ID">
+      <generator class="sequence">
+        <param name="sequence">SEQ_HISTORY_HOUSING</param>
+      </generator>
+    </id>
+    <property name="housingId" column="HOU_ID" type="java.lang.Long" />
+    <property name="month" column="HHO_MONTH" type="java.lang.Integer" />
+    <property name="year" column="HHO_YEAR" type="java.lang.Integer" />
+    <property name="revisedSurfaceArea" column="HHO_REVISED_SURFACE_AREA" type="java.math.BigDecimal" />
+    <property name="roomCount" column="HHO_ROOM_COUNT" type="java.lang.Integer" />
+    <property name="natureOfLocal" column="HHO_HNA_NATURE_OF_LOCAL" type="java.lang.String" />
+    <property name="thirdPartyName" column="HHO_THP_NAME" type="java.lang.String" />
+    <property name="first10SqrMeterPrice" column="HHO_RCA_1ST_10_SQR_METER_PRICE" type="java.math.BigDecimal" />
+    <property name="nextSqrMeterPrice" column="HHO_RCA_NEXT_SQR_METER_PRICE" type="java.math.BigDecimal" />
+    <property name="temp" column="HHO_TEMP" type="java.lang.Boolean" />
+  </class>
+
+  <query name="deleteOldHousings">DELETE FROM HistoryHousingEntity hho WHERE hho.month &lt; :month AND hho.year &lt;= :year OR hho.year &lt; :year OR hho.temp is true</query>
+
+  <query name="findHistoryHousingByPrimaryKeys">SELECT hho FROM HistoryHousingEntity hho WHERE hho.housingId = :id AND hho.month = :month AND hho.year = :year</query>
+
+  <query name="findLatestHistoryHousingByPrimaryKeys">SELECT hho FROM HistoryHousingEntity hho WHERE hho.housingId = :id ORDER BY hho.id</query>
+
+  <query name="findTemporariesHousing">SELECT hho FROM HistoryHousingEntity hho WHERE hho.housingId = :id AND hho.temp IS TRUE</query>
+
+  <query name="deleteHistoryHousing">
+    	<![CDATA[ delete HistoryHousingEntity h where h.housingId = :idHousing ]]>
+  </query>
+
+</hibernate-mapping>

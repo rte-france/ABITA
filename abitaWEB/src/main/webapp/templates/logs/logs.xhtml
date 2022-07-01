@@ -1,0 +1,12 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+        >
+
+	<!-- RM_LOG_001 - Accès à l'écran de consultation des logs -->
+	<ui:composition template="/templates/site/site.xhtml">
+		<ui:define name="title">
+			<h:outputText value="#{siteViewController.siteName}" />:&#160;<h:outputText value="#{logs['fwk.logs.title']}" />
+		</ui:define>
+	</ui:composition>
+</html>

@@ -1,0 +1,30 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+	<h:body>
+		<ui:composition>
+
+			<!-- Cas modifiable et obligatoire -->
+			<p:panelGrid columns="2" rendered="#{editable and required}">
+				<h:outputLabel  value="#{label}" styleClass="required" />
+				<p:inputText value="#{value}" required="true" requiredMessage="#{requiredMessage}"/>
+			</p:panelGrid>
+
+			<!-- Cas modifiable et non obligatoire -->
+			<p:panelGrid columns="2" rendered="#{(not required) and editable}">
+				<h:outputLabel value="#{label}"/>
+				<p:inputText value="#{value}"/>
+			</p:panelGrid>
+
+			<!-- Cas non modifiable -->
+			<p:panelGrid columns="2" rendered="#{not editable}">
+				<h:outputLabel value="#{label}"/>
+				<h:outputText  value="#{value}"/>
+			</p:panelGrid>
+
+       </ui:composition>
+	</h:body>
+</html>

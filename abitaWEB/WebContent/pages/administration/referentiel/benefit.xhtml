@@ -1,0 +1,132 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:fn="http://java.sun.com/jsp/jstl/functions" xmlns:p="http://primefaces.org/ui">
+<ui:composition template="/templates/site/site.xhtml">
+  <ui:define name="title">
+    <h:outputText value="#{customProperties['page.title.prefix']}#{customProperties['administration.referentiel.benefit.title']}" />
+  </ui:define>
+  <ui:define name="body-site">
+    <h2 class="center">#{customProperties['administration.referentiel.benefit.title']}</h2>
+    <h:form id="frmRefBenefit" prependId="false" onkeypress="return event.keyCode != 13">
+      <p:outputPanel layout="block" id="benefitListing">
+        <!-- Permet de désactiver l'action par défaut de la touche "Entrée" (Mantis 35) -->
+        <!-- Voir issue : https://code.google.com/p/primefaces/issues/detail?id=4204 -->
+        <p:commandButton style="display: none;" process="@none" update="@none" ajax="true" />
+        <p:dataTable id="benefitdtble" var="salaryrange" value="#{benefitController.benefitBean.benefitList}" editable="true" emptyMessage="#{customProperties['no.data']}" rowIndexVar="rowIndex">
+          <p:ajax event="rowEdit" update=":messages :frmRefBenefit:benefitdtble" process="@this" />
+          <!-- Titre du tableau -->
+          <f:facet name="header">
+            <h:outputText value="#{customProperties['administration.referentiel.benefit.datatable.title']}" />
+          </f:facet>
+          <!-- Rémunération brute mensuelle -->
+          <p:column headerText="#{customProperties['administration.referentiel.benefit.column.salary.label']}">
+            <!-- Intervales -->
+            <!-- "De" -->
+            <h:outputText value="#{customProperties['administration.referentiel.benefit.label.from']} " rendered="#{!benefitController.isLastIndex(rowIndex)}" />
+            <!-- "A partir de " -->
+            <h:outputText value="#{customProperties['administration.referentiel.benefit.label.startingAt']} " rendered="#{benefitController.isLastIndex(rowIndex)}" />
+            <p:cellEditor render="#{(rowIndex) ne benefitController.benefitBean.benefitList.size()}">
+              <f:facet name="output">
+                <h:outputText value="#{salaryrange.minimumThreshold}" styleClass="lowLimit" />
+              </f:facet>
+              <f:facet name="input">
+                <p:inputText value="#{salaryrange.minimumThreshold}" maxlength="50" label="#{customProperties['administration.referentiel.benefit.column.salary.label']}">
+                  <f:validator validatorId="salaryRangeValidator" />
+                  <f:attribute name="salaryRange" value="#{salaryrange}" />
+                  <f:attribute name="summaryMessage" value="#{customProperties['administration.referentiel.benefit.error.minimumthreshold.limit']}" />
+                </p:inputText>
+                <br />
+              </f:facet>
+              <br />
+            </p:cellEditor>
+            <!-- " à " -->
+            <h:outputText value=" #{customProperties['administration.referentiel.benefit.label.to']} " rendered="#{!benefitController.isLastIndex(rowIndex)}" />
+            <h:outputText value="#{salaryrange.maximumThreshold}" rendered="#{!benefitController.isLastIndex(rowIndex)}" styleClass="highLimit" />
+            <!-- " exclus" -->
+            <h:outputText value=" #{customProperties['administration.referentiel.benefit.label.exclude']}" rendered="#{!benefitController.isLastIndex(rowIndex)}" />
+          </p:column>
+          <!-- Avantages pour une pièce -->
+          <p:column headerText="#{customProperties['administration.referentiel.benefit.column.benefitforoneroom.label']}">
+            <p:cellEditor>
+              <f:facet name="output">
+                <h:outputText value="#{salaryrange.benefit.benefitForOneRoom}" />
+              </f:facet>
+              <f:facet name="input">
+                <p:inputText value="#{salaryrange.benefit.benefitForOneRoom}" maxlength="50" label="#{customProperties['administration.referentiel.benefit.column.benefitforoneroom.label.noreturn']}" />
+              </f:facet>
+            </p:cellEditor>
+          </p:column>
+          <!-- Avantage pour chaque pièce dans le cas de plusieurs pièces -->
+          <p:column headerText="#{customProperties['administration.referentiel.benefit.column.benefitformanyrooms.label']}">
+            <p:cellEditor>
+              <f:facet name="output">
+                <h:outputText value="#{salaryrange.benefit.benefitForManyRooms}" />
+              </f:facet>
+              <f:facet name="input">
+                <p:inputText value="#{salaryrange.benefit.benefitForManyRooms}" maxlength="50" label="#{customProperties['administration.referentiel.benefit.column.benefitformanyrooms.label.noreturn']}" />
+              </f:facet>
+            </p:cellEditor>
+          </p:column>
+          <!-- Actions -->
+          <p:column headerText="#{customProperties['administration.referentiel.benefit.column.action']}" styleClass="action_column">
+            <p:rowEditor id="btnModify" />
+            <!-- 				            <p:tooltip for="btnModify" value="#{customProperties['common.action.update']}" showEffect="fade" hideEffect="fade" /> -->
+            <!-- Bouton suppression -->
+            <p:commandButton id="btnDelete" type="button" onclick="confirmDelete_#{salaryrange.id}.show()" icon="ui-icon-trash" styleClass="btn" rendered="#{!benefitController.isFirstIndex(rowIndex)}" />
+            <p:tooltip for="btnDelete" value="#{customProperties['common.action.delete']}" showEffect="fade" hideEffect="fade" />
+            <!-- Confirmation suppression -->
+            <p:confirmDialog widgetVar="confirmDelete_#{salaryrange.id}" message="#{customProperties['administration.referentiel.benefit.action.delete.confirm']}">
+              <p:commandButton value="#{customProperties['confirm.yes']}" update=":messages :frmRefBenefit:benefitListing" process=":frmRefBenefit:benefitListing" onclick="confirmDelete_#{salaryrange.id}.hide()" immediate="true">
+                <p:collector value="#{salaryrange}" removeFrom="#{benefitController.benefitBean.benefitList}" />
+              </p:commandButton>
+              <p:commandButton type="button" value="#{customProperties['confirm.no']}" onclick="confirmDelete_#{salaryrange.id}.hide()" />
+            </p:confirmDialog>
+          </p:column>
+        </p:dataTable>
+      </p:outputPanel>
+      <p:fieldset id="benefitFieldset" legend="#{customProperties['administration.referentiel.benefit.fieldset.label']}">
+        <p class="info_required">
+          Les champs suivis de <span class="mandatory">*</span> sont obligatoires.
+        </p>
+        <!-- Rémunération brute mensuelle, seuil minimum -->
+        <p>
+          <h:outputLabel for="minimumThreshold" value="#{customProperties['administration.referentiel.benefit.field.minimumthreshold']}" styleClass="label">
+            <span class="mandatory">*</span>
+          </h:outputLabel>
+          <p:inputText id="minimumThreshold" value="#{benefitController.benefitBean.editedSalaryLevel.minimumThreshold}" maxlength="50" label="#{customProperties['administration.referentiel.benefit.field.minimumthreshold']}" />
+          <!-- 					<p:autoComplete id="minimumThreshold" queryDelay="500" minQueryLength="1" valueChangeListener="refreshMaximumThreshold()" binding="#{newMinimumThreshold}"/> -->
+        </p>
+        <p>
+          <!-- Rémunération brute mensuelle, seuil maximum calculé -->
+          <h:outputLabel for="maximumThreshold" value="#{customProperties['administration.referentiel.benefit.field.maximumthreshold']}" styleClass="label" />
+          <p:inputText id="maximumThreshold" value="#{customProperties['administration.referentiel.benefit.label.calculated']}" label="#{customProperties['administration.referentiel.benefit.field.minimumthreshold']}" disabled="true" />
+          <!-- 					<p:remoteCommand name="refreshMaximumThreshold" update="maximumThreshold" /> -->
+          <!-- 					<h:outputText id="maximumThreshold" value="#{benefitController.findNextMaximumThreshold(newMinimumThreshold)}"   -->
+          <!-- 						disabled="true"  -->
+          <!-- 						label="#{customProperties['administration.referentiel.benefit.field.maximumthreshold']}" /> -->
+        </p>
+        <p>
+          <!-- Avantages pour une pièce -->
+          <h:outputLabel for="benefitForOneRoom" value="#{customProperties['administration.referentiel.benefit.field.benefitforoneroom']}" styleClass="label">
+            <span class="mandatory">*</span>
+          </h:outputLabel>
+          <p:inputText id="benefitForOneRoom" value="#{benefitController.benefitBean.editedSalaryLevel.benefit.benefitForOneRoom}" maxlength="50" label="#{customProperties['administration.referentiel.benefit.field.benefitforoneroom']}" />
+        </p>
+        <p>
+          <!-- Avantage pour chaque pièce dans le cas de plusieurs pièces -->
+          <h:outputLabel for="benefitForManyRooms" value="#{customProperties['administration.referentiel.benefit.field.benefitformanyrooms']}" styleClass="label">
+            <span class="mandatory">*</span>
+          </h:outputLabel>
+          <p:inputText id="benefitForManyRooms" value="#{benefitController.benefitBean.editedSalaryLevel.benefit.benefitForManyRooms}" maxlength="50" label="#{customProperties['administration.referentiel.benefit.field.benefitformanyrooms']}" />
+        </p>
+        <!-- Bouton Ajouter -->
+        <p:commandButton id="btnAdd" value="#{customProperties['administration.referentiel.benefit.action.add']}" oncomplete="document.getElementById('minimumThreshold').focus()" actionListener="#{benefitController.addToList}" update=":messages minimumThreshold maximumThreshold benefitForOneRoom benefitForManyRooms benefitListing" process="benefitFieldset" />
+      </p:fieldset>
+      <p:outputPanel layout="block" styleClass="action">
+        <p:commandButton id="btnValidate" value="#{customProperties['common.action.save']}" actionListener="#{benefitController.saveData}" immediate="true" update=":messages" />
+        <p:commandButton id="btnCancel" value="#{customProperties['common.action.cancel']}" action="welcome" immediate="true" />
+      </p:outputPanel>
+    </h:form>
+  </ui:define>
+</ui:composition>
+</html>

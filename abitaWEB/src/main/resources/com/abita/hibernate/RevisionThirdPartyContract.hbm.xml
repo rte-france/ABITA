@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+<hibernate-mapping package="com.abita.dao.revisionthirdpartycontract.entity">
+  <class name="com.abita.dao.revisionthirdpartycontract.entity.RevisionThirdPartyContractEntity" table="REVISION_TPC">
+    <id name="id" type="java.lang.Long" column="REV_TPC_ID">
+      <generator class="sequence">
+        <param name="sequence">SEQ_REVISION_TPC</param>
+      </generator>
+    </id>
+    <property name="amount" column="REV_TPC_AMOUNT" type="java.math.BigDecimal" />
+    <property name="date" column="REV_TPC_DATE" type="java.util.Date" />
+    <property name="type" column="REV_TPC_TYPE" type="java.lang.String" />
+    <property name="thirdPartyContractId" column="TPC_ID" type="java.lang.Long" />
+  </class>
+
+  <query name="findRevisionOfOneContract">
+		<![CDATA[FROM RevisionThirdPartyContractEntity rev_tpc WHERE thirdPartyContractId = :tpcId ORDER BY rev_tpc.id]]>
+  </query>
+
+  <query name="deleteAllRevisionsOfOneContract">
+    	<![CDATA[ delete RevisionThirdPartyContractEntity rev where rev.thirdPartyContractId = :thirdPartyContractId ]]>
+  </query>
+
+</hibernate-mapping>

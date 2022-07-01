@@ -1,0 +1,70 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:fn="http://java.sun.com/jsp/jstl/functions" xmlns:p="http://primefaces.org/ui">
+<ui:composition template="/templates/site/site.xhtml">
+  <ui:define name="title">
+    <h:outputText value="#{customProperties['page.title.prefix']}#{customProperties['administration.referentiel.accountingcode.title']}" />
+  </ui:define>
+  <ui:define name="body-site">
+    <h2 class="center">#{customProperties['administration.referentiel.accountingcode.title']}</h2>
+    <h:form id="frmRefAccountingCode" prependId="false" onkeypress="return event.keyCode != 13">
+      <p:outputPanel layout="block" id="accountingCodeListing">
+        <!-- Permet de désactiver l'action par défaut de la touche "Entrée" (Mantis 35) -->
+        <!-- Voir issue : https://code.google.com/p/primefaces/issues/detail?id=4204 -->
+        <p:commandButton style="display: none;" process="@none" update="@none" ajax="true" />
+        <p:dataTable id="accountingcodedtble" var="accountingCodeRow" value="#{accountingCodeController.accountingCodeBean.lstAccountingCode}" editable="true" emptyMessage="#{customProperties['no.data']}" sortBy="#{accountingCodeRow.code}" paginator="true" paginatorAlwaysVisible="false" paginatorPosition="bottom" rows="15" rowsPerPageTemplate="15, 20, 25" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+          <!-- Titre du tableau -->
+          <f:facet name="header">
+            <h:outputText value="#{customProperties['administration.referentiel.accountingcode.datatable.title']}" />
+          </f:facet>
+          <!-- Code -->
+          <p:column headerText="#{customProperties['administration.referentiel.accountingcode.column.code']}">
+            <p:cellEditor>
+              <f:facet name="output">
+                <h:outputText value="#{accountingCodeRow.code}" />
+              </f:facet>
+              <f:facet name="input">
+                <p:inputText value="#{accountingCodeRow.code}" maxlength="10" required="true" requiredMessage="#{customProperties['administration.referentiel.accountingcode.error.code']}" />
+              </f:facet>
+            </p:cellEditor>
+          </p:column>
+          <!-- Libellé -->
+          <p:column headerText="#{customProperties['administration.referentiel.accountingcode.column.label']}">
+            <h:outputText value="#{accountingCodeRow.label}" />
+          </p:column>
+          <!-- Actions -->
+          <p:column headerText="#{customProperties['administration.referentiel.accountingcode.column.action']}" styleClass="action_column">
+            <p:rowEditor id="btnModify" />
+            <!-- 				            <p:tooltip for="btnModify" value="#{customProperties['administration.referentiel.accountingcode.action.modify']}" showEffect="fade" hideEffect="fade" /> -->
+          </p:column>
+        </p:dataTable>
+      </p:outputPanel>
+      <p:fieldset legend="#{customProperties['administration.referentiel.accountingcode.fieldset']}">
+        <p class="info_required">
+          Les champs suivis de <span class="mandatory">*</span> sont obligatoires.
+        </p>
+        <p>
+          <!-- Code -->
+          <h:outputLabel for="code" value="#{customProperties['administration.referentiel.accountingcode.field.code']}" styleClass="label">
+            <span class="mandatory">*</span>
+          </h:outputLabel>
+          <p:inputText id="code" value="#{accountingCodeController.accountingCodeBean.accountingCode.code}" maxlength="10" label="#{customProperties['administration.referentiel.accountingcode.column.code']}" required="true" requiredMessage="#{customProperties['administration.referentiel.accountingcode.error.code']}" />
+        </p>
+        <p>
+          <!-- Libellé -->
+          <h:outputLabel for="label" value="#{customProperties['administration.referentiel.accountingcode.field.label']}" styleClass="label">
+            <span class="mandatory">*</span>
+          </h:outputLabel>
+          <p:inputText id="label" value="#{accountingCodeController.accountingCodeBean.accountingCode.label}" maxlength="250" required="true" requiredMessage="#{customProperties['administration.referentiel.accountingcode.error.label']}" />
+        </p>
+        <!-- Bouton Ajouter -->
+        <p:commandButton id="btnAdd" value="#{customProperties['administration.referentiel.accountingcode.action.add']}" actionListener="#{accountingCodeController.addAccountingCodeToList}" update=":messages code label accountingCodeListing" />
+      </p:fieldset>
+      <p:outputPanel layout="block" styleClass="action">
+        <p:commandButton id="btnValidate" value="#{customProperties['common.action.save']}" actionListener="#{accountingCodeController.saveData}" immediate="true" update=":messages" />
+        <p:commandButton id="btnCancel" value="#{customProperties['common.action.cancel']}" action="welcome" immediate="true" />
+      </p:outputPanel>
+    </h:form>
+  </ui:define>
+</ui:composition>
+</html>

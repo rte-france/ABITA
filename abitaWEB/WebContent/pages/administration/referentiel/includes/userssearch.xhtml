@@ -1,0 +1,58 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:p="http://primefaces.org/ui">
+<ui:composition>
+  <p:messages autoUpdate="true">
+  </p:messages>
+  <!-- Search form -->
+  <p:panel header="#{access['admin.acces.search']}">
+    <h:panelGrid columns="1" styleClass="searchUserPanel">
+      <h:panelGrid id="userSearchPanelGrid1" columns="8" styleClass="searchUserPanel">
+        <!-- NNI -->
+        <h:outputLabel for="nni" value="#{site.nni}" styleClass="label_search" />
+        <p:inputText id="nni" value="#{extendedUserBean.extendedUserCriteria.login}" />
+        <!-- FirstName -->
+        <h:outputLabel for="firstName" value="#{access['user.list.first_name']}" styleClass="label_search" />
+        <p:inputText id="firstName" value="#{extendedUserBean.extendedUserCriteria.firstName}" />
+        <!-- Name -->
+        <h:outputLabel for="name" value="#{access['user.list.last_name']}" styleClass="label_search" />
+        <p:inputText id="name" value="#{extendedUserBean.extendedUserCriteria.lastName}" />
+        <!-- Email -->
+        <h:outputLabel for="email" value="#{access['user.list.email']}" styleClass="label_search" />
+        <p:inputText id="email" value="#{extendedUserBean.extendedUserCriteria.email}" />
+      </h:panelGrid>
+      <h:panelGrid id="userSearchPanelGrid4" columns="8" styleClass="searchUserPanel">
+        <!-- State -->
+        <h:outputLabel for="activatedString" value="#{access['user.list.activation.label']}" styleClass="label_search" />
+        <p:selectOneMenu id="activatedString" value="#{extendedUserBean.extendedUserCriteria.activated}" converter="fwk.converter.stringselectitem">
+          <f:attribute name="converter-values" value="#{extendedUserBean.activatedList}" />
+          <f:selectItems value="#{extendedUserBean.activatedList}" />
+        </p:selectOneMenu>
+        <!-- Third Party Contract Manager -->
+        <h:outputLabel for="thirdPartyContractManagerOptionListString" value="#{customProperties['housing.field.manager']}" styleClass="label_search" />
+        <p:selectOneMenu id="thirdPartyContractManagerOptionListString" value="#{extendedUserBean.extendedUserCriteria.thirdPartyContractManager}" converter="fwk.converter.stringselectitem">
+          <f:attribute name="converter-values" value="#{extendedUserBean.thirdPartyContractManagerOptionList}" />
+          <f:selectItems value="#{extendedUserBean.thirdPartyContractManagerOptionList}" />
+        </p:selectOneMenu>
+        <!-- Groups -->
+        <h:outputLabel for="groups" value="#{access['user.groups']}" styleClass="label_search" />
+        <p:selectManyMenu id="groups" value="#{extendedUserBean.extendedUserCriteria.groups}" style="height:50px; width:150px;">
+          <f:selectItem itemLabel="#{access['user.groups.all']}" itemValue="all" />
+          <f:selectItems value="#{extendedUserBean.groupList}" var="group" itemLabel="#{group.name}" itemValue="#{group.identifier}" />
+        </p:selectManyMenu>
+      </h:panelGrid>
+      <h:panelGrid>
+        <!-- Agence -->
+        <h:outputLabel for="agencies" value="#{customProperties['administration.agency.label']}" styleClass="label_search" />
+        <p:selectOneMenu id="agencies" value="#{extendedUserBean.extendedUserCriteria.agency}" converter="abita.converter.dto">
+          <f:attribute name="converter-values" value="#{extendedUserBean.agencyList}" />
+          <f:selectItem itemLabel="#{customProperties['administration.agency.all']}" itemValue="#{null}" />
+          <f:selectItems value="#{extendedUserBean.agencyList}" var="agency" itemLabel="#{agency.name}" itemValue="#{agency}" />
+        </p:selectOneMenu>
+      </h:panelGrid>
+    </h:panelGrid>
+    <!-- Search -->
+    <!-- [RM_MET_002] Trace de la durée de la liste des utilisateurs -->
+    <p:commandButton id="searchButton" value="#{access['user.button.search']}" actionListener="#{extendedUserController.search}" update=":userListForm:userListTable" />
+  </p:panel>
+</ui:composition>
+</html>

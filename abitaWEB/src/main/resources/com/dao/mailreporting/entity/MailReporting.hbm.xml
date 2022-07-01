@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.dao.mailreporting.entity">
+	<class name="MailReporting" table="FWK_MAIl_REPORTING">
+
+		<id name="id" unsaved-value="null" column="MAIL_ID">
+			<generator class="native">
+				<param name="sequence">SEQ_MAIL_ID</param>
+			</generator>
+		</id>
+
+		<property name="statusCode" column="MAIL_STATUS" type="java.lang.Integer" not-null="false" />
+
+		<property name="dateSent" column="MAIL_DATE_SENT" type="java.util.Date" not-null="true" />
+
+		<property name="subject" column="MAIL_SUBJECT" type="java.lang.String" not-null="true" />
+
+		<property name="sender" column="MAIL_SENDER" type="java.lang.String" not-null="true" />
+
+		<property name="recipients" column="MAIL_RECIPIENTS" type="java.lang.String" not-null="true" />
+
+		<property name="copyRecipients" column="MAIL_COPY_RECIPIENTS" type="java.lang.String" not-null="false" />
+
+		<property name="blindCopyRecipients" column="MAIL_BLIND_COPY_RECIPIENTS" type="java.lang.String" not-null="false" />
+
+		<property name="attachmentsCount" column="MAIL_ATTACHMENTS" type="java.lang.Integer" not-null="true" />
+
+		<property name="errorMessage" column="MAIL_ERROR_MESSAGE" type="java.lang.String" not-null="false" />
+	</class>
+
+	<query name="getErrorMessages"><![CDATA[
+		SELECT DISTINCT mail.errorMessage FROM MailReporting AS mail WHERE mail.errorMessage IS NOT NULL
+	]]></query>
+</hibernate-mapping>

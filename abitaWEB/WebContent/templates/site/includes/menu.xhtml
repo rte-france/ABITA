@@ -1,0 +1,72 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:fn="http://java.sun.com/jsp/jstl/functions" xmlns:p="http://primefaces.org/ui">
+<ui:composition>
+  <ui:include src="/templates/site/includes/locale.xhtml" />
+  <h:form id="menuForm">
+    <p:menubar id="menubar" style="z-index:100;">
+      <p:menuitem id="macceuil" value="#{site['nav.home']}" action="welcome" />
+      <!-- Tiers -->
+      <p:submenu id="sthirdparty" label="#{customProperties['thirdparty.menu.title']}" rendered="#{security.access('consultation', 'utilisateur', 'administrateur')}">
+        <p:menuitem id="smcreationthirdparty" value="#{customProperties['thirdparty.menu.creation.title']}" action="tp_create" ajax="false" rendered="#{security.access('utilisateur', 'administrateur')}" />
+        <p:menuitem id="smsearchthirdparty" value="#{customProperties['thirdparty.menu.search.title']}" action="tp_search" ajax="false" />
+      </p:submenu>
+      <!-- Logement -->
+      <p:submenu id="shousing" label="#{customProperties['housing.menu.title']}" rendered="#{security.access('consultation', 'utilisateur', 'administrateur')}">
+        <p:menuitem id="smcreationhousing" value="#{customProperties['housing.menu.creation.title']}" action="h_create" ajax="false" rendered="#{security.access('utilisateur', 'administrateur')}" />
+        <p:menuitem id="smsearchhousing" value="#{customProperties['housing.menu.search.title']}" action="h_search" ajax="false" />
+      </p:submenu>
+      <!-- Contrat Tiers -->
+      <p:submenu id="sthirdpartycontract" label="#{customProperties['thirdpartycontract.menu.title']}" rendered="#{security.access('consultation', 'utilisateur', 'administrateur')}">
+        <p:menuitem id="smcreationthirdpartycontract" value="#{customProperties['thirdpartycontract.menu.creation.title']}" action="tpc_create" ajax="false" rendered="#{security.access('utilisateur', 'administrateur')}" />
+        <p:menuitem id="smsearchthirdpartycontract" value="#{customProperties['thirdpartycontract.menu.search.title']}" action="tpc_search" ajax="false" />
+      </p:submenu>
+      <!-- Occupant -->
+      <p:submenu id="stenant" label="#{customProperties['tenant.menu.title']}" rendered="#{security.access('consultation', 'utilisateur', 'administrateur')}">
+        <p:menuitem id="smcreationtenant" value="#{customProperties['tenant.menu.creation.title']}" ajax="false" rendered="#{security.access('utilisateur', 'administrateur')}" action="t_create" />
+        <p:menuitem id="smsearchtenant" value="#{customProperties['tenant.menu.search.title']}" ajax="false" action="t_search" />
+      </p:submenu>
+      <!-- Contrat Occupant -->
+      <p:submenu id="scontract" label="#{customProperties['contract.menu.title']}" rendered="#{security.access('consultation', 'utilisateur', 'administrateur')}">
+        <p:menuitem id="smcreationcontract" value="#{customProperties['contract.menu.creation.title']}" action="tc_create" ajax="false" rendered="#{security.access('utilisateur', 'administrateur')}" />
+        <p:menuitem id="smsearchcontract" value="#{customProperties['contract.menu.search.title']}" action="tc_search" ajax="false" />
+      </p:submenu>
+      <!-- Administration fonctionnelle-->
+      <p:submenu id="sapplicationadmin" label="#{customProperties['application.administration.menu.title']}" rendered="#{security.access('consultation', 'utilisateur', 'administrateur')}">
+        <p:menuitem id="smfonctionaluserlist" value="#{access['nav.admin.access.user']}" action="adm_users" ajax="false" rendered="#{security.access('administrateur')}" />
+        <!-- Gestion du référentiel -->
+        <p:submenu id="sreferentiel" label="#{customProperties['adm.menu.referentiel.title']}" rendered="#{security.access('administrateur')}">
+          <p:menuitem id="smreferentielcostcenter" value="#{customProperties['adm.menu.referentiel.costcenter.title']}" action="adm_ref_costcenter" ajax="false" rendered="#{security.access('administrateur')}" />
+          <p:menuitem id="smreferentielfieldofactivity" value="#{customProperties['adm.menu.referentiel.fieldofactivity.title']}" action="adm_ref_fieldofactivity" ajax="false" rendered="#{security.access('administrateur')}" />
+          <p:menuitem id="smreferentielbenefit" value="#{customProperties['adm.menu.referentiel.benefit.title']}" action="adm_ref_benefit" ajax="false" rendered="#{security.access('administrateur')}" />
+          <p:menuitem id="smaccountingcode" value="#{customProperties['adm.menu.referentiel.accountingcode.title']}" action="adm_ref_accountingcode" ajax="false" rendered="#{security.access('administrateur')}" />
+          <p:menuitem id="smtvacode" value="#{customProperties['adm.menu.referentiel.tvacode.title']}" action="adm_ref_tvacode" ajax="false" rendered="#{security.access('administrateur')}" />
+          <p:menuitem id="smroomcategory" value="#{customProperties['adm.menu.referentiel.roomcategory.title']}" action="adm_ref_roomcategory" ajax="false" rendered="#{security.access('administrateur')}" />
+          <p:menuitem id="smrevaluationrents" value="#{customProperties['adm.menu.referentiel.revaluationrents.title']}" action="adm_ref_revaluationrents" ajax="false" rendered="#{security.access('administrateur')}" />
+          <p:menuitem id="smrefagency" value="#{customProperties['adm.menu.referentiel.agency.title']}" action="adm_ref_agency" ajax="false" rendered="#{security.access('administrateur')}" />
+          <p:menuitem id="smrefsite" value="#{customProperties['adm.menu.referentiel.site.title']}" action="adm_ref_site" ajax="false" rendered="#{security.access('administrateur')}" />
+        </p:submenu>
+        <!-- Archivage -->
+        <p:menuitem id="smarchive" value="#{customProperties['adm.menu.archive.title']}" action="adm_archive" ajax="false" rendered="#{security.access('consultation', 'utilisateur', 'administrateur')}" />
+        <!-- Interface -->
+        <p:submenu id="sminterface" label="#{customProperties['adm.menu.interface.title']}" rendered="#{security.access('consultation', 'utilisateur', 'administrateur')}">
+          <p:menuitem id="smcron" value="#{customProperties['adm.menu.interface.detailcron.title']}" action="adm_int_cron" ajax="false" rendered="#{security.access('consultation', 'utilisateur', 'administrateur')}" />
+          <p:menuitem id="smintartesis" value="#{customProperties['adm.menu.interface.artesis.title']}" action="adm_int_artesis" ajax="false" rendered="#{security.access('administrateur')}" />
+          <p:menuitem id="sminterfacegcpdownloading" value="#{customProperties['adm.menu.interface.gcpdownloading.title']}" action="adm_int_gcpdownloading" ajax="false" rendered="#{security.access('administrateur')}" />
+          <p:menuitem id="sminterfaceartesisdownloading" value="#{customProperties['adm.menu.interface.artesisdownloading.title']}" action="adm_int_artesisdownloading" ajax="false" rendered="#{security.access('administrateur')}" />
+          <p:menuitem id="smpdfquittancement" value="#{customProperties['adm.menu.interface.pdfquittancement.title']}" action="adm_int_quittancement" ajax="false" rendered="#{security.access('consultation', 'utilisateur', 'administrateur')}" />
+        </p:submenu>
+      </p:submenu>
+      <!-- Administration technique-->
+      <p:submenu id="sadmin" label="#{customProperties['application.administration.technique.menu.title']}" rendered="#{security.access('administrateur')}">
+        <p:menuitem id="smuserlist" value="#{access['nav.admin.access.user']}" action="user" ajax="false" rendered="#{security.access('administrateur')}" />
+        <p:menuitem id="smgrouplist" value="#{access['nav.admin.access.group']}" action="group" ajax="false" rendered="#{security.access('administrateur')}" />
+        <p:menuitem id="smconf" value="#{parame['nav.admin.param']}" action="parameter" ajax="false" rendered="#{security.access('administrateur')}" />
+        <!-- RM_MAI_001 -->
+        <p:menuitem id="smmails" value="#{mails['mails.menu.title']}" action="mails" ajax="false" rendered="#{security.access('administrateur')}" />
+        <!-- RM_LOG_001 - Accès à l'écran de consultation des logs -->
+        <p:menuitem id="mlogs" value="#{site['nav.logs']}" action="logs" rendered="#{security.access('administrateur')}" />
+      </p:submenu>
+    </p:menubar>
+  </h:form>
+</ui:composition>
+</html>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+<hibernate-mapping package="com.abita.dao.roomcategory.entity">
+  <class name="com.abita.dao.roomcategory.entity.RoomCategoryEntity" table="ROOM_CATEGORY">
+    <id name="id" type="java.lang.Long" column="RCA_ID">
+      <generator class="sequence">
+        <param name="sequence">SEQ_ROOM_CATEGORY</param>
+      </generator>
+    </id>
+    <property name="label" column="RCA_LABEL" type="java.lang.String" />
+    <property name="first10SqrMeterPrice" column="RCA_FIRST_10_SQR_METER_PRICE" type="java.math.BigDecimal" />
+    <property name="nextSqrMeterPrice" column="RCA_NEXT_SQR_METER_PRICE" type="java.math.BigDecimal" />
+  </class>
+</hibernate-mapping>

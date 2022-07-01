@@ -1,0 +1,123 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.dao.user.entity">
+
+	<class name="User" table="FWK_USER">
+		<id name="id" column="USR_ID" unsaved-value="null">
+			<generator class="native">
+				<param name="sequence">SEQ_USR_ID</param>
+			</generator>
+		</id>
+
+		<natural-id mutable="true">
+			<property name="login" length="10" column="USR_LOGIN" />
+		</natural-id>
+
+		<version name="version" column="USR_VERSION" />
+
+		<property name="passwd" length="15" column="USR_PASSWD" />
+
+		<property name="firstName" column="USR_FIRST_NAME" length="30"
+			not-null="true" />
+
+		<property name="lastName" column="USR_LAST_NAME" length="30"
+			not-null="true" />
+
+		<property name="location" column="USR_LOCATION" length="30" />
+
+		<property name="email" column="USR_EMAIL" />
+
+		<property name="phone" column="USR_PHONE" />
+
+		<property name="fax" column="USR_FAX" />
+
+		<property name="activated" column="USR_ACTIVATED" />
+
+		<property name="logicalId" column="USR_LOGICAL_ID" />
+
+		<many-to-one name="theme" class="com.dao.theme.entity.Theme" column="THEME_ID" />
+
+        <property name="groups" column="USR_GROUPS" not-null="false" />
+
+	</class>
+
+	<query name="findByLogin"><![CDATA[
+        from User u where u.login = :login]]>
+	</query>
+
+	<query name="findByLogicalId"><![CDATA[
+        from User u where u.logicalId = :logicalId]]>
+	</query>
+
+	<query name="removeAllUsers"><![CDATA[
+        delete User]]>
+	</query>
+
+	<query name="getAllUser"><![CDATA[
+        from User]]>
+	</query>
+
+	<query name="getAllUserSortedByIdAscending"><![CDATA[
+        from User u where u.login not in (:filtredLogin) order by u.id asc ]]>
+	</query>
+
+	<query name="getAllUserSortedByIdDescending"><![CDATA[
+        from User u where u.login not in (:filtredLogin) order by u.id desc ]]>
+	</query>
+
+	<query name="getAllUserSortedByLoginAscending"><![CDATA[
+        from User u where u.login not in (:filtredLogin) order by u.login asc]]>
+	</query>
+
+	<query name="getAllUserSortedByLoginDescending"><![CDATA[
+        from User u where u.login not in (:filtredLogin) order by u.login desc]]>
+	</query>
+
+	<query name="getAllUserSortedByFirstNameAscending"><![CDATA[
+        from User u where u.login not in (:filtredLogin) order by u.firstName asc]]>
+	</query>
+
+	<query name="getAllUserSortedByFirstNameDescending"><![CDATA[
+        from User u where u.login not in (:filtredLogin) order by u.firstName desc]]>
+	</query>
+
+	<query name="getAllUserSortedByLastNameAscending"><![CDATA[
+        from User u where u.login not in (:filtredLogin) order by u.lastName asc]]>
+	</query>
+
+	<query name="getAllUserSortedByLastNameDescending"><![CDATA[
+        from User u where u.login not in (:filtredLogin) order by u.lastName desc]]>
+	</query>
+
+	<query name="getAllUserSortedByLocationAscending"><![CDATA[
+        from User u where u.login not in (:filtredLogin) order by u.location asc]]>
+	</query>
+
+	<query name="getAllUserSortedByLocationDescending"><![CDATA[
+        from User u where u.login not in (:filtredLogin) order by u.location desc]]>
+	</query>
+
+	<query name="getAllUserSortedByEmailAscending"><![CDATA[
+        from User u where u.login not in (:filtredLogin) order by u.email asc]]>
+	</query>
+
+	<query name="getAllUserSortedByEmailDescending"><![CDATA[
+        from User u where u.login not in (:filtredLogin) order by u.email desc]]>
+	</query>
+
+	<query name="getAllUserSortedByActivationAscending"><![CDATA[
+        from User u where u.login not in (:filtredLogin) order by u.activated asc]]>
+	</query>
+
+	<query name="getAllUserSortedByActivationDescending"><![CDATA[
+        from User u where u.login not in (:filtredLogin) order by u.activated desc]]>
+	</query>
+
+	<query name="getUserCount"><![CDATA[
+        select count(u) from User as u where u.login not in (:filtredLogin)  ]]>
+	</query>
+
+</hibernate-mapping>
+

@@ -1,0 +1,426 @@
+/**	COMMUN A L'APPLICATION	**/
+form[id^=frm] {
+  margin-top: 2%;
+}
+
+form[id^=frm] fieldset {
+  margin: 2% auto 0;
+  width: 70%;
+}
+
+form[id^=frm] input {
+  width: 40%;
+}
+
+[id=messages],#alert {
+  margin: 0 auto 0;
+  width: 60%;
+}
+
+#alert {
+  display: none;
+}
+
+.info_required {
+  margin-bottom: 2%;
+  font-weight: bold;
+  font-style: italic;
+  font-size: 0.85em;
+}
+
+.mandatory {
+  color: #FF0000;
+}
+
+legend+div {
+  margin-top: 2%;
+}
+
+[id^=frm] label,[id^=frm] span.label {
+  display: inline-block;
+  width: 25%;
+  text-align: right;
+}
+
+[id^=frmCreateThirdParty] .sublabel {
+  width: auto;
+}
+
+[id^=frm] label.txtarea,[id^=frm] span.label.txtarea {
+  vertical-align: top;
+}
+
+span.label.txtarea {
+  padding-top: 0;
+}
+
+[id^=frm] .ddl label,[id^=frm] .ddl span.label,[id^=frm] label.chxbox,[id^=frm] span.label.chxbox {
+  vertical-align: bottom;
+}
+
+.action {
+  margin-top: 3%;
+  text-align: center;
+}
+
+.action button+button {
+  margin-left: 3%;
+}
+
+.actionSearch {
+  margin-bottom: 3%;
+}
+
+.actionSearch button+button {
+  margin-left: 3%;
+}
+
+.ui-datatable-data-empty {
+  text-align: center;
+}
+
+.action_column {
+  width: 15%;
+}
+
+.action_column .btn {
+  margin-left: 5px;
+  background: none !important;
+  border: none !important;
+  box-shadow: none !important;
+  height: 16px;
+  width: 16px;
+}
+
+[id=result] {
+  margin-top: 3%;
+}
+
+[id=resultHousing] {
+  margin-top: 3%;
+}
+
+[id=resultTenant] {
+  margin-top: 3%;
+}
+
+[id=result] table {
+  margin: 0 auto;
+}
+
+[id=result] [id=btn_actions] {
+  margin-top: 4%;
+  text-align: center;
+}
+
+table.radio {
+  display: inline-block;
+}
+
+table.radio label {
+  margin-right: 10px;
+}
+
+.dropdownlist {
+  vertical-align: middle;
+}
+
+span.long_desc {
+  display: inline-block;
+  width: 50%;
+}
+
+.dt_export_excel {
+  display: none;
+}
+
+p,.ddl {
+  margin: 0.5em 0;
+}
+
+table.presentation {
+  border-spacing: 0 0.5em;
+}
+
+/**	ACCUEIL	**/
+:not (.loginContainer ) +.welcome {
+  background: url("../resources/images/welcome.jpg") no-repeat center 0;
+  height: 768px;
+}
+
+.welcome .ui-widget-content {
+  background: transparent;
+}
+
+.welcome table[role=grid] tbody {
+  background-color: #87CEFA;
+}
+
+/** RECHERCHE	**/
+[id^=frmCreate] .ui-datatable th,[id^=frmSearch] .ui-datatable th {
+  padding-right: 6px;
+  white-space: inherit;
+}
+
+[id^=frmSearch] .ui-datatable th>div,[id^=frmSearch] .ui-datatable td>div,[id^=frmCreate] [id=result] .ui-datatable th>div,[id^=frmSearch] [id=result] .ui-datatable td>div {
+  min-width: 75px;
+}
+
+[id^=frmSearch] .ui-datatable th.small_label>div,[id^=frmSearch] .ui-datatable td.small_label>div,#result.consult .ui-datatable th.small_label>div,#result.consult .ui-datatable td.small_label>div {
+  width: 75px;
+}
+
+[id^=frmSearch] .ui-datatable th.long_label>div,[id^=frmSearch] .ui-datatable td.long_label>div,#result.consult .ui-datatable th.long_label>div,#result.consult .ui-datatable td.long_label>div {
+  width: 115px;
+}
+
+[id^=frmSearch] .ui-datatable th.very_long_label>div,[id^=frmSearch] .ui-datatable td.very_long_label>div,#result.consult .ui-datatable th.very_long_label>div,#result.consult .ui-datatable td.very_long_label>div {
+  width: 136px;
+}
+
+[id^=frmSearch] .ui-datatable th .ui-sortable-column-icon,#result.consult .ui-datatable th .ui-sortable-column-icon {
+  float: right;
+  position: inherit;
+  right: inherit;
+}
+
+[id^=frmSearch] .ui-datatable th.long_label .ui-sortable-column-icon,[id^=frmSearch] .ui-datatable th.multi_line .ui-sortable-column-icon,#result.consult .ui-datatable th.long_label .ui-sortable-column-icon,#result.consult .ui-datatable th.multi_line .ui-sortable-column-icon {
+  margin-top: 6%;
+}
+
+[id^=frmSearch] .ui-datatable th.very_long_label .ui-sortable-column-icon,[id^=frmSearch] .ui-datatable th.hybride .ui-sortable-column-icon,#result.consult .ui-datatable th.very_long_label .ui-sortable-column-icon,#result.consult .ui-datatable th.hybride .ui-sortable-column-icon {
+  margin-top: 10%;
+}
+
+/**	TIERS	**/
+/*	TIERS - RECHERCHE	*/
+[id=frmSearchThirdParty] [id=result] table {
+  width: 80%;
+}
+
+/**	LOGEMENT	**/
+fieldset [id$=_date] input,fieldset input[id$=_surface],fieldset input[id$=_number] {
+  width: 75px;
+}
+
+table.presentation label {
+  width: 160px;
+  text-align: right;
+}
+
+table.presentation td+td label {
+  width: 130px;
+  padding-left: 30px;
+}
+
+table.presentation table td label {
+  width: inherit;
+  padding-left: 0;
+}
+
+table.presentation input {
+  width: 75px;
+}
+
+table.presentation input.normal {
+  width: 175px;
+}
+
+fieldset [id$=_date].chk_mod {
+  display: none;
+}
+
+@media screen and (max-width: 1300px) {
+  form[id^=frm] fieldset {
+    width: 95%;
+  }
+}
+
+/* LOGEMENT - CONSULTATION	*/
+[id=frmCreateHousing] [id=result] table {
+  width: 75%;
+}
+
+/* LOGEMENT - RECHERCHE	*/
+[id=frmSearchHousing] [id=result] table {
+  width: 95%;
+}
+
+/**	CONTRAT TIERS **/
+/*	CONTRAT TIERS - RECHERCHE	*/
+[id=frmSearchThirdPartyContract] .ui-datatable th>div,[id=frmSearchThirdPartyContract] .ui-datatable td>div {
+  width: 95px;
+}
+
+[id=frmSearchThirdPartyContract] .ui-datatable-data-empty td>div {
+  width: inherit;
+}
+
+#termZone table label {
+  width: inherit;
+}
+
+/** OCCUPANT	**/
+#refField {
+  margin: 0.5em 0;
+}
+
+#reftest {
+  display: inline-block;
+  padding-bottom: 7px;
+}
+
+/* OCCUPANT - RECHERCHE	*/
+[id=frmSearchTenant] [id=result] table {
+  width: 90%;
+}
+
+[id=frmSearchTenant] .ui-datatable th.long_label>div,[id=frmSearchTenant] .ui-datatable td.long_label>div {
+  width: 150px;
+}
+
+/**	CONSULTATION DATATABLE	**/
+#result.consult h2 ~ h2 {
+  margin-top: 3%;
+}
+
+/**	ADMINISTRATION	**/
+/*	Archivages	et Interface de téléchargement GCP et Artesis*/
+[id=frmArchive] [id=year],[id=frmArchive] [id=btnSearch],[id=frmInterfaceGCPDownloading] [id=year],[id=frmInterfaceGCPDownloading] [id=btnSearch],[id=frmInterfacePDFQuittancement] [id=year],[id=frmInterfacePDFQuittancement] [id=btnSearch],[id=frmInterfaceArtesisDownloading] [id=year],[id=frmInterfaceArtesisDownloading] [id=btnSearch] {
+  margin-left: 2%;
+  vertical-align: top;
+}
+
+[id=frmArchive] fieldset input,[id=frmInterfaceGCPDownloading] fieldset input,[id=frmInterfacePDFQuittancement] fieldset input,[id=frmInterfaceArtesisDownloading] fieldset input {
+  width: inherit;
+}
+
+[id=frmArchive] [id=btnSearch],[id=frmInterfaceGCPDownloading] [id=btnSearch],[id=frmInterfacePDFQuittancement] [id=btnSearch],[id=frmInterfaceArtesisDownloading] [id=btnSearch] {
+  margin-left: 15%;
+}
+
+[id=frmArchive] [id=result] table,[id=frmInterfaceGCPDownloading] [id=result] table,[id=frmInterfacePDFQuittancement] [id=result] table,[id=frmInterfaceArtesisDownloading] [id=result] table {
+  width: 50%;
+}
+
+[id=frmArchive] [id=result] td,[id=frmInterfaceGCPDownloading] [id=result] td,[id=frmInterfacePDFQuittancement] [id=result] td,[id=frmInterfaceArtesisDownloading] [id=result] td {
+  text-align: center;
+}
+
+[id=frmArchive] [id=result] button,[id=frmInterfaceGCPDownloading] [id=result] button,[id=frmInterfacePDFQuittancement] [id=result] button,[id=frmInterfaceArtesisDownloading] [id=result] button {
+  background: none;
+  border: none;
+  box-shadow: none;
+}
+
+[id=frmArchive] [id=result] .ddl,[id=frmInterfaceGCPDownloading] [id=result] .ddl,[id=frmInterfacePDFQuittancement] [id=result] .ddl,[id=frmInterfaceArtesisDownloading] [id=result] .ddl {
+  background: url("../resources/images/download.png") no-repeat;
+  border-radius: 0;
+  height: 16px;
+  width: 16px;
+}
+
+/*	Référentiel	*/
+form[id^=frmRef] table {
+  margin: auto;
+  width: 40%;
+}
+
+form[id^=frmRef] input {
+  width: 70%;
+}
+
+[id^=frmRef] fieldset label {
+  width: 38%;
+}
+
+[id^=frmRef] fieldset button {
+  margin: 1% 40%;
+}
+
+form[id^=frmRef] fieldset {
+  width: 50%;
+}
+
+[id=frmRefAccountingCode] fieldset input,[id=frmRefTvaCode] fieldset input,[id=frmRefFieldOfActivity] fieldset input,[id=frmRefCostCenter] fieldset input,[id=frmRefAgency] fieldset input, [id=frmRefSite] fieldset input {
+  width: 30%;
+}
+
+[id=frmRefBenefit] fieldset input {
+  width: 20%;
+}
+
+.ui-widget-content {
+  text-shadow: 0 0 0 black;
+}
+
+/*	CRON	*/
+[id=frmCron] label,[id=frmCron] span.label {
+  display: inline-block;
+  width: 48%;
+  text-align: right;
+}
+
+form[id=frmCron] .ui-tabs {
+  width: 900px;
+  margin: auto;
+}
+
+form[id=frmCron] .ui-fieldset {
+  width: 750px;
+  margin: 20px;
+}
+
+form[id=frmCron] label ~ span {
+  margin-left: 2%;
+}
+
+form[id=frmCron] input.hasDatepicker {
+  width: 38px;
+  text-align: center;
+}
+
+form[id=frmCron] span.calendar input {
+  width: 38px;
+}
+
+/* Empeche les boutons du spinner de passer devant le menu */
+form[id=frmCron] .ui-spinner-button {
+  z-index: 99;
+}
+
+.ui-datatable tr th div.ui-dt-c {
+  padding-right: 1rem;
+}
+
+.sublabel {
+  padding: 3px 5px 3px 10px;
+  color: #0090CE;
+}
+
+.sublabel-info {
+  padding: 3px 5px 3px 10px;
+}
+
+.value {
+  display: inline-block;
+  min-width: 35px;
+}
+
+.short-label {
+  width: 15% !important;
+}
+
+.short-input input{
+  width: 10% !important;
+}
+
+/** CONTRATS OCCUPANTS */
+.date-range input {
+  width: 65px !important;
+}
+
+.date-range .short-label {
+  width: auto !important;
+  margin: 0 2%;
+}

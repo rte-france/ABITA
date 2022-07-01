@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p" xmlns:util="http://www.springframework.org/schema/util" xmlns:batch="http://www.springframework.org/schema/batch" xmlns="http://www.springframework.org/schema/beans" xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx" xmlns:context="http://www.springframework.org/schema/context" xmlns:task="http://www.springframework.org/schema/task"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+						http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch-3.0.xsd
+      					http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+      					http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
+      					http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+      					http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+
+  <!-- RUNNER -->
+  <bean id="tenantTreatmentsRunner" class="com.abita.services.batch.RunScheduledBatch">
+    <property name="label" value="${gcp.tenanttreatmentsrunner.name}" />
+    <property name="jobLauncher" ref="jobLauncher" />
+    <property name="job" ref="tenantTreatmentsJob" />
+  </bean>
+
+  <batch:job id="tenantTreatmentsJob">
+    <batch:step id="tenantTreatmentsStep1" next="tenantTreatmentsStep2">
+      <batch:tasklet ref="archivesHousingService" method="process" />
+    </batch:step>
+    <batch:step id="tenantTreatmentsStep2" next="tenantTreatmentsStep3">
+      <batch:tasklet ref="archivesTenantService" method="process" />
+    </batch:step>
+    <batch:step id="tenantTreatmentsStep3" next="tenantTreatmentsStep4">
+      <batch:tasklet ref="archivesContractService" method="process" />
+    </batch:step>
+    <batch:step id="tenantTreatmentsStep4">
+      <batch:tasklet ref="updateServiceFacade" method="updateContractData" />
+    </batch:step>
+  </batch:job>
+
+</beans>

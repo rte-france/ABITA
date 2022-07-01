@@ -1,0 +1,82 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:fn="http://java.sun.com/jsp/jstl/functions" xmlns:p="http://primefaces.org/ui">
+<ui:composition template="/templates/site/site.xhtml">
+  <ui:define name="title">
+    <h:outputText value="#{customProperties['page.title.prefix']}#{customProperties['thirdparty.update.title']}" />
+  </ui:define>
+  <ui:define name="body-site">
+    <h2 class="center">#{customProperties['thirdparty.update.title']}</h2>
+    <h:form id="frmUpdateThirdParty" prependId="false">
+      <p:fieldset legend="#{customProperties['thirdparty.creation.fieldset']}">
+        <p class="info_required">
+          Les champs suivis de <span class="mandatory">*</span> sont obligatoires.
+        </p>
+        <p>
+          <!-- Référence -->
+          <h:outputText value="#{customProperties['thirdparty.field.ref']}" styleClass="label" />
+          <h:outputText value="#{thirdPartyController.thirdPartyBean.thirdPartyDTO.id}" />
+        </p>
+        <p>
+          <!-- Référence GCP -->
+          <h:outputLabel for="refGCP" value="#{customProperties['thirdparty.field.refgcp']}" styleClass="label" />
+          <p:inputText id="refGCP" value="#{thirdPartyController.thirdPartyBean.thirdPartyDTO.gcpReference}" maxlength="50" />
+        </p>
+        <p>
+          <!-- Nom -->
+          <h:outputLabel for="name" value="#{customProperties['thirdparty.field.name']}" styleClass="label">
+            <span class="mandatory">*</span>
+          </h:outputLabel>
+          <p:inputText id="name" value="#{thirdPartyController.thirdPartyBean.thirdPartyDTO.name}" maxlength="50" />
+        </p>
+        <p>
+          <!-- Adresse -->
+          <h:outputLabel for="adress" value="#{customProperties['thirdparty.field.adress']}" styleClass="label txtarea">
+            <span class="mandatory">*</span>
+          </h:outputLabel>
+          <p:inputTextarea id="adress" value="#{thirdPartyController.thirdPartyBean.thirdPartyDTO.address}" rows="4" cols="74" maxlength="250" />
+        </p>
+        <p>
+          <!-- Code postal -->
+          <h:outputLabel for="cp" value="#{customProperties['thirdparty.field.cp']}" styleClass="label">
+            <span class="mandatory">*</span>
+          </h:outputLabel>
+          <p:inputText id="cp" value="#{thirdPartyController.thirdPartyBean.thirdPartyDTO.postalCode}" maxlength="10" />
+        </p>
+        <p>
+          <!-- Ville -->
+          <h:outputLabel for="city" value="#{customProperties['thirdparty.field.city']}" styleClass="label">
+            <span class="mandatory">*</span>
+          </h:outputLabel>
+          <p:inputText id="city" value="#{thirdPartyController.thirdPartyBean.thirdPartyDTO.city}" maxlength="50" />
+        </p>
+        <p>
+          <!-- Téléphone -->
+          <h:outputLabel for="phone" value="#{customProperties['thirdparty.field.phone']}" styleClass="label" />
+          <p:inputText id="phone" value="#{thirdPartyController.thirdPartyBean.thirdPartyDTO.phone}" maxlength="20" />
+        </p>
+        <p>
+          <!-- Email -->
+          <h:outputLabel for="email" value="#{customProperties['thirdparty.field.email']}" styleClass="label" />
+          <p:inputText id="email" value="#{thirdPartyController.thirdPartyBean.thirdPartyDTO.mailAddress}" maxlength="255" />
+        </p>
+        <p>
+          <!-- Nom du bénéficiaire -->
+          <h:outputLabel for="beneficiaryName" value="#{customProperties['thirdparty.field.beneficiary.name']}" styleClass="label"></h:outputLabel>
+          <p:inputText id="beneficiaryName" value="#{thirdPartyController.thirdPartyBean.thirdPartyDTO.beneficiaryName}" maxlength="50" />
+        </p>
+        <p>
+          <!-- Adresse du bénéficiaire -->
+          <h:outputLabel for="beneficiaryAddress" value="#{customProperties['thirdparty.field.beneficiary.address']}" styleClass="label txtarea"></h:outputLabel>
+          <p:inputTextarea id="beneficiaryAddress" value="#{thirdPartyController.thirdPartyBean.thirdPartyDTO.beneficiaryAddress}" rows="4" cols="74" maxlength="250" />
+        </p>
+      </p:fieldset>
+      <h:inputHidden id="checkId" value=" " />
+      <p:outputPanel layout="block" styleClass="action">
+        <p:commandButton id="btnValidate" value="#{customProperties['thirdparty.action.save']}" validateClient="true" action="#{thirdPartyController.saveOrUpdateData}" update=":messages @form" />
+        <p:commandButton id="btnCancel" value="#{customProperties['thirdparty.action.cancel']}" action="#{thirdPartyController.cancel}" immediate="true" />
+      </p:outputPanel>
+    </h:form>
+  </ui:define>
+</ui:composition>
+</html>

@@ -1,0 +1,590 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:fn="http://java.sun.com/jsp/jstl/functions" xmlns:p="http://primefaces.org/ui">
+<ui:composition template="/templates/site/site.xhtml">
+  <ui:define name="title">
+    <h:outputText value="#{customProperties['page.title.prefix']}#{customProperties['contract.search.title']}" />
+  </ui:define>
+  <ui:define name="body-site">
+    <h2 class="center">#{customProperties['contract.search.title']}</h2>
+    <h:form id="frmSearchContract" prependId="false">
+      <p:fieldset legend="#{customProperties['contract.search.fieldset']}">
+        <p>
+          <!-- Ref Contrat Occupant  -->
+          <h:outputLabel for="contract" value="#{customProperties['contract.field.refcontract']}" styleClass="label" />
+          <p:inputText id="contract" value="#{contractSearchController.contractSearchBean.contractCriteria.contractReference}" maxlength="13" label="#{customProperties['contract.field.refcontract']}" />
+        </p>
+        <p>
+          <!-- Ref Occupant -->
+          <h:outputLabel for="tenantReference" value="#{customProperties['contract.field.tenant.reference']}" styleClass="label" />
+          <p:inputText id="tenantReference" value="#{contractSearchController.contractSearchBean.contractCriteria.tenantReference}" maxlength="15" label="#{customProperties['contract.field.tenant.reference']}" />
+        </p>
+        <p>
+          <!-- Nom de l’occupant -->
+          <h:outputLabel for="tenantLastName" value="#{customProperties['contract.field.tenant.lastname']}" styleClass="label" />
+          <p:inputText id="tenantLastName" value="#{contractSearchController.tenantSearchBean.tenantCriteria.lastName}" maxlength="15" label="#{customProperties['contract.field.tenant.lastname']}" />
+        </p>
+        <p>
+          <!-- Prénom de loccupant -->
+          <h:outputLabel for="tenantFirstName" value="#{customProperties['contract.field.tenant.firstname']}" styleClass="label" />
+          <p:inputText id="tenantFirstName" value="#{contractSearchController.tenantSearchBean.tenantCriteria.firstName}" maxlength="15" label="#{customProperties['contract.field.tenant.firstname']}" />
+        </p>
+        <p>
+          <!-- Ref Logement -->
+          <h:outputLabel for="housing" value="#{customProperties['contract.field.refhousing']}" styleClass="label" />
+          <p:inputText id="housing" value="#{contractSearchController.contractSearchBean.contractCriteria.housingReference}" maxlength="19" label="#{customProperties['contract.field.refhousing']}" />
+        </p>
+        <div class="ddl">
+          <!-- Domaine d'activité -->
+          <h:outputLabel for="field" value="#{customProperties['contract.field.field']}" styleClass="label" />
+          <p:selectOneMenu id="field" value="#{contractSearchController.contractSearchBean.contractCriteria.fieldOfActivity}" converter="abita.converter.dto" styleClass="dropdownlist">
+            <f:attribute name="converter-values" value="#{contractController.allFieldOfActivity}" />
+            <f:selectItem itemLabel="#{msg['dropdownlist.empty']}" value="#{null}" />
+            <f:selectItems value="#{contractController.allFieldOfActivity}" var="fieldItem" itemLabel="#{fieldItem.label} #{fieldItem.gmr}" />
+          </p:selectOneMenu>
+        </div>
+        <div class="ddl">
+          <!-- Agence -->
+          <h:outputLabel for="agency" value="#{customProperties['housing.field.agency']}" styleClass="label" />
+          <p:selectOneMenu id="agency" value="#{contractSearchController.housingSearchBean.housingCriteria.agency}" converter="abita.converter.dto" styleClass="dropdownlist">
+            <f:attribute name="converter-values" value="#{contractSearchController.agencies}" />
+            <f:selectItem itemLabel="#{msg['dropdownlist.empty']}" value="#{null}" />
+            <f:selectItems value="#{contractSearchController.agencies}" var="agency" itemLabel="#{agency.name}" />
+          </p:selectOneMenu>
+        </div>
+        <div class="ddl">
+          <!-- Centre coût -->
+          <h:outputLabel for="costCenter" value="#{customProperties['contract.field.costcenter']}" styleClass="label" />
+          <p:selectOneMenu id="costCenter" value="#{contractSearchController.contractSearchBean.contractCriteria.costCenter}" converter="abita.converter.dto" styleClass="dropdownlist">
+            <f:attribute name="converter-values" value="#{contractController.allCostCenter}" />
+            <f:selectItem itemLabel="#{msg['dropdownlist.empty']}" value="#{null}" />
+            <f:selectItems value="#{contractController.allCostCenter}" var="costCenterItem" itemLabel="#{costCenterItem.label}" />
+          </p:selectOneMenu>
+        </div>
+        <div class="ddl">
+          <!-- Typologie de loyer -->
+          <h:outputLabel for="rentTypology" value="#{customProperties['contract.field.renttypology']}" styleClass="label" />
+          <p:selectOneMenu id="rentTypology" value="#{contractSearchController.contractSearchBean.contractCriteria.rentTypology}" converter="abita.converter.dto" styleClass="dropdownlist">
+            <f:attribute name="converter-values" value="#{contractController.allRentTypology}" />
+            <f:selectItem itemLabel="#{msg['dropdownlist.empty']}" value="#{null}" />
+            <f:selectItems value="#{contractController.allRentTypology}" var="rentTypologyItem" itemLabel="#{rentTypologyItem.label}" />
+          </p:selectOneMenu>
+        </div>
+        <div class="ddl">
+          <!-- Mode de paiement  -->
+          <h:outputLabel for="paymentMethod" value="#{customProperties['contract.field.paymentmethod']}" styleClass="label" />
+          <p:selectOneMenu id="paymentMethod" value="#{contractSearchController.contractSearchBean.contractCriteria.paymentMethod}" converter="abita.converter.dto" styleClass="dropdownlist">
+            <f:attribute name="converter-values" value="#{contractController.allPaymentMethod}" />
+            <f:selectItem itemLabel="#{msg['dropdownlist.empty']}" value="#{null}" />
+            <f:selectItems value="#{contractController.allPaymentMethod}" var="paymentMethodItem" itemLabel="#{paymentMethodItem.label}" />
+          </p:selectOneMenu>
+        </div>
+        <div class="ddl">
+          <!-- Contrat signé -->
+          <h:outputLabel for="signature" value="#{customProperties['contract.field.signature']}" styleClass="label" />
+          <p:selectOneMenu id="signature" value="#{contractSearchController.contractSearchBean.contractCriteria.signature}">
+            <f:selectItem itemLabel="#{customProperties['confirm.all']}" noSelectionOption="true" />
+            <f:selectItem itemLabel="#{customProperties['confirm.yes']}" itemValue="#{true}" />
+            <f:selectItem itemLabel="#{customProperties['confirm.no']}" itemValue="#{false}" />
+          </p:selectOneMenu>
+        </div>
+        <p>
+          <!-- Date de début de validité -->
+          <h:outputLabel for="startValidityDate" value="#{customProperties['contract.field.startvalidity']}" styleClass="label" />
+          <p:calendar id="startValidityDate" value="#{contractSearchController.contractSearchBean.contractCriteria.startValidityDate}" locale="fr" pattern="#{customProperties['pattern.date']}" navigator="true" maxlength="10" label="#{customProperties['contract.field.startvalidity']}" binding="#{startDate}">
+          </p:calendar>
+        </p>
+        <p>
+          <!-- Date de fin de validité -->
+          <h:outputLabel for="endValidityDate" value="#{customProperties['contract.field.endvalidity']}" styleClass="label"></h:outputLabel>
+          <p:calendar id="endValidityDate" value="#{contractSearchController.contractSearchBean.contractCriteria.endValidityDate}" locale="fr" pattern="#{customProperties['pattern.date']}" navigator="true" maxlength="10" label="#{customProperties['contract.field.endvalidity']}" binding="#{endDate}">
+          </p:calendar>
+        </p>
+        <div class="ddl">
+          <!-- Motif de résiliation-->
+          <h:outputLabel id="terminationLabel" for="termination" value="#{customProperties['contract.field.termination']}" styleClass="label" />
+          <p:selectOneMenu id="termination" value="#{contractSearchController.contractSearchBean.contractCriteria.termination}" converter="abita.converter.dto" styleClass="dropdownlist">
+            <f:attribute name="converter-values" value="#{contractController.allTermination}" />
+            <f:selectItem itemLabel="#{msg['dropdownlist.empty']}" value="#{null}" />
+            <f:selectItems value="#{contractController.allTermination}" var="terminationItem" itemLabel="#{terminationItem.label}" />
+          </p:selectOneMenu>
+        </div>
+        <p>
+          <!-- Surface corrigée  -->
+          <h:outputLabel for="revisedSurfaceArea" value="#{customProperties['contract.field.fixedsurface']}" styleClass="label" />
+          <p:inputText id="revisedSurfaceArea" value="#{contractSearchController.contractSearchBean.contractCriteria.revisedSurfaceArea}" label="#{customProperties['contract.field.fixedsurface']}" maxlength="10" />
+        </p>
+        <p>
+          <!-- Loyer surface corrigée  -->
+          <h:outputLabel for="revisedSurfaceAreaRent" value="#{customProperties['contract.field.rentfixedsurface']}" styleClass="label" />
+          <p:inputText id="revisedSurfaceAreaRent" value="#{contractSearchController.contractSearchBean.contractCriteria.revisedSurfaceAreaRent}" label="#{customProperties['contract.field.rentfixedsurface']}" maxlength="10" />
+        </p>
+        <p>
+          <!-- Nombre d'occupants  -->
+          <h:outputLabel for="householdSize" value="#{customProperties['contract.field.household']}" styleClass="label" />
+          <p:inputText id="householdSize" value="#{contractSearchController.contractSearchBean.contractCriteria.householdSize}" label="#{customProperties['contract.field.household']}" maxlength="10" />
+        </p>
+        <p>
+          <!-- Coefficient n/N  -->
+          <h:outputLabel for="nNCoef" value="#{customProperties['contract.field.coefficiant']}" styleClass="label" />
+          <p:inputText id="nNCoef" value="#{contractSearchController.contractSearchBean.contractCriteria.nNCoef}" label="#{customProperties['contract.field.coefficiant']}" maxlength="10" />
+        </p>
+        <p>
+          <!-- Abattement de précarité  -->
+          <h:outputLabel for="shortTermContractDiscount" value="#{customProperties['contract.field.reducingvulnerability']}" styleClass="label" />
+          <p:inputText id="shortTermContractDiscount" value="#{contractSearchController.contractSearchBean.contractCriteria.shortTermContractDiscount}" label="#{customProperties['contract.field.reducingvulnerability']}" maxlength="10" />
+        </p>
+        <p>
+          <!-- Loyer marché  -->
+          <h:outputLabel for="marketRentPrice" value="#{customProperties['contract.field.marketrentprice']}" styleClass="label"></h:outputLabel>
+          <p:inputText id="marketRentPrice" value="#{contractSearchController.contractSearchBean.contractCriteria.marketRentPrice}" maxlength="10" label="#{customProperties['contract.field.marketrentprice']}">
+          </p:inputText>
+        </p>
+        <p>
+          <!-- Loyer plafond  -->
+          <h:outputLabel for="rentPriceLimit" value="#{customProperties['contract.field.rentpricelimit']}" styleClass="label"></h:outputLabel>
+          <p:inputText id="rentPriceLimit" value="#{contractSearchController.contractSearchBean.contractCriteria.rentPriceLimit}" maxlength="10" label="#{customProperties['contract.field.rentpricelimit']}">
+          </p:inputText>
+        </p>
+        <p>
+          <!-- Loyer écrêté  -->
+          <h:outputLabel for="lopRent" value="#{customProperties['contract.field.cappedrent']}" styleClass="label" />
+          <p:inputText id="lopRent" value="#{contractSearchController.contractSearchBean.contractCriteria.lopRent}" label="#{customProperties['contract.field.cappedrent']}" maxlength="10" />
+        </p>
+        <p>
+          <!-- Loyer net agent  -->
+          <h:outputLabel for="netAgentRent" value="#{customProperties['contract.field.netrent']}" styleClass="label" />
+          <p:inputText id="netAgentRent" value="#{contractSearchController.contractSearchBean.contractCriteria.netAgentRent}" label="#{customProperties['contract.field.netrent']}" maxlength="10" />
+        </p>
+        <p>
+          <!-- Loyer garage  -->
+          <h:outputLabel for="garageRent" value="#{customProperties['contract.field.garagerent']}" styleClass="label"></h:outputLabel>
+          <p:inputText id="garageRent" value="#{contractSearchController.contractSearchBean.contractCriteria.garageRent}" maxlength="10" label="#{customProperties['contract.field.garagerent']}">
+          </p:inputText>
+        </p>
+        <p>
+          <!-- Loyer jardin  -->
+          <h:outputLabel for="gardenRent" value="#{customProperties['contract.field.gardenrent']}" styleClass="label"></h:outputLabel>
+          <p:inputText id="gardenRent" value="#{contractSearchController.contractSearchBean.contractCriteria.gardenRent}" maxlength="10" label="#{customProperties['contract.field.gardenrent']}">
+          </p:inputText>
+        </p>
+        <p>
+          <!-- Surloyer  -->
+          <h:outputLabel for="extraRent" value="#{customProperties['contract.field.extrarent']}" styleClass="label"></h:outputLabel>
+          <p:inputText id="extraRent" value="#{contractSearchController.contractSearchBean.contractCriteria.extraRent}" maxlength="10" label="#{customProperties['contract.field.extrarent']}">
+          </p:inputText>
+        </p>
+        <p>
+          <!-- Charges prévisionnelles  -->
+          <h:outputLabel for="expectedChargeCost" value="#{customProperties['contract.field.expectedchargecost']}" styleClass="label"></h:outputLabel>
+          <p:inputText id="expectedChargeCost" value="#{contractSearchController.contractSearchBean.contractCriteria.expectedChargeCost}" maxlength="10" label="#{customProperties['contract.field.expectedchargecost']}">
+          </p:inputText>
+        </p>
+        <div class="date-range">
+          <!-- Date limite de validité de l'attestation d'assurance, borne supérieure de l'interval -->
+          <h:outputLabel for="insuranceCertificateEndDateLow" value="#{customProperties['contract.field.insurancecertificateenddate']} du " styleClass="label" />
+          <p:calendar id="insuranceCertificateEndDateLow" value="#{contractSearchController.contractSearchBean.contractCriteria.insuranceCertificateEndDateLow}" locale="fr" pattern="#{customProperties['pattern.date']}" navigator="true" maxlength="10"/>
+          <!-- Date limite de validité de l'attestation d'assurance, borne inférieure de l'interval -->
+          <h:outputLabel for="insuranceCertificateEndDateHigh" value=" au " styleClass="label short-label" />
+          <p:calendar id="insuranceCertificateEndDateHigh" value="#{contractSearchController.contractSearchBean.contractCriteria.insuranceCertificateEndDateHigh}" locale="fr" pattern="#{customProperties['pattern.date']}" navigator="true" maxlength="10"/>
+        </div>
+        <p>
+          <!-- Loyer prélevé  -->
+          <h:outputLabel for="withdrawnRent" value="#{customProperties['contract.field.withdrawnrent']}" styleClass="label" />
+          <p:inputText id="withdrawnRent" value="#{contractSearchController.contractSearchBean.contractCriteria.fixedWithdrawnRent}" label="#{customProperties['contract.field.withdrawnrent']}" maxlength="10" />
+        </p>
+        <p>
+          <!-- Loyer prélevé cumulé sur l'année  -->
+          <h:outputLabel for="addedWithdrawnRent" value="#{customProperties['contract.field.addedwithdrawnrent']}" styleClass="label" />
+          <p:inputText id="addedWithdrawnRent" value="#{contractSearchController.contractSearchBean.contractCriteria.plainAddedWithdrawnRent}" maxlength="10" label="#{customProperties['contract.field.addedwithdrawnrent']}">
+          </p:inputText>
+        </p>
+        <div class="ddl">
+          <!-- Pécule de fin d'occupation -->
+          <h:outputLabel for="terminationSavings" value="#{customProperties['contract.field.terminationsavings']}" styleClass="label" />
+          <p:selectOneMenu id="terminationSavings" value="#{contractSearchController.contractSearchBean.contractCriteria.terminationSavings}">
+            <f:selectItem itemLabel="#{customProperties['confirm.all']}" noSelectionOption="true" />
+            <f:selectItem itemLabel="#{customProperties['confirm.yes']}" itemValue="#{true}" />
+            <f:selectItem itemLabel="#{customProperties['confirm.no']}" itemValue="#{false}" />
+          </p:selectOneMenu>
+        </div>
+        <p>
+          <!--Montant du pécule de fin d'occupation -->
+          <h:outputLabel for="terminationSavingAmount" value="#{customProperties['contract.field.terminationsavingamount']}" styleClass="label" />
+          <p:inputText id="terminationSavingAmount" value="#{contractSearchController.contractSearchBean.contractCriteria.plainTerminationSavingAmount}" label="#{customProperties['contract.field.terminationsavingamount']}" maxlength="10" />
+        </p>
+        <div class="ddl">
+          <!-- Règlement du pécule de fin d'occupation -->
+          <h:outputLabel for="terminationSavingsPayment" value="#{customProperties['contract.field.terminationsavingspayment']}" styleClass="label" />
+          <p:selectOneMenu id="terminationSavingsPayment" value="#{contractSearchController.contractSearchBean.contractCriteria.terminationSavingsPayment}">
+            <f:selectItem itemLabel="#{customProperties['confirm.all']}" noSelectionOption="true" />
+            <f:selectItem itemLabel="#{customProperties['confirm.yes']}" itemValue="#{true}" />
+            <f:selectItem itemLabel="#{customProperties['confirm.no']}" itemValue="#{false}" />
+          </p:selectOneMenu>
+        </div>
+        <p>
+          <!--Avantage en nature -->
+          <h:outputLabel for="benefit" value="#{customProperties['contract.field.benefit']}" styleClass="label" />
+          <p:inputText id="benefit" value="#{contractSearchController.contractSearchBean.contractCriteria.benefit}" label="#{customProperties['contract.field.benefit']}" maxlength="10" />
+        </p>
+        <p>
+          <!-- Montant de la valeur locative foncière -->
+          <h:outputLabel for="realEstateRentalValue" value="#{customProperties['contract.field.realestaterentalvalue']}" styleClass="label"></h:outputLabel>
+          <p:inputText id="realEstateRentalValue" value="#{contractSearchController.contractSearchBean.contractCriteria.realEstateRentalValue}" maxlength="10" label="#{customProperties['contract.field.realestaterentalvalue']}">
+          </p:inputText>
+        </p>
+      </p:fieldset>
+      <p:outputPanel layout="block" styleClass="action">
+        <p:commandButton id="btnValidate" value="#{customProperties['contract.action.search']}" actionListener="#{contractSearchController.searchData}" update=":messages :frmSearchContract:result" />
+        <p:commandButton id="btnCancel" value="#{customProperties['contract.action.cancel']}" action="#{contractSearchController.cancel}" immediate="true" />
+      </p:outputPanel>
+      <p:outputPanel id="result" layout="block">
+        <p:dataTable id="resultTab" value="#{contractSearchController.contractSearchBean.contractList}" var="contract" emptyMessage="#{customProperties['no.data']}" sortBy="#{contract.id}" rendered="#{contractSearchController.contractSearchBean.contractList != null}" paginator="true" rows="100" paginatorPosition="bottom" rowsPerPageTemplate="#{contractSearchController.paginationTemplate}" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" currentPageReportTemplate="(Enregistrements : {startRecord} - {endRecord} sur {totalRecords}, Page: {currentPage}/{totalPages})">
+          <!-- Référence du contrat occupant -->
+          <p:column sortBy="#{contract.id}" styleClass="multi_line long_label">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['contract.field.refcontract']}" />
+            </f:facet>
+            <p:commandLink value="#{contract.contractReference}" actionListener="#{contractSearchController.redirectConsult}">
+              <f:attribute name="data_id" value="#{contract.id}" />
+            </p:commandLink>
+          </p:column>
+          <!-- Référence occupant -->
+          <p:column sortBy="#{contract.tenant.reference.toUpperCase()}" styleClass="multi_line long_label">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['contract.field.tenant.reference']}" />
+            </f:facet>
+            <h:outputText value="#{contract.tenant.reference}" />
+          </p:column>
+          <!-- Nom de l’occupant -->
+          <p:column sortBy="#{contract.tenant.lastName}" styleClass="multi_line long_label">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['contract.field.tenant.lastname']}" />
+            </f:facet>
+            <h:outputText value="#{contract.tenant.lastName}" />
+          </p:column>
+          <!-- Prénom de l’occupant -->
+          <p:column sortBy="#{contract.tenant.firstName}" styleClass="multi_line long_label">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['contract.field.tenant.firstname']}" />
+            </f:facet>
+            <h:outputText value="#{contract.tenant.firstName}" />
+          </p:column>
+          <!-- Référence du logement -->
+          <p:column sortBy="#{contract.housing.reference.toUpperCase()}" styleClass="multi_line long_label">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['contract.field.refhousing']}" />
+            </f:facet>
+            <h:outputText value="#{contract.housing.reference}" />
+          </p:column>
+          <!-- Domaine d'activité -->
+          <p:column sortBy="#{contract.fieldOfActivity.label.toUpperCase()}" styleClass="multi_line small_label">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['contract.field.field']}" />
+            </f:facet>
+            <h:outputText value="#{contract.fieldOfActivity.label} #{contract.fieldOfActivity.gmr}" />
+          </p:column>
+          <!-- Gestionnaire du logement -->
+          <p:column sortBy="#{contract.housing.thirdpartyContractManager.lastName}" styleClass="multi_line long_label">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['housing.field.manager']}" />
+            </f:facet>
+            <h:outputText value="#{contract.housing.thirdpartyContractManager.lastName} #{contract.housing.thirdpartyContractManager.firstName}" />
+          </p:column>
+          <!-- Agence, fixe si contrat clos -->
+          <p:column sortBy="#{contract.agencyDisplay.name.toUpperCase()}" styleClass="multi_line small_label">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['housing.field.agency']}" />
+            </f:facet>
+            <h:outputText value="#{contract.agencyDisplay.name}" />
+          </p:column>
+          <!-- Centre coût -->
+          <p:column sortBy="#{contract.costCenter.label.toUpperCase()}" styleClass="multi_line small_label">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['contract.field.costcenter']}" />
+            </f:facet>
+            <h:outputText value="#{contract.costCenter.label}" />
+          </p:column>
+          <!-- Typologie de loyer -->
+          <p:column sortBy="#{contract.rentTypology.label.toUpperCase()}" styleClass="multi_line small_label">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['contract.field.renttypology']}" />
+            </f:facet>
+            <h:outputText value="#{contract.rentTypology.label}" />
+          </p:column>
+          <!-- Mode de paiement -->
+          <p:column sortBy="#{contract.paymentMethod.label.toUpperCase()}" styleClass="multi_line">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['contract.field.paymentmethod']}" />
+            </f:facet>
+            <h:outputText value="#{contract.paymentMethod.label}" />
+          </p:column>
+          <!-- Contrat signé -->
+          <p:column sortBy="#{contract.sortedSignature}" styleClass="multi_line small_label">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['contract.field.signature']}" />
+            </f:facet>
+            <h:outputText value="#{customProperties['confirm.yes']}" rendered="#{contract.signature != null ? contract.signature : false}" />
+            <h:outputText value="#{customProperties['confirm.no']}" rendered="#{contract.signature != null ? !contract.signature : false}" />
+          </p:column>
+          <!-- Date de début de validité -->
+          <p:column sortBy="#{contract.startValidityDate}" styleClass="multi_line long_label">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['contract.field.startvalidity']}" />
+            </f:facet>
+            <h:outputText value="#{contract.startValidityDate}">
+              <f:convertDateTime pattern="#{customProperties['pattern.date']}" />
+            </h:outputText>
+          </p:column>
+          <!-- Date de fin de validité -->
+          <p:column sortBy="#{contract.sortedEndValidityDate}" styleClass="multi_line">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['contract.field.endvalidity']}" />
+            </f:facet>
+            <h:outputText value="#{contract.endValidityDate}">
+              <f:convertDateTime pattern="#{customProperties['pattern.date']}" />
+            </h:outputText>
+          </p:column>
+          <!-- Mode de résiliation -->
+          <p:column sortBy="#{contract.sortedTerminationLabel}" styleClass="multi_line">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['contract.field.termination']}" />
+            </f:facet>
+            <h:outputText value="#{contract.termination.label}" />
+          </p:column>
+          <!-- Surface corrigée, fixe si contrat clos -->
+          <p:column sortBy="#{contract.revisedSurfaceAreaDisplay}" styleClass="multi_line">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['contract.field.fixedsurface']}" />
+            </f:facet>
+            <h:outputText value="#{contract.revisedSurfaceAreaDisplay}" />
+          </p:column>
+          <!-- Loyer surface corrigée, fixe si contrat clos -->
+          <p:column sortBy="#{contract.revisedSurfaceAreaRentDisplay}" styleClass="multi_line long_label">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['contract.field.rentfixedsurface']}" />
+            </f:facet>
+            <h:outputText value="#{contract.revisedSurfaceAreaRentDisplay}" />
+          </p:column>
+          <!-- Nombre d'occupants -->
+          <p:column sortBy="#{contract.householdSize}" styleClass="multi_line">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['contract.field.household']}" />
+            </f:facet>
+            <h:outputText value="#{contract.householdSize}" />
+          </p:column>
+          <!-- Coefficient n/N, fixe si contrat clos -->
+          <p:column sortBy="#{contract.NNCoefDisplay}" styleClass="multi_line">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['contract.field.coefficiant']}" />
+            </f:facet>
+            <h:outputText value="#{contract.NNCoefDisplay}" >
+              <f:convertNumber maxFractionDigits="2" minFractionDigits="2" locale="en_US" groupingUsed="false" />
+            </h:outputText>
+          </p:column>
+          <!-- Abattement de précarité -->
+          <p:column sortBy="#{contract.shortTermContractDiscount}" styleClass="multi_line long_label">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['contract.field.reducingvulnerability']}" />
+            </f:facet>
+            <h:outputText value="#{contract.shortTermContractDiscount}">
+              <f:convertNumber maxFractionDigits="2" minFractionDigits="2" locale="en_US" groupingUsed="false" />
+            </h:outputText>
+          </p:column>
+          <!-- Loyer marché -->
+          <p:column sortBy="#{contract.sortedMarketRentPrice}" styleClass="multi_line">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['contract.field.marketrentprice']}" />
+            </f:facet>
+            <h:outputText value="#{contract.marketRentPrice}" />
+          </p:column>
+          <!-- Loyer plafond -->
+          <p:column sortBy="#{contract.sortedRentPriceLimit}" styleClass="multi_line">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['contract.field.rentpricelimit']}" />
+            </f:facet>
+            <h:outputText value="#{contract.rentPriceLimit}" />
+          </p:column>
+          <!-- Loyer écrêté, fixe si contrat clos -->
+          <p:column sortBy="#{contract.lopRentDisplay}" styleClass="multi_line">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['contract.field.cappedrent']}" />
+            </f:facet>
+            <h:outputText value="#{contract.lopRentDisplay}" >
+              <f:convertNumber maxFractionDigits="2" minFractionDigits="2" locale="en_US" groupingUsed="false" />
+            </h:outputText>
+          </p:column>
+          <!-- Loyer net agent -->
+          <p:column sortBy="#{contract.sortedNetAgentRent}" styleClass="multi_line">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['contract.field.netrent']}" />
+            </f:facet>
+            <h:outputText value="#{contract.netAgentRent}">
+              <f:convertNumber maxFractionDigits="2" minFractionDigits="2" locale="en_US" groupingUsed="false" />
+            </h:outputText>
+          </p:column>
+          <!-- Loyer garage -->
+          <p:column sortBy="#{contract.sortedGarageRent}" styleClass="multi_line">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['contract.field.garagerent']}" />
+            </f:facet>
+            <h:outputText value="#{contract.garageRent}" />
+          </p:column>
+          <!-- Loyer jardin -->
+          <p:column sortBy="#{contract.sortedGardenRent}" styleClass="multi_line">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['contract.field.gardenrent']}" />
+            </f:facet>
+            <h:outputText value="#{contract.gardenRent}" />
+          </p:column>
+          <!-- Surloyer -->
+          <p:column sortBy="#{contract.sortedExtraRent}" styleClass="multi_line">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['contract.field.extrarent']}" />
+            </f:facet>
+            <h:outputText value="#{contract.extraRent}" />
+          </p:column>
+          <!-- Charges prévisionnelles -->
+          <p:column sortBy="#{contract.sortedExpectedChargeCost}" styleClass="multi_line long_label">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['contract.field.expectedchargecost']}" />
+            </f:facet>
+            <h:outputText value="#{contract.expectedChargeCost}" />
+          </p:column>
+          <!-- Facturation de la consommation d’eau -->
+          <p:column sortBy="#{contract.sortedWaterInvoicing}" styleClass="multi_line long_label">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['contract.field.waterinvoicing']}" />
+            </f:facet>
+            <h:outputText value="#{contract.waterInvoicing}" />
+          </p:column>
+          <!-- Facturation des ordures ménagères -->
+          <p:column sortBy="#{contract.sortedGarbageInvoicing}" styleClass="multi_line long_label">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['contract.field.garbageinvoicing']}" />
+            </f:facet>
+            <h:outputText value="#{contract.garbageInvoicing}" />
+          </p:column>
+          <!-- Remboursement assurance -->
+          <p:column sortBy="#{contract.sortedInsuranceReimbursement}" styleClass="multi_line long_label">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['contract.field.insurancereimbursement']}" />
+            </f:facet>
+            <h:outputText value="#{contract.insuranceReimbursement}" />
+          </p:column>
+          <!-- Date limite de validité de l'attestation d'assurance -->
+          <p:column sortBy="#{contract.sortedInsuranceCertificateEndDate}" styleClass="multi_line long_label">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['contract.field.insurancecertificateenddate']}" />
+            </f:facet>
+            <h:outputText value="#{contract.insuranceCertificateEndDate}">
+              <f:convertDateTime pattern="#{customProperties['pattern.date']}" />
+            </h:outputText>
+          </p:column>
+          <!-- Remboursement taxe habitation -->
+          <p:column sortBy="#{contract.sortedHousingTaxReimbursement}" styleClass="multi_line long_label">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['contract.field.housingtaxreimbursement']}" />
+            </f:facet>
+            <h:outputText value="#{contract.housingTaxReimbursement}" />
+          </p:column>
+          <!-- Remboursement taxe ordures ménagères -->
+          <p:column sortBy="#{contract.sortedGarbageReimbursement}" styleClass="multi_line long_label">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['contract.field.garbagereimbursement']}" />
+            </f:facet>
+            <h:outputText value="#{contract.garbageReimbursement}" />
+          </p:column>
+          <!-- Apurement annuel des charges -->
+          <p:column sortBy="#{contract.sortedAnnualClearanceCharges}" styleClass="multi_line long_label">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['contract.field.annualclearancecharges']}" />
+            </f:facet>
+            <h:outputText value="#{contract.annualClearanceCharges}" />
+          </p:column>
+          <!-- Autres charges locatives -->
+          <p:column sortBy="#{contract.sortedOtherInvoicingAmount}" styleClass="multi_line long_label">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['contract.field.otherinvoicing']}" />
+            </f:facet>
+            <h:outputText value="#{contract.otherInvoicingAmount}" />
+          </p:column>
+          <!-- Loyer prélevé -->
+          <p:column sortBy="#{contract.sortedWithdrawnRent}" styleClass="multi_line">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['contract.field.withdrawnrent']}" />
+            </f:facet>
+            <h:outputText value="#{contract.fixedWithdrawnRent}">
+              <f:convertNumber maxFractionDigits="2" minFractionDigits="2" locale="en_US" groupingUsed="false" />
+            </h:outputText>
+          </p:column>
+          <!-- Loyer prélevé cumulé -->
+          <p:column sortBy="#{contract.plainAddedWithdrawnRent}" styleClass="multi_line very_long_label">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['contract.field.addedwithdrawnrent']}" />
+            </f:facet>
+            <h:outputText value="#{contract.plainAddedWithdrawnRent}">
+              <f:convertNumber maxFractionDigits="2" minFractionDigits="2" locale="en_US" groupingUsed="false" />
+            </h:outputText>
+          </p:column>
+          <!-- Pécule de fin d'occupation -->
+          <p:column sortBy="#{contract.terminationSavings}" styleClass="multi_line very_long_label">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['contract.field.terminationsavings']}" />
+            </f:facet>
+            <h:outputText value="#{customProperties['confirm.yes']}" rendered="#{contract.terminationSavings}" />
+            <h:outputText value="#{customProperties['confirm.no']}" rendered="#{!contract.terminationSavings}" />
+          </p:column>
+          <!-- Montant du pécule de fin d'occupation -->
+          <p:column sortBy="#{contract.sortedTerminationSavingAmount}" styleClass="multi_line very_long_label">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['contract.field.terminationsavingamount']}" />
+            </f:facet>
+            <h:outputText value="#{contract.plainTerminationSavingAmount}">
+              <f:convertNumber maxFractionDigits="2" minFractionDigits="2" locale="en_US" groupingUsed="false" />
+            </h:outputText>
+          </p:column>
+          <!-- Règlement du pécule de fin d'occupation -->
+          <p:column sortBy="#{contract.terminationSavingsPayment}" styleClass="multi_line long_label">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['contract.field.terminationsavingspayment']}" />
+            </f:facet>
+            <h:outputText value="#{customProperties['confirm.yes']}" rendered="#{contract.terminationSavingsPayment}" />
+            <h:outputText value="#{customProperties['confirm.no']}" rendered="#{!contract.terminationSavingsPayment}" />
+          </p:column>
+          <!-- Date de règlement du pécule de fin d'occupation -->
+          <p:column sortBy="#{contract.terminationSavingsPaymentDate}" styleClass="multi_line">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['contract.field.terminationsavingspaymentdate']}" />
+            </f:facet>
+            <h:outputText value="#{contract.terminationSavingsPaymentDate}">
+              <f:convertDateTime pattern="#{customProperties['pattern.date']}" />
+            </h:outputText>
+          </p:column>
+          <!-- Avantage en nature, fixe si contrat clos -->
+          <p:column sortBy="#{contract.sortedBenefit}" styleClass="multi_line">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['contract.field.benefit']}" />
+            </f:facet>
+            <h:outputText value="#{contract.benefitDisplay}" >
+              <f:convertNumber maxFractionDigits="2" minFractionDigits="2" locale="en_US" groupingUsed="false" />
+            </h:outputText>
+          </p:column>
+          <!-- Montant de la valeur locative foncière -->
+          <p:column sortBy="#{contract.sortedRealEstateRentalValue}" styleClass="multi_line very_long_label">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['contract.field.realestaterentalvalue']}" />
+            </f:facet>
+            <h:outputText value="#{contract.realEstateRentalValue}" />
+          </p:column>
+        </p:dataTable>
+        <div id="btn_actions">
+          <p:commandButton id="btnexport" value="#{customProperties['common.action.export']}" immediate="true" ajax="false" rendered="#{contractSearchController.contractSearchBean.contractList.size() > 0}">
+            <p:dataExporter type="xls" target="resultTab" fileName="export_contrats" postProcessor="#{contractSearchController.postProcessXLS}" />
+          </p:commandButton>
+        </div>
+      </p:outputPanel>
+    </h:form>
+  </ui:define>
+</ui:composition>
+</html>

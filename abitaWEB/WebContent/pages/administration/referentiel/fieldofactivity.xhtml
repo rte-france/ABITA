@@ -1,0 +1,113 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:fn="http://java.sun.com/jsp/jstl/functions" xmlns:p="http://primefaces.org/ui">
+<ui:composition template="/templates/site/site.xhtml">
+  <ui:define name="title">
+    <h:outputText value="#{customProperties['page.title.prefix']}#{customProperties['administration.referentiel.fieldofactivity.title']}" />
+  </ui:define>
+  <ui:define name="body-site">
+    <h2 class="center">#{customProperties['administration.referentiel.fieldofactivity.title']}</h2>
+    <h:form id="frmRefFieldOfActivity" prependId="false" onkeypress="return event.keyCode != 13">
+      <p:outputPanel layout="block" id="fieldOfActivityListing">
+        <!-- Permet de désactiver l'action par défaut de la touche "Entrée" (Mantis 35) -->
+        <!-- Voir issue : https://code.google.com/p/primefaces/issues/detail?id=4204 -->
+        <p:commandButton style="display: none;" process="@none" update="@none" ajax="true" />
+        <p:dataTable id="fieldOfActivitydtble" var="fieldOfActivity" value="#{fieldOfActivityController.fieldOfActivityBean.lstFieldOfActivity}" editable="true" emptyMessage="#{customProperties['no.data']}" sortBy="#{fieldOfActivity.label.toUpperCase()}" paginator="true" paginatorAlwaysVisible="false" paginatorPosition="bottom" rows="10" rowsPerPageTemplate="15, 20, 25" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+          <p:ajax event="rowEdit" listener="#{fieldOfActivityController.onEdit}" update=":messages" />
+          <!-- Titre du tableau -->
+          <f:facet name="header">
+            <h:outputText value="#{customProperties['administration.referentiel.fieldofactivity.datatable.title']}" />
+          </f:facet>
+          <!-- Libellé -->
+          <p:column headerText="#{customProperties['administration.referentiel.fieldofactivity.column.label']}">
+            <p:cellEditor>
+              <f:facet name="output">
+                <h:outputText value="#{fieldOfActivity.label}" />
+              </f:facet>
+              <f:facet name="input">
+                <p:inputText value="#{fieldOfActivity.label}" maxlength="50" required="true" requiredMessage="#{customProperties['administration.referentiel.fieldofactivity.error.label']}" />
+              </f:facet>
+            </p:cellEditor>
+          </p:column>
+          <!-- GMR -->
+          <p:column headerText="#{customProperties['administration.referentiel.fieldofactivity.column.gmr']}">
+            <p:cellEditor>
+              <f:facet name="output">
+                <h:outputText value="#{fieldOfActivity.gmr}" />
+              </f:facet>
+              <f:facet name="input">
+                <p:inputText value="#{fieldOfActivity.gmr}" maxlength="60" required="true" requiredMessage="#{customProperties['administration.referentiel.fieldofactivity.error.gmr']}" />
+              </f:facet>
+            </p:cellEditor>
+          </p:column>
+          <!-- Agence -->
+          <p:column headerText="#{customProperties['administration.referentiel.fieldofactivity.column.agency']}">
+            <p:cellEditor>
+              <f:facet name="output">
+                <h:outputText value="#{fieldOfActivity.agency.name}" />
+              </f:facet>
+              <f:facet name="input">
+                <p:selectOneMenu id="agency" value="#{fieldOfActivity.agency}" converter="abita.converter.dto" styleClass="dropdownlist">
+                  <f:attribute name="converter-values" value="#{fieldOfActivityController.fieldOfActivityBean.agencies}" />
+                  <f:selectItem itemLabel="#{msg['dropdownlist.empty']}" value="#{null}" />
+                  <f:selectItems value="#{fieldOfActivityController.fieldOfActivityBean.agencies}" var="agency" itemLabel="#{agency.name}" />
+                </p:selectOneMenu>
+              </f:facet>
+            </p:cellEditor>
+          </p:column>
+          <!-- Actions -->
+          <p:column headerText="#{customProperties['administration.referentiel.fieldofactivity.column.action']}" styleClass="action_column">
+            <p:rowEditor id="btnModify" />
+            <!-- Bouton suppression -->
+            <p:commandButton id="btnDelete" type="button" rendered="#{fieldOfActivity.removable}" onclick="confirmDelete_#{fieldOfActivity.id}.show()" icon="ui-icon-trash" styleClass="btn" />
+            <p:tooltip for="btnDelete" value="#{customProperties['administration.referentiel.fieldofactivity.action.delete']}" showEffect="fade" hideEffect="fade" />
+            <!-- Confirmation suppression -->
+            <p:confirmDialog widgetVar="confirmDelete_#{fieldOfActivity.id}" message="#{customProperties['administration.referentiel.fieldofactivity.action.delete.confirm']}">
+              <p:commandButton value="#{customProperties['confirm.yes']}" update=":messages :frmRefFieldOfActivity:fieldOfActivityListing" process=":frmRefFieldOfActivity:fieldOfActivityListing" onclick="confirmDelete_#{fieldOfActivity.id}.hide()">
+                <p:collector value="#{fieldOfActivity}" removeFrom="#{fieldOfActivityController.fieldOfActivityBean.lstFieldOfActivity}" />
+              </p:commandButton>
+              <p:commandButton type="button" value="#{customProperties['confirm.no']}" onclick="confirmDelete_#{fieldOfActivity.id}.hide()" />
+            </p:confirmDialog>
+          </p:column>
+        </p:dataTable>
+      </p:outputPanel>
+      <p:fieldset legend="#{customProperties['administration.referentiel.fieldofactivity.fieldset']}" id="addFieldOfActivity">
+        <p class="info_required">
+          Les champs suivis de <span class="mandatory">*</span> sont obligatoires.
+        </p>
+        <p>
+          <!-- Libellé -->
+          <h:outputLabel for="label" value="#{customProperties['administration.referentiel.fieldofactivity.field.label']}" styleClass="label">
+            <span class="mandatory">*</span>
+          </h:outputLabel>
+          <p:inputText id="label" value="#{fieldOfActivityController.fieldOfActivityBean.fieldOfActivity}" maxlength="50" required="true" requiredMessage="#{customProperties['administration.referentiel.fieldofactivity.error.label']}" />
+        </p>
+        <!-- GMR -->
+        <p>
+          <h:outputLabel for="gmr" value="#{customProperties['administration.referentiel.fieldofactivity.field.gmr']}" styleClass="label">
+            <span class="mandatory">*</span>
+          </h:outputLabel>
+          <p:inputText id="gmr" value="#{fieldOfActivityController.fieldOfActivityBean.gmr}" maxlength="60" required="true" requiredMessage="#{customProperties['administration.referentiel.fieldofactivity.error.gmr']}" />
+        </p>
+        <!-- Agence -->
+        <div class="ddl">
+          <h:outputLabel for="agency" value="#{customProperties['administration.referentiel.fieldofactivity.field.agency']}" styleClass="label">
+            <span class="mandatory">*</span>
+          </h:outputLabel>
+          <p:selectOneMenu id="agency" value="#{fieldOfActivityController.fieldOfActivityBean.agency}" converter="abita.converter.dto" styleClass="dropdownlist" required="true" requiredMessage="#{customProperties['administration.referentiel.fieldofactivity.error.agency']}">
+            <f:attribute name="converter-values" value="#{fieldOfActivityController.fieldOfActivityBean.agencies}" />
+            <f:selectItem itemLabel="#{msg['dropdownlist.empty']}" value="#{null}" />
+            <f:selectItems value="#{fieldOfActivityController.fieldOfActivityBean.agencies}" var="agency" itemLabel="#{agency.name}" />
+          </p:selectOneMenu>
+        </div>
+        <!-- Bouton Ajouter -->
+        <p:commandButton id="btnAdd" value="#{customProperties['administration.referentiel.fieldofactivity.action.add']}" actionListener="#{fieldOfActivityController.addFieldOfActivityToList}" update=":messages addFieldOfActivity fieldOfActivityListing" process="addFieldOfActivity" />
+      </p:fieldset>
+      <p:outputPanel layout="block" styleClass="action">
+        <p:commandButton id="btnValidate" value="#{customProperties['administration.referentiel.fieldofactivity.action.save']}" actionListener="#{fieldOfActivityController.saveData}" immediate="true" update=":messages" />
+        <p:commandButton id="btnCancel" value="#{customProperties['administration.referentiel.fieldofactivity.action.cancel']}" action="welcome" immediate="true" />
+      </p:outputPanel>
+    </h:form>
+  </ui:define>
+</ui:composition>
+</html>

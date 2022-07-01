@@ -1,0 +1,210 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:fn="http://java.sun.com/jsp/jstl/functions" xmlns:p="http://primefaces.org/ui">
+<ui:composition template="/templates/site/site.xhtml">
+  <ui:define name="title">
+    <h:outputText value="#{customProperties['page.title.prefix']}#{customProperties['thirdpartycontract.update.title']}" />
+  </ui:define>
+  <ui:define name="body-site">
+    <h2 class="center">#{customProperties['thirdpartycontract.update.title']}</h2>
+    <h:form id="frmCreateThirdParty" prependId="false">
+      <p:fieldset legend="#{customProperties['thirdpartycontract.creation.fieldset']}">
+        <p class="info_required">
+          Les champs suivis de <span class="mandatory">*</span> sont obligatoires.
+        </p>
+        <p>
+          <!-- Référence contrat -->
+          <h:outputText value="#{customProperties['thirdpartycontract.field.refthirdpartycontract']}" styleClass="label" />
+          <h:outputText value="#{thirdPartyContractController.thirdPartyContractBean.thirdPartyContractDTO.reference}" />
+        </p>
+        <p>
+          <!-- Tiers -->
+          <h:outputText value="#{customProperties['thirdpartycontract.field.refthirdparty']}" styleClass="label" />
+          <h:outputText value="#{thirdPartyContractController.thirdPartyContractBean.thirdPartyContractDTO.thirdParty.id}" />
+        </p>
+        <p>
+          <!-- Logement -->
+          <h:outputText value="#{customProperties['thirdpartycontract.field.refhousing']}" styleClass="label" />
+          <h:outputText value="#{thirdPartyContractController.thirdPartyContractBean.thirdPartyContractDTO.housing.reference}" />
+        </p>
+        <div class="ddl">
+          <!-- Domaine d'activité -->
+          <h:outputLabel for="fieldOfActivity" value="#{customProperties['thirdpartycontract.field.fieldofactivity']}" styleClass="label">
+            <span class="mandatory">*</span>
+          </h:outputLabel>
+          <p:selectOneMenu id="fieldOfActivity" value="#{thirdPartyContractController.thirdPartyContractBean.thirdPartyContractDTO.fieldOfActivity}" converter="abita.converter.dto" styleClass="dropdownlist">
+            <f:attribute name="converter-values" value="#{thirdPartyContractController.allFieldOfActivity}" />
+            <f:selectItem itemLabel="#{msg['dropdownlist.empty']}" value="#{null}" />
+            <f:selectItems value="#{thirdPartyContractController.allFieldOfActivity}" var="fieldOfActivityItem" itemLabel="#{fieldOfActivityItem.label} #{fieldOfActivityItem.gmr}" />
+          </p:selectOneMenu>
+        </div>
+        <div class="ddl">
+          <!-- Centre coût -->
+          <h:outputLabel for="costCenter" value="#{customProperties['thirdpartycontract.field.costcenter']}" styleClass="label">
+            <span class="mandatory">*</span>
+          </h:outputLabel>
+          <p:selectOneMenu id="costCenter" value="#{thirdPartyContractController.thirdPartyContractBean.thirdPartyContractDTO.costCenter}" converter="abita.converter.dto" styleClass="dropdownlist">
+            <f:attribute name="converter-values" value="#{thirdPartyContractController.allCostCenter}" />
+            <f:selectItem itemLabel="#{msg['dropdownlist.empty']}" value="#{null}" />
+            <f:selectItems value="#{thirdPartyContractController.allCostCenter}" var="costCenterItem" itemLabel="#{costCenterItem.label}" />
+          </p:selectOneMenu>
+        </div>
+        <p>
+          <!-- Durée du contrat -->
+          <h:outputLabel for="contractPeriod" value="#{customProperties['thirdpartycontract.field.contractperiod']}" styleClass="label">
+            <span class="mandatory">*</span>
+          </h:outputLabel>
+          <p:inputText id="contractPeriod" value="#{thirdPartyContractController.thirdPartyContractBean.thirdPartyContractDTO.contractPeriod}" maxlength="5" label="#{customProperties['thirdpartycontract.field.contractperiod']}" />
+        </p>
+        <p>
+          <!-- Durée du préavis -->
+          <h:outputLabel for="noticePeriod" value="#{customProperties['thirdpartycontract.field.noticeperiod']}" styleClass="label"></h:outputLabel>
+          <p:inputText id="noticePeriod" value="#{thirdPartyContractController.thirdPartyContractBean.thirdPartyContractDTO.noticePeriod}" maxlength="5" label="#{customProperties['thirdpartycontract.field.noticeperiod']}" />
+        </p>
+        <p>
+          <!-- Date de début de validité -->
+          <h:outputLabel for="startValidity_date" value="#{customProperties['thirdpartycontract.field.startvalidity']}" styleClass="label">
+            <span class="mandatory">*</span>
+          </h:outputLabel>
+          <p:calendar id="startValidity_date" value="#{thirdPartyContractController.thirdPartyContractBean.thirdPartyContractDTO.startValidity}" locale="fr" pattern="#{customProperties['pattern.date']}" navigator="true" maxlength="10">
+            <f:validator validatorId="specificThirdPartyContractStartValidityValidator" for="startValidity_date" />
+            <f:attribute name="otherDate" value="#{thirdPartyContractController.thirdPartyContractBean.thirdPartyContractDTO.housing.registerDate}" />
+            <f:attribute name="summaryMessage" value="#{customProperties['thirdpartycontract.error.startValidity.before.registration']}" />
+          </p:calendar>
+        </p>
+        <p>
+          <!-- Date de début de paiement fournisseur -->
+          <h:outputLabel for="startSupplierPayment_date" value="#{customProperties['thirdpartycontract.field.startsupplierpaymentdate']}" styleClass="label">
+            <span class="mandatory">*</span>
+          </h:outputLabel>
+          <p:calendar id="startSupplierPayment_date" value="#{thirdPartyContractController.thirdPartyContractBean.thirdPartyContractDTO.startSupplierPaymentDate}" locale="fr" pattern="#{customProperties['pattern.date']}" navigator="true" maxlength="10">
+          </p:calendar>
+        </p>
+        <p>
+          <!-- Montant du loyer mensuel -->
+          <h:outputLabel for="rentAmount" value="#{customProperties['thirdpartycontract.field.rentamount']}" styleClass="label">
+            <span class="mandatory">*</span>
+          </h:outputLabel>
+          <p:inputText id="rentAmount" value="#{thirdPartyContractController.thirdPartyContractBean.thirdPartyContractDTO.rentAmount}" maxlength="10" label="#{customProperties['thirdpartycontract.field.rentamount']}" />
+        </p>
+        <p>
+          <!-- Montant de la révision du loyer mensuel -->
+          <h:outputLabel for="revisedRentAmount" id="revisedRentAmountLabel" value="#{customProperties['thirdpartycontract.field.revisedrentamount']}" styleClass="label">
+            <h:outputText value=" *" styleClass="mandatory" rendered="#{thirdPartyContractController.checkRevisedRentAmountMandatory()}" />
+          </h:outputLabel>
+          <p:inputText id="revisedRentAmount" binding="#{revisedRentAmountInput}" value="#{thirdPartyContractController.thirdPartyContractBean.thirdPartyContractDTO.revisedRentAmount}" maxlength="10" label="#{customProperties['thirdpartycontract.field.revisedrentamount']}" required="#{thirdPartyContractController.checkRevisedRentAmountMandatory()}" requiredMessage="#{customProperties['thirdpartycontract.error.mandatory.revisedrentamount']}">
+            <p:ajax update="revisedRentDateLabel" listener="#{thirdPartyContractController.isRevisedRentAmountEmpty}" process="@this" immediate="true" />
+          </p:inputText>
+          <!-- Date d'effet de la revision du loyer mensuel -->
+          <h:outputLabel for="revisedRentDate_date" id="revisedRentDateLabel" value="#{customProperties['thirdpartycontract.field.revisedrentdate']}" styleClass="sublabel">
+            <h:outputText value=" *" styleClass="mandatory" rendered="#{thirdPartyContractController.checkRevisedRentDateMandatory()}" />
+          </h:outputLabel>
+          <p:calendar id="revisedRentDate_date" binding="#{revisedRentDateInput}" value="#{thirdPartyContractController.thirdPartyContractBean.thirdPartyContractDTO.revisedRentDate}" locale="fr" pattern="#{customProperties['pattern.date']}" navigator="true" maxlength="10" required="#{thirdPartyContractController.checkRevisedRentDateMandatory()}" requiredMessage="#{customProperties['thirdpartycontract.error.mandatory.revisedrentdate']}">
+            <p:ajax event="change" update="revisedRentAmountLabel" listener="#{thirdPartyContractController.isRevisedRentDateEmpty}" process="@this" immediate="true" />
+            <p:ajax event="dateSelect" update="revisedRentAmountLabel" listener="#{thirdPartyContractController.isRevisedRentDateEmpty}" process="@this" />
+          </p:calendar>
+        </p>
+        <p>
+        </p>
+        <p>
+          <!-- Montant des charges prévisionnelles mensuelles -->
+          <h:outputLabel for="expectedChargeCost" value="#{customProperties['thirdpartycontract.field.expectedchargecost']}" styleClass="label">
+            <span class="mandatory">*</span>
+          </h:outputLabel>
+          <p:inputText id="expectedChargeCost" value="#{thirdPartyContractController.thirdPartyContractBean.thirdPartyContractDTO.expectedChargeCost}" maxlength="10" label="#{customProperties['thirdpartycontract.field.expectedchargecost']}" required="#{revisedRentDateCheck.value != null}" requiredMessage="#{customProperties['thirdpartycontract.error.mandatory.revisedrentamount']}" />
+        </p>
+        <p>
+          <!-- Montant de la révision des charges prévisionnelles mensuelles -->
+          <h:outputLabel for="revisedExpectedChargeCostAmount" id="revisedExpectedChargeCostAmountLabel" value="#{customProperties['thirdpartycontract.field.revisedexpectedchargecostamount']}" styleClass="label">
+            <h:outputText value=" *" styleClass="mandatory" rendered="#{thirdPartyContractController.checkRevisedExpectedChargeCostAmountMandatory()}" />
+          </h:outputLabel>
+          <p:inputText id="revisedExpectedChargeCostAmount" binding="#{revisedExpectedChargeCostAmountInput}" value="#{thirdPartyContractController.thirdPartyContractBean.thirdPartyContractDTO.revisedExpectedChargeCostAmount}" maxlength="10" label="#{customProperties['thirdpartycontract.field.revisedexpectedchargecostamount']}" required="#{thirdPartyContractController.checkRevisedExpectedChargeCostAmountMandatory()}" requiredMessage="#{customProperties['thirdpartycontract.error.mandatory.revisedexpectedchargecostamount']}">
+            <p:ajax event="change" update="revisedExpectedChargeCostDateLabel" listener="#{thirdPartyContractController.isRevisedExpectedChargeCostAmountEmpty}" process="@this" immediate="true" />
+          </p:inputText>
+          <!-- Date d'effet de la revision des charges prévisionnelles mensuelles -->
+          <h:outputLabel for="revisedExpectedChargeCostDate_date" id="revisedExpectedChargeCostDateLabel" value="#{customProperties['thirdpartycontract.field.revisedexpectedchargecostdate']}" styleClass="sublabel">
+            <h:outputText value=" *" styleClass="mandatory" rendered="#{thirdPartyContractController.checkRevisedExpectedChargeCostDateMandatory()}" />
+          </h:outputLabel>
+          <p:calendar id="revisedExpectedChargeCostDate_date" binding="#{revisedExpectedChargeCostDateInput}" value="#{thirdPartyContractController.thirdPartyContractBean.thirdPartyContractDTO.revisedExpectedChargeCostDate}" locale="fr" pattern="#{customProperties['pattern.date']}" navigator="true" maxlength="10" required="#{thirdPartyContractController.checkRevisedExpectedChargeCostDateMandatory()}" requiredMessage="#{customProperties['thirdpartycontract.error.mandatory.revisedexpectedchargecostdate']}">
+            <p:ajax event="change" update="revisedExpectedChargeCostAmountLabel" listener="#{thirdPartyContractController.isRevisedExpectedChargeCostDateEmpty}" process="@this" immediate="true" />
+            <p:ajax event="dateSelect" update="revisedExpectedChargeCostAmountLabel" listener="#{thirdPartyContractController.isRevisedExpectedChargeCostDateEmpty}" process="@this" />
+          </p:calendar>
+        </p>
+        <p>
+          <!-- Loyer à payer  -->
+          <h:outputLabel for="rentToCharge" value="#{customProperties['thirdpartycontract.field.renttocharge']}" styleClass="label" />
+          <p:inputText id="rentToCharge" value="#{customProperties['thirdpartycontract.label.common']}" label="#{customProperties['thirdpartycontract.field.renttocharge']}" disabled="true" />
+        </p>
+        <p>
+          <!-- Montant du dépot de garantie -->
+          <h:outputLabel for="guaranteedDepositAmount" value="#{customProperties['thirdpartycontract.field.guaranteeddepositamount']}" styleClass="label" />
+          <p:inputText id="guaranteedDepositAmount" value="#{thirdPartyContractController.thirdPartyContractBean.thirdPartyContractDTO.guaranteedDepositAmountAsString}" maxlength="10" label="#{customProperties['thirdpartycontract.field.guaranteeddepositamount']}" />
+        </p>
+        <p>
+          <!-- Montant des frais d'agence -->
+          <h:outputLabel for="realEstateAgencyFee" value="#{customProperties['thirdpartycontract.field.realestateagencyfee']}" styleClass="label" />
+          <p:inputText id="realEstateAgencyFee" value="#{thirdPartyContractController.thirdPartyContractBean.thirdPartyContractDTO.realEstateAgencyFeeAsString}" maxlength="10" label="#{customProperties['thirdpartycontract.field.realestateagencyfee']}" />
+        </p>
+        <div class="ddl">
+          <!-- Périodicité du paiement -->
+          <h:outputLabel for="paymentCycle" value="#{customProperties['thirdpartycontract.field.paymentcycle']}" styleClass="label">
+            <span class="mandatory">*</span>
+          </h:outputLabel>
+          <p:selectOneMenu id="paymentCycle" value="#{thirdPartyContractController.thirdPartyContractBean.thirdPartyContractDTO.paymentCycle}" converter="abita.converter.dto" styleClass="dropdownlist">
+            <p:ajax listener="#{thirdPartyContractController.setMandatoryFields}" update="termZone" />
+            <f:attribute name="converter-values" value="#{thirdPartyContractController.allPaymentCycle}" />
+            <f:selectItem itemLabel="#{msg['dropdownlist.empty']}" value="#{null}" />
+            <f:selectItems value="#{thirdPartyContractController.allPaymentCycle}" var="paymentCycleItem" itemLabel="#{paymentCycleItem.label}" />
+          </p:selectOneMenu>
+        </div>
+        <p:outputPanel id="termZone" layout="block" styleClass="ddl">
+          <!-- Terme échu / échoir -->
+          <h:outputLabel for="term" value="#{customProperties['thirdpartycontract.field.term']}" styleClass="label" rendered="#{thirdPartyContractController.thirdPartyContractBean.blnTerm}">
+            <span class="mandatory">*</span>
+          </h:outputLabel>
+          <p:selectOneRadio id="term" value="#{thirdPartyContractController.thirdPartyContractBean.thirdPartyContractDTO.expiryDate}" styleClass="radio" required="#{thirdPartyContractController.checkRequired()}" requiredMessage="#{customProperties['thirdpartycontract.error.term']}" rendered="#{thirdPartyContractController.thirdPartyContractBean.blnTerm}">
+            <f:selectItem itemLabel="#{customProperties['thirdpartycontract.field.expirydate']}" itemValue="#{true}" />
+            <f:selectItem itemLabel="#{customProperties['thirdpartycontract.field.falldue']}" itemValue="#{false}" />
+          </p:selectOneRadio>
+        </p:outputPanel>
+        <p>
+          <!-- Charge ponctuelle -->
+          <h:outputLabel for="sporadicallyInvoicing" value="#{customProperties['thirdpartycontract.field.sporadicallyinvoicing']}" styleClass="label" />
+          <p:inputText id="sporadicallyInvoicing" value="#{thirdPartyContractController.thirdPartyContractBean.thirdPartyContractDTO.sporadicallyInvoicingAsString}" maxlength="10" label="#{customProperties['thirdpartycontract.field.sporadicallyinvoicing']}" />
+        </p>
+        <p>
+          <!-- Date de résiliation du contrat -->
+          <h:outputLabel for="cancellation_date" value="#{customProperties['thirdpartycontract.field.cancellationdate']}" styleClass="label" />
+          <p:calendar id="cancellation_date" value="#{thirdPartyContractController.thirdPartyContractBean.thirdPartyContractDTO.cancellationDate}" locale="fr" pattern="#{customProperties['pattern.date']}" navigator="true" maxlength="10" disabled="#{thirdPartyContractController.thirdPartyContractBean.thirdPartyContractDTO.closedThirdPartyContract}">
+            <f:validator validatorId="specificThirdPartyContractCancellationDateValidator" for="cancellation_date" />
+            <f:attribute name="otherDate" value="#{thirdPartyContractController.thirdPartyContractBean.thirdPartyContractDTO.housing.unregisterDate}" />
+            <f:attribute name="summaryMessage" value="#{customProperties['thirdpartycontract.error.cancellationDate.after.unregistration']}" />
+          </p:calendar>
+        </p>
+        <div class="ddl">
+          <!-- Motif de résiliation-->
+          <h:outputLabel for="thirdPartyTermination" value="#{customProperties['thirdpartycontract.field.thirdpartytermination']}" styleClass="label" />
+          <p:selectOneMenu id="thirdPartyTermination" value="#{thirdPartyContractController.thirdPartyContractBean.thirdPartyContractDTO.thirdPartyTermination}" converter="abita.converter.dto" styleClass="dropdownlist">
+            <f:attribute name="converter-values" value="#{thirdPartyContractController.allThirdPartyTermination}" />
+            <f:selectItem itemLabel="#{msg['dropdownlist.empty']}" value="#{null}" />
+            <f:selectItems value="#{thirdPartyContractController.allThirdPartyTermination}" var="terminationItem" itemLabel="#{terminationItem.label}" />
+          </p:selectOneMenu>
+        </div>
+        <div class="ddl">
+          <!-- Remboursement du dépot de garantie -->
+          <h:outputLabel for="guaranteedDepositRefund" value="#{customProperties['thirdpartycontract.field.guaranteeddepositrefund']}" styleClass="label" />
+          <p:selectOneRadio id="guaranteedDepositRefund" value="#{thirdPartyContractController.thirdPartyContractBean.thirdPartyContractDTO.guaranteedDepositRefund}" styleClass="radio">
+            <f:selectItem itemLabel="#{customProperties['confirm.yes']}" itemValue="#{true}" />
+            <f:selectItem itemLabel="#{customProperties['confirm.no']}" itemValue="#{false}" />
+          </p:selectOneRadio>
+        </div>
+      </p:fieldset>
+      <h:inputHidden id="checkId" value=" " />
+      <p:outputPanel layout="block" styleClass="action">
+        <p:commandButton id="btnValidate" value="#{customProperties['thirdpartycontract.action.save']}" validateClient="true" action="#{thirdPartyContractController.saveOrUpdateData}" update=":messages @form" />
+        <p:commandButton id="btnCancel" value="#{customProperties['common.action.cancel']}" action="#{thirdPartyContractController.cancel}" immediate="true" />
+      </p:outputPanel>
+    </h:form>
+  </ui:define>
+</ui:composition>
+</html>

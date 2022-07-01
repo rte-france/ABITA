@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p" xmlns:util="http://www.springframework.org/schema/util" xmlns:batch="http://www.springframework.org/schema/batch" xmlns="http://www.springframework.org/schema/beans" xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx" xmlns:context="http://www.springframework.org/schema/context" xmlns:task="http://www.springframework.org/schema/task"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+						http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch-3.0.xsd
+      					http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+      					http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
+      					http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+      					http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+
+  <!-- RUNNER -->
+  <bean id="NTRunner" class="com.abita.services.batch.RunScheduledBatch">
+    <property name="label" value="${gcp.nt.name}" />
+    <property name="jobLauncher" ref="jobLauncher" />
+    <property name="job" ref="NTJob" />
+  </bean>
+
+  <batch:job id="NTJob">
+    <batch:step id="nt_1" next="processArchivingNT">
+      <batch:tasklet>
+        <batch:chunk reader="GCPNTEntryBlockReader" writer="NTEntryWriter" chunk-completion-policy="completionPolicy" />
+      </batch:tasklet>
+      <batch:listeners>
+        <batch:listener ref="promotionListener" />
+      </batch:listeners>
+    </batch:step>
+    <batch:step id="processArchivingNT" next="processMovingNT">
+      <batch:tasklet ref="copyGCPFileFromTempToArchive" />
+    </batch:step>
+    <batch:step id="processMovingNT" next="processRasNT">
+      <batch:tasklet ref="moveGCPFileFromTempToOutbound" />
+    </batch:step>
+    <batch:step id="processRasNT" parent="ras_3" next="sNT" />
+    <batch:step id="sNT">
+      <batch:tasklet ref="sendNT" />
+    </batch:step>
+  </batch:job>
+
+  <bean id="sendNT" class="com.abita.dao.batch.tasklet.SendMailTasklet">
+    <property name="reportingServiceFacade" ref="reportingServiceFacade" />
+    <property name="type">
+      <util:constant static-field="com.abita.services.jobs.gcp.constants.GcpConstants.TYPE_PIECE_NT" />
+    </property>
+  </bean>
+
+  <bean id="GCPNTEntryBlockReader" class="com.abita.dao.batch.gcp.reader.GCPNTEntryBlockReader">
+    <property name="gcpTenantServiceFacade" ref="gcpTenantServiceFacade" />
+  </bean>
+
+  <bean id="NTEntryWriter" class="com.abita.dao.batch.gcp.writer.FlatFileWriter" init-method="afterPropertiesSet">
+    <property name="fieldExtractorHeader" ref="GCPEntryHeaderExtractor" />
+    <property name="fieldExtractorLine" ref="GCPEntryLineExtractor" />
+    <property name="parameterService" ref="parameterService" />
+    <property name="headerFormat" value="${gcp.header.format}" />
+    <property name="lineFormat" value="${gcp.line.format}" />
+    <property name="filePart" value="${gcp.nt.filepart}" />
+    <property name="filenameKey">
+      <util:constant static-field="com.abita.dao.batch.constant.BatchConstants.BATCH_GCP_TEMP_FILE_NAME" />
+    </property>
+    <property name="encoding" value="${batch.encoding}" />
+  </bean>
+
+  <bean class="com.abita.dao.batch.gcp.extractor.GCPEntryHeaderExtractor" name="GCPEntryHeaderExtractor" />
+  <bean class="com.abita.dao.batch.gcp.extractor.GCPEntryLineExtractor" name="GCPEntryLineExtractor" />
+
+</beans>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+<hibernate-mapping package="com.abita.dao.paymentcycle.entity">
+  <class name="com.abita.dao.paymentcycle.entity.PaymentCycleEntity" table="PAYMENT_CYCLE">
+    <id name="id" column="PCY_ID">
+      <generator class="sequence">
+        <param name="sequence">SEQ_PAYMENT_CYCLE</param>
+      </generator>
+    </id>
+    <property name="label" column="PCY_LABEL" type="java.lang.String" />
+  </class>
+</hibernate-mapping>

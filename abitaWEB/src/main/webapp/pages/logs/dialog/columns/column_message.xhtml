@@ -1,0 +1,11 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+	<ui:composition>
+		<p:column headerText="#{logs['fwk.logs.dialog.table.column.message']}" filterMatchMode="contains" filterBy="#{message.message}"
+			sortBy="#{message.message}">
+			#{message.message}
+		</p:column>
+	</ui:composition>
+</html>

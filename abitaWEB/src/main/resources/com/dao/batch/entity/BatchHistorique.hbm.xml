@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.dao.batch.entity">
+	<typedef name="statutEnum" class="com.dao.common.entity.GenericEnumUserType">
+		<param name="enumClass">com.services.batchservice.constants.BatchStatut</param>
+	</typedef>
+
+	<class name="BatchHistorique" table="FWK_BATCH_HISTO">
+		<id name="id" column="BATCH_ID" unsaved-value="null">
+			<generator class="native">
+				<param name="sequence">SEQ_BATCH_ID</param>
+			</generator>
+		</id>
+
+		<property name="name" column="BATCH_NAME" not-null="true" />
+		<property name="dateLancement" column="BATCH_DATE_LANCEMENT" not-null="true" />
+		<property name="statut" column="BATCH_STATUT" not-null="true" type="statutEnum" />
+
+		<set name="messages" table="FWK_BATCH_MESSAGE" cascade="all" lazy="false">
+			<key column="BATCH_ID" />
+			<one-to-many class="BatchMessage" />
+		</set>
+	</class>
+</hibernate-mapping>

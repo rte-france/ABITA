@@ -1,0 +1,31 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+			"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+<ui:composition>
+	<h:form id="localeForm">
+		<c:if test="#{localeViewController.localeSwitchEnabled}">
+			<h:panelGrid columns="2" styleClass="header-locale">
+				<h:commandLink immediate="true"
+					action="#{localeViewController.processChangeLocale}">
+					<h:graphicImage width="20" height="10"
+						value="/images/locale/fr.gif" style="border: 0px" />
+					<f:param name="localeId" value="fr" />
+				</h:commandLink>
+				<h:commandLink immediate="true"
+					action="#{localeViewController.processChangeLocale}">
+					<h:graphicImage width="20" height="10"
+						value="/images/locale/en.gif" style="border: 0px" />
+					<f:param name="localeId" value="en" />
+				</h:commandLink>
+			</h:panelGrid>
+		</c:if>
+	</h:form>
+</ui:composition>
+
+</html>

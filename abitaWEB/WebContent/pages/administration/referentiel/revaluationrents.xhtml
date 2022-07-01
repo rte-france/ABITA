@@ -1,0 +1,61 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:fn="http://java.sun.com/jsp/jstl/functions" xmlns:p="http://primefaces.org/ui">
+<ui:composition template="/templates/site/site.xhtml">
+  <ui:define name="title">
+    <h:outputText value="#{customProperties['page.title.prefix']}#{customProperties['administration.referentiel.accountingcode.title']}" />
+  </ui:define>
+  <ui:define name="body-site">
+    <h2 class="center">#{customProperties['administration.referentiel.revaluationrents.title']}</h2>
+    <h:form id="frmRevaluationRents" prependId="false">
+      <p:fieldset legend="#{customProperties['administration.referentiel.revaluationrents.fieldset']}">
+        <p class="info_required">
+          Les champs suivis de <span class="mandatory">*</span> sont obligatoires.
+        </p>
+        <p>
+          <!-- Taux -->
+          <h:outputLabel for="rate" value="#{customProperties['administration.referentiel.revaluationrents.rent']}" styleClass="label">
+            <span class="mandatory">*</span>
+          </h:outputLabel>
+          <p:inputText id="rate" value="#{revaluationRentsController.revaluationRentsBean.revaluationRentsDTO.rate}" maxlength="10" label="#{customProperties['administration.referentiel.revaluationrents.rent']}" />
+        </p>
+        <p:outputPanel id="actionZone" layout="block" styleClass="ddl">
+          <!-- Action -->
+          <h:outputLabel for="action" value="#{customProperties['administration.referentiel.revaluationrents.action']}" styleClass="label">
+            <span class="mandatory">*</span>
+          </h:outputLabel>
+          <p:selectOneRadio id="action" value="#{revaluationRentsController.revaluationRentsBean.revaluationRentsDTO.action}" styleClass="radio">
+            <f:selectItem itemLabel="#{customProperties['administration.referentiel.revaluationrents.action.add']}" itemValue="#{true}" />
+            <f:selectItem itemLabel="#{customProperties['administration.referentiel.revaluationrents.action.remove']}" itemValue="#{false}" />
+          </p:selectOneRadio>
+        </p:outputPanel>
+        <h:outputFormat id="lastUpdated" for="mode" value="#{customProperties['administration.referentiel.revaluationrents.lastupdated']}" styleClass="info_required">
+          <f:param value="#{revaluationRentsController.revaluationRentsBean.revaluationRentsDTO.lastUpdated}" />
+          <c:if test="#{revaluationRentsController.revaluationRentsBean.revaluationRentsDTO.action}">
+            <f:param value="#{customProperties['administration.referentiel.revaluationrents.action.add']}" />
+          </c:if>
+          <c:if test="#{!revaluationRentsController.revaluationRentsBean.revaluationRentsDTO.action}">
+            <f:param value="#{customProperties['administration.referentiel.revaluationrents.action.remove']}" />
+          </c:if>
+        </h:outputFormat>
+      </p:fieldset>
+      <p:outputPanel layout="block" styleClass="action">
+        <p:commandButton id="btnValidate" value="#{customProperties['administration.referentiel.revaluationrents.action.save']}" onclick="confirmRevaluation.show()" update="dialogRate"  />
+        <p:commandButton id="btnCancel" value="#{customProperties['administration.referentiel.revaluationrents.action.cancel']}" action="welcome" immediate="true" />
+      </p:outputPanel>
+      <!-- Confirmation suppression -->
+      <p:confirmDialog widgetVar="confirmRevaluation">
+        <f:facet name="message">
+          <p:outputPanel>
+            <h:outputFormat id="dialogRate" value="#{customProperties['administration.referentiel.revaluationrents.action.delete.confirm']}" escape="false">
+              <f:param value="#{revaluationRentsController.revaluationRentsBean.revaluationRentsDTO.rate}" />
+            </h:outputFormat>
+          </p:outputPanel>
+        </f:facet>
+        <p:commandButton value="#{customProperties['confirm.yes']}" actionListener="#{revaluationRentsController.saveData}" update=":messages lastUpdated" onclick="confirmRevaluation.hide()" />
+        <p:commandButton type="button" value="#{customProperties['confirm.no']}" onclick="confirmRevaluation.hide()" />
+      </p:confirmDialog>
+    </h:form>
+  </ui:define>
+</ui:composition>
+</html>

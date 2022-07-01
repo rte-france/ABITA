@@ -1,0 +1,19 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+	<!-- RM_UTI_012 : Gestion des groupes par défaut -->
+	<p:panel header="#{access['admin.acces.defaultgroup']}">
+		<h:outputText value="#{access['user.defaultgroup.description']}" />
+		<p:panelGrid columns="3" styleClass="no-border">
+			<h:outputLabel for="defaultgroups" value="#{access['user.defaultgroup.name.label']}" styleClass="label_search" />
+			<p:selectManyMenu id="defaultgroups" value="#{userListViewBean.defaultGroupsId}" style="width: 250px; height: 68px">
+		        <f:selectItems value="#{userListViewController.userListViewBean.groups}" />
+		    </p:selectManyMenu>
+
+		    <p:commandButton value="#{access['user.defaultgroup.valid']}"
+				 actionListener="#{userListViewController.saveDefaultGroups}" update=":messages" />
+		</p:panelGrid>
+	</p:panel>
+</html>

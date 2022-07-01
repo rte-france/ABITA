@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+<hibernate-mapping package="com.abita.dao.thirdpartytermination.entity">
+  <class name="com.abita.dao.thirdpartytermination.entity.ThirdPartyTerminationEntity" table="THIRD_PARTY_TERMINATION">
+    <id name="id" column="TPT_ID">
+      <generator class="sequence">
+        <param name="sequence">SEQ_THIRD_PARTY_TERMINATION</param>
+      </generator>
+    </id>
+    <property name="label" column="TPT_LABEL" type="java.lang.String" />
+  </class>
+</hibernate-mapping>

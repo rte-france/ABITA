@@ -1,0 +1,62 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<ui:composition>
+
+    <p:dialog widgetVar="aproposDlg" closable="true" header="#{site.aPropos}" style="text-align: left;">
+        <h:panelGrid columns="3" style="margin-bottom: 10px; margin-left: auto; margin-right: auto;">
+            <h:outputText value="#{site.version}" styleClass="label"/>
+            :
+            <h:outputText value="#{siteViewController.siteVersion}" styleClass="label"/>
+            <h:outputText value="#{site.technicalversion}" styleClass="label"/>
+            :
+            <h:outputText value="#{customProperties['technical.version']}" styleClass="label"/>
+            <h:outputText value="#{site.fwkversion}" styleClass="label"/>
+            :<h:outputText value="#{customProperties['fwk.version']}" styleClass="label"/>
+            <h:outputText value="#{site.deliverydate}" styleClass="label"/>
+            :
+            <h:outputText value="#{siteViewController.convertDeliveryDate}" styleClass="label"/>
+        </h:panelGrid>
+    </p:dialog>
+
+    <!-- Dialog change theme -->
+    <p:dialog widgetVar="changeThemeDlg" header="#{site.changeThemeLabelDlg}" modal="true" resizable="false"
+              closable="false">
+        <h:form>
+            <p:messages id="changeThemeMessages" autoUpdate="true"/>
+            <h:panelGrid columns="2" id="themePanelGrid">
+
+                <h:outputText value="#{site.themeOnGoing}"/>
+                <h:outputText value="#{siteViewController.userTheme}"/>
+
+                <h:outputText value="#{site.themeList}"/>
+                <p:themeSwitcher value="#{themeUserBean.userThemeName}" effect="fade" id="statefulSwitcher">
+                    <f:selectItems value="#{siteViewController.themes}"/>
+                </p:themeSwitcher>
+
+            </h:panelGrid>
+
+            <h:panelGrid columns="2" style="width: 100%;" id="themePanelGridButtons">
+                <f:facet name="footer">
+                    <h:panelGroup style="display:block; text-align:center">
+                        <p:commandButton value="#{site.apply}" actionListener="#{siteViewController.saveTheme}"
+                                         oncomplete="changeThemeDlg.hide();"
+                                         update="themePanelGrid,themePanelGridButtons"/>
+                        <p:commandButton value="#{site.cancel}" actionListener="#{siteViewController.cancelTheme}"
+                                         oncomplete="PrimeFaces.changeTheme('#{siteViewController.userTheme}');changeThemeDlg.hide();"
+                                         update="themePanelGrid,themePanelGridButtons"/>
+                    </h:panelGroup>
+                </f:facet>
+            </h:panelGrid>
+        </h:form>
+    </p:dialog>
+
+</ui:composition>
+
+</html>

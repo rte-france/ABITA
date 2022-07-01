@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://java.sun.com/xml/ns/javaee"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+         id="WebApp_ID" version="2.5">
+  <display-name>WEB.XML_FWK_V4_NotUsedFile</display-name>
+  <servlet>
+    <servlet-name>Faces Servlet</servlet-name>
+    <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>Faces Servlet</servlet-name>
+    <url-pattern>*.jsf</url-pattern>
+    <url-pattern>/faces/*</url-pattern>
+  </servlet-mapping>
+  <context-param>
+    <param-name>javax.faces.PROJECT_STAGE</param-name>
+    <param-value>Development</param-value>
+  </context-param>
+  <context-param>
+    <param-name>javax.faces.FACELETS_REFRESH_PERIOD</param-name>
+    <param-value>2</param-value>
+  </context-param>
+  <!-- to produce valid HTML -->
+  <context-param>
+    <param-name>com.sun.faces.autoCompleteOffOnViewState</param-name>
+    <param-value>false</param-value>
+  </context-param>
+  <context-param>
+    <param-name>com.sun.faces.enableViewStateIdRendering</param-name>
+    <param-value>false</param-value>
+  </context-param>
+  <!-- end valid HTML-->
+  <context-param>
+    <description>
+		javax.faces.DEFAULT_SUFFIX -- Allow the web application to define an alternate suffix for JSP pages
+		containing JSF content. See the javadocs for the symbolic constant
+		ViewHandler.DEFAULT_SUFFIX_PARAM_NAME for the complete specification.
+		</description>
+    <param-name>javax.faces.DEFAULT_SUFFIX</param-name>
+    <param-value>.xhtml</param-value>
+  </context-param>
+  <context-param>
+    <description>
+		javax.faces.CONFIG_FILES -- Comma-delimited list of context-relative resource paths under which the JSF
+		implementation will look for application configuration resources (see Section 11.4.4 “Application Configuration
+		Resource Format”), before loading a configuration resource named &quot;/WEB-INF/faces-config.xml&quot; (if such a
+		resource exists). If “/WEB-INF/faces-config.xml” is present in the list, it must be ignored.
+		</description>
+    <param-name>javax.faces.CONFIG_FILES</param-name>
+    <param-value>/WEB-INF/site-faces-config.xml,/WEB-INF/access-faces-config.xml</param-value>
+  </context-param>
+  <filter>
+    <display-name>Security Filter</display-name>
+    <filter-name>securityFilter</filter-name>
+    <filter-class>com.web.login.filters.SecurityFilter</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>securityFilter</filter-name>
+    <url-pattern>/pages/*</url-pattern>
+    <dispatcher>REQUEST</dispatcher>
+    <dispatcher>FORWARD</dispatcher>
+  </filter-mapping>
+  <context-param>
+    <description>Log4j configuration file location</description>
+    <param-name>log4jConfigLocation</param-name>
+    <param-value>/WEB-INF/log4j.xml</param-value>
+  </context-param>
+  <listener>
+    <description>
+	  	Spring listener for log4j initialisation.WARNING it must be declare before ContextLoaderListener
+	  </description>
+    <listener-class>
+	      org.springframework.web.util.Log4jConfigListener
+	    </listener-class>
+  </listener>
+  <listener>
+    <description>
+  	Spring / JSF configuration
+  	</description>
+    <listener-class>
+      org.springframework.web.context.ContextLoaderListener
+    </listener-class>
+  </listener>
+  <listener>
+    <description>
+  	Spring /JSF configuration
+  </description>
+    <listener-class>
+      org.springframework.web.context.request.RequestContextListener
+    </listener-class>
+  </listener>
+  <welcome-file-list>
+    <welcome-file>index.jsp</welcome-file>
+  </welcome-file-list>
+  <error-page>
+    <exception-type>javax.faces.application.ViewExpiredException</exception-type>
+    <location>/index.jsp</location>
+  </error-page>
+   <error-page>
+    <exception-type>403</exception-type>
+    <location>/welcome/welcome.jsf</location>
+     </error-page>
+     <error-page>
+    <exception-type>408</exception-type>
+    <location>/welcome/welcome.jsf</location>
+     </error-page>
+
+     <session-config>
+		<session-timeout>480</session-timeout>
+	</session-config>
+
+	<!-- Gestion des graph -->
+	<servlet-mapping>
+        <servlet-name>GenerateAmchartsXmlServlet</servlet-name>
+        <url-pattern>/GenerateAmchartsXmlServlet/*</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>GenerateAmchartsXmlServlet</servlet-name>
+        <servlet-class>com.web.common.servlets.GenerateAmchartsXmlServlet</servlet-class>
+        <init-param>
+            <param-name>encoding</param-name>
+            <param-value>UTF-8</param-value>
+        </init-param>
+    </servlet>
+    <!-- Gestion du Push -->
+    <servlet-mapping>
+    	<servlet-name>Push Servlet</servlet-name>
+    	<url-pattern>/push/*</url-pattern>
+    </servlet-mapping>
+    <servlet>
+    	<servlet-name>Push Servlet</servlet-name>
+    	<servlet-class>org.primefaces.push.PushServlet</servlet-class>
+    	<load-on-startup>1</load-on-startup>
+    	<init-param>
+    		<param-name>channels</param-name>
+    		<param-value>synchronisation</param-value>
+    	</init-param>
+    </servlet>
+</web-app>

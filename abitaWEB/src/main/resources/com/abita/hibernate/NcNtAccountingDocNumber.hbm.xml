@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+<hibernate-mapping package="com.abita.dao.ncntaccountingdocnumber.entity">
+  <class name="com.abita.dao.ncntaccountingdocnumber.entity.NcNtAccountingDocNumberEntity" table="NC_NT_ACC_DOC_NBR">
+    <id name="id" type="java.lang.Long" column="NC_NT_ADN_ID">
+      <generator class="sequence">
+        <param name="sequence">SEQ_NC_NT_ACC_DOC_NBR</param>
+      </generator>
+    </id>
+    <property name="ncNtAdnPieceNumber" column="NC_NT_ADN_PIECE_NUMBER" type="java.lang.Long" />
+    <property name="ncNtAdnPieceType" column="NC_NT_ADN_PIECE_TYPE" type="java.lang.String" />
+    <property name="ncNtAdnPieceDate" column="NC_NT_ADN_PIECE_DATE" type="java.util.Date" />
+    <many-to-one name="contract" class="com.abita.dao.contract.entity.ContractEntity" column="CON_ID" />
+  </class>
+
+  <query name="getNcNtCurrentMaxValPieceNumber"><![CDATA[
+        select max(ncNtAdnPieceNumber) as max from NcNtAccountingDocNumberEntity ncntadn]]>
+  </query>
+
+  <query name="deleteNcNtAccountingDocNumber">
+    	<![CDATA[ delete NcNtAccountingDocNumberEntity n where n.contract.id = :idContract ]]>
+  </query>
+</hibernate-mapping>

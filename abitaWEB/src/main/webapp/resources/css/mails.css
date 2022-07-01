@@ -1,0 +1,26 @@
+@CHARSET "ISO-8859-1";
+
+#mailsForm\:list tr.success td {
+	background-color: #BBE2BB;
+}
+#mailsForm\:list tr.success:hover td {
+	background-color: inherit;
+}
+
+#mailsForm\:list tr.failure td {
+	background-color: #F5A9A9;
+}
+#mailsForm\:list tr.failure:hover td {
+	background-color: inherit;
+}
+
+#mailsForm\:list tr.inProgress td {
+    background-color: #f5be46;
+}
+#mailsForm\:list tr.inProgress:hover td {
+    background-color: inherit;
+}
+
+.highlight {
+	background-color: white;
+}

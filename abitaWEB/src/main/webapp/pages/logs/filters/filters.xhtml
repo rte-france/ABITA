@@ -1,0 +1,53 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+	<!-- RM_LOG_002 - Zone de filtrage -->
+	<ui:composition>
+		<h:form id="formLogsFilters">
+			<p:panelGrid styleClass="no-border centered">
+				<p:row>
+					<p:column>
+						<ui:include src="filter_from_libelle.xhtml" />
+					</p:column>
+					<p:column>
+						<ui:include src="filter_from_field.xhtml" />
+					</p:column>
+
+					<p:column>
+						<ui:include src="filter_to_libelle.xhtml" />
+					</p:column>
+
+					<p:column>
+						<ui:include src="filter_to_field.xhtml" />
+					</p:column>
+				</p:row>
+
+
+				<p:row>
+					<p:column>
+						<ui:include src="filter_origin_libelle.xhtml" />
+					</p:column>
+					<p:column>
+						<ui:include src="filter_origin_field.xhtml" />
+					</p:column>
+
+					<p:column>
+						<ui:include src="filter_status_libelle.xhtml" />
+					</p:column>
+					<p:column>
+						<ui:include src="filter_status_field.xhtml" />
+					</p:column>
+				</p:row>
+
+				<p:row>
+					<p:column colspan="4" styleClass="center-content">
+						<p:commandButton actionListener="#{controller.filterLogs}" value="#{logs['fwk.logs.filters.button']}"
+							update=":logsList,:messages" />
+					</p:column>
+				</p:row>
+			</p:panelGrid>
+		</h:form>
+	</ui:composition>
+</html>

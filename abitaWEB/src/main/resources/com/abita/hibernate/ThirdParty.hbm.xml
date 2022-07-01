@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+<hibernate-mapping package="com.abita.dao.thirdparty.entity">
+  <class name="com.abita.dao.thirdparty.entity.ThirdPartyEntity" table="THIRD_PARTY">
+    <id name="id" type="java.lang.Long" column="THP_ID">
+      <generator class="sequence">
+        <param name="sequence">SEQ_THIRD_PARTY</param>
+      </generator>
+    </id>
+    <property name="gcpReference" column="THP_GCP_REF" type="java.lang.String" />
+    <property name="name" column="THP_NAME" type="java.lang.String" />
+    <property name="address" column="THP_ADDRESS" type="java.lang.String" />
+    <property name="postalCode" column="THP_POSTAL_CODE" type="java.lang.String" />
+    <property name="city" column="THP_CITY" type="java.lang.String" />
+    <property name="phone" column="THP_PHONE" type="java.lang.String" />
+    <property name="mailAddress" column="THP_MAIL_ADDRESS" type="java.lang.String" />
+    <property name="beneficiaryName" column="THP_BENEFICIARY_NAME" type="java.lang.String" />
+    <property name="beneficiaryAddress" column="THP_BENEFICIARY_ADDRESS" type="java.lang.String" />
+    <!-- <property name="comment" column="THP_COMMENT" type="java.lang.String" length="4000" /> -->
+  </class>
+
+  <query name="findThirdPartyByGCPRef"><![CDATA[
+        from ThirdPartyEntity tp WHERE tp.gcpReference = :gcpReference ]]>
+  </query>
+
+  <query name="findThirdPartyByHousing"><![CDATA[
+        select distinct tpc.thirdParty from ThirdPartyContractEntity tpc where tpc.housing = :idHousing ]]>
+  </query>
+
+  <query name="isRemovable">
+    	<![CDATA[ select tpc.thirdParty from ThirdPartyContractEntity tpc where tpc.thirdParty = :idThirdParty ]]>
+  </query>
+
+</hibernate-mapping>

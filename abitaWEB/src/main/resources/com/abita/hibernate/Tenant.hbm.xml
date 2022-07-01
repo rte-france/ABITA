@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+<hibernate-mapping package="com.abita.dao.tenant.entity">
+  <class name="com.abita.dao.tenant.entity.TenantEntity" table="TENANT">
+    <id name="id" column="TEN_ID">
+      <generator class="sequence">
+        <param name="sequence">SEQ_TENANT</param>
+      </generator>
+    </id>
+    <property name="reference" column="TEN_REFERENCE" type="java.lang.String" />
+    <property name="firstName" column="TEN_FIRSTNAME" type="java.lang.String" />
+    <property name="lastName" column="TEN_LASTNAME" type="java.lang.String" />
+    <property name="address" column="TEN_ADDRESS" type="java.lang.String" />
+    <property name="postalCode" column="TEN_POSTAL_CODE" type="java.lang.String" />
+    <property name="city" column="TEN_CITY" type="java.lang.String" />
+    <property name="managerial" column="TEN_MANAGERIAL_EMP" type="java.lang.Boolean" />
+    <property name="managerialLastYear" column="TEN_MANAGERIAL_EMP_LAST_YEAR" type="java.lang.Boolean" />
+    <property name="householdSize" column="TEN_HOUSEHOLD_SIZE" type="java.lang.Integer" />
+    <property name="householdSizeLastYear" column="TEN_HOUSEHOLD_SIZE_LAST_YEAR" type="java.lang.Integer" />
+    <property name="actualSalary" column="TEN_ACTUAL_SALARY" type="java.math.BigDecimal" />
+    <property name="referenceGrossSalary" column="TEN_REFERENCE_GROSS_SALARY" type="java.math.BigDecimal" />
+    <property name="phone" column="TEN_PHONE" type="java.lang.String" />
+    <property name="mailAddress" column="TEN_MAIL_ADDRESS" type="java.lang.String" />
+    <many-to-one name="typeTenant" class="com.abita.dao.typetenant.entity.TypeTenantEntity" column="TTE_ID" />
+  </class>
+
+  <query name="isRemovableTenant">
+    	<![CDATA[ select c.tenant from ContractEntity c where c.tenant = :idTenant ]]>
+  </query>
+
+  <query name="findTenantByNNI">
+    	<![CDATA[ select ten from TenantEntity ten join ten.typeTenant tte where ten.reference = :referenceTenant and (tte.ntHeaderLabel = 'AGENT_RETRAITE' or tte.ntHeaderLabel = 'Quittance')]]>
+  </query>
+
+  <sql-query name="findNNI">
+    	<![CDATA[SELECT TEN.TEN_REFERENCE
+				FROM TENANT TEN
+				INNER JOIN CONTRACT CON ON CON.TEN_ID = TEN.TEN_ID
+				INNER JOIN TYPE_TENANT TTE ON TTE.TTE_ID = TEN.TTE_ID
+				WHERE (TTE.TTE_NT_HEADER_LABEL = 'Quittance'
+				OR TTE.TTE_NT_HEADER_LABEL = 'AGENT_RETRAITE')
+				AND (con.CON_end_Validity_Date >= :startDate OR con.CON_end_Validity_Date IS NULL)
+				GROUP BY (TEN.TEN_REFERENCE)]]>
+  </sql-query>
+
+  <sql-query name="updateManagerialLastYear">
+    	<![CDATA[UPDATE TENANT
+    			SET TEN_MANAGERIAL_EMP_LAST_YEAR = TEN_MANAGERIAL_EMP]]>
+  </sql-query>
+
+  <sql-query name="updateHouseholdSizeLastYear">
+    	<![CDATA[UPDATE TENANT
+    			SET TEN_HOUSEHOLD_SIZE_LAST_YEAR = TEN_HOUSEHOLD_SIZE]]>
+  </sql-query>
+
+</hibernate-mapping>

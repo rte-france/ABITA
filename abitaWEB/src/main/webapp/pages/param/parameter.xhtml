@@ -1,0 +1,40 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+			"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/templates/site/site.xhtml">
+	<ui:define name="title-site">&#160;<h:outputText value="#{parame.title}" /></ui:define>
+	<ui:define name="body-site">
+		<h:form id="parameterUpdateForm">
+			<h:panelGrid columns="1" style="width:98%">
+				<f:facet name="header">
+					<p:messages id="parameterMessages" layout="table" globalOnly="true"
+						styleClass="validation" showSummary="true" showDetail="false"
+						summaryFormat="{0}" />
+				</f:facet>
+				<p:calendar rendered="false" />
+				<!-- load calendar resource -->
+				<p:tabView rendered="false" />
+				<!-- load tabview resource -->
+				<p:tabView binding="#{parameter.panelTabbedPane}" styleClass="large"/>
+			</h:panelGrid>
+			<h:panelGrid columns="2" styleClass="horizontalCentered">
+
+				<p:commandButton id="ok" action="#{parameter.getSaveOutcome}"
+					actionListener="#{parameter.processSaveParameters}"
+					value="#{site.apply}" />
+
+				<p:commandButton id="cancel" action="cancel" value="#{site.cancel}"
+					immediate="true" />
+			</h:panelGrid>
+
+		</h:form>
+
+	</ui:define>
+</ui:composition>
+</html>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+<hibernate-mapping package="com.abita.dao.renttypology.entity">
+  <class name="com.abita.dao.renttypology.entity.RentTypologyEntity" table="RENT_TYPOLOGY">
+    <id name="id" type="java.lang.Long" column="RTP_ID">
+      <generator class="sequence">
+        <param name="sequence">SEQ_RENT_TYPOLOGY</param>
+      </generator>
+    </id>
+    <property name="label" column="RTP_LABEL" type="java.lang.String" />
+    <property name="technicalCode" column="RTP_TECHNICAL_CODE" type="java.lang.String" />
+    <property name="housingIndex" column="RTP_HOUSING_INDEX" type="java.lang.String" />
+  </class>
+</hibernate-mapping>

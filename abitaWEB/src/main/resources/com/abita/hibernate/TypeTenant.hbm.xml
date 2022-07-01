@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+<hibernate-mapping package="com.abita.dao.typetenant.entity">
+  <class name="com.abita.dao.typetenant.entity.TypeTenantEntity" table="TYPE_TENANT">
+    <id name="id" column="TTE_ID">
+      <generator class="sequence">
+        <param name="sequence">SEQ_TYPE_TENANT</param>
+      </generator>
+    </id>
+    <property name="label" column="TTE_LABEL" type="java.lang.String" />
+    <property name="ntHeaderLabel" column="TTE_NT_HEADER_LABEL" type="java.lang.String" />
+  </class>
+</hibernate-mapping>

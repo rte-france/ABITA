@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+<hibernate-mapping package="com.abita.dao.historyreporting.entity">
+  <class name="com.abita.dao.historyreporting.entity.HistoryReportingEntity" table="HISTORY_REPORTING">
+    <id name="id" type="java.lang.Long" column="HRE_ID">
+      <generator class="sequence">
+        <param name="sequence">SEQ_HISTORY_REPORTING</param>
+      </generator>
+    </id>
+    <property name="month" column="HRE_MONTH" type="java.lang.Integer" />
+    <property name="year" column="HRE_YEAR" type="java.lang.Integer" />
+    <property name="type" column="HRE_TYPE" type="java.lang.String" />
+    <property name="amount" column="HRE_AMOUNT" type="java.math.BigDecimal" />
+  </class>
+
+  <query name="findHistoryReportingByTypeAndYearMonth">SELECT hre FROM HistoryReportingEntity hre WHERE hre.type = :type AND hre.month = :month AND hre.year = :year ORDER BY year DESC, month DESC</query>
+
+</hibernate-mapping>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+
+	<bean id="actionLogDAO" class="com.dao.actionlogs.impl.ActionLogDAOImpl">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+	<!-- Log Action service -->
+	<bean id="actionLogService" class="com.services.actionlogs.impl.ActionLogServiceImpl">
+		<property name="actionLogDao" ref="actionLogDAO" />
+		<property name="mapper" ref="dozerMapper" />
+	</bean>
+
+    <!-- Aspect de logs du framework -->
+    <bean id="logAspect" class="com.services.actionlogs.aspects.LoggingAspect">
+        <property name="actionLogsService" ref="actionLogService" />
+    </bean>
+
+</beans>

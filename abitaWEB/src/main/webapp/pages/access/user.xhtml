@@ -1,0 +1,146 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+      xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/templates/site/site.xhtml">
+	<ui:define name="title">
+		<h:outputText value="#{siteViewController.siteName}" />: <h:outputText value="#{access['admin.access.user.title']}" />
+	</ui:define>
+
+	<ui:define name="body-site">
+		<f:event listener="#{userListViewController.init}" type="preRenderView" />
+
+		<h:form id="userListForm">
+			<!-- Groupes des nouveaux utilisateurs -->
+			<!-- RM_UTI_012 : Gestion des groupes par défaut -->
+			<ui:include src="includes/groupsdefault.xhtml" />
+
+			<!-- Critères de recherche d'utilisateurs -->
+			<ui:include src="includes/userssearch.xhtml" />
+
+				<p:panel header="#{access['admin.access.result']}" id="userlistpanelgrid">
+					<p:dataTable
+						id="userListTable"
+						var="userdm"
+						rowKey="#{userdm.id}"
+						value="#{userListViewBean.usersListDataModel}"
+						paginator="true" rows="25"
+						selection="#{userListViewBean.selectedUser}"
+						selectionMode="single" width="100%" paginatorPosition="bottom"
+						emptyMessage="#{primefaces.datatableEmptyMessage}" rowIndexVar="rowIndex"
+						rowStyleClass="#{userListViewController.getStyleClass(rowIndex)}"
+						widgetVar="userListTable"
+						>
+
+						<p:ajax event="rowSelect"
+							update=":dialogForm:listgrp,:dialogForm:groupTable"
+							oncomplete="dlg.show()" />
+
+						<p:column sortBy="#{userdm.login.toUpperCase()}" >
+							<f:facet name="header">
+								<h:outputText value="#{site.nni}" />
+							</f:facet>
+							<h:outputText value="#{userdm.login}" />
+						</p:column>
+						<p:column sortBy="#{userdm.firstName.toUpperCase()}">
+							<f:facet name="header">
+								<h:outputText value="#{access['user.list.first_name']}" />
+							</f:facet>
+							<h:outputText value="#{userdm.firstName}" />
+						</p:column>
+						<p:column sortBy="#{userdm.lastName.toUpperCase()}">
+							<f:facet name="header">
+								<h:outputText value="#{access['user.list.last_name']}" />
+							</f:facet>
+							<h:outputText value="#{userdm.lastName}" />
+						</p:column>
+						<p:column sortBy="#{userdm.email.toUpperCase()}">
+							<f:facet name="header">
+								<h:outputText value="#{access['user.list.email']}" />
+							</f:facet>
+							<h:outputText value="#{userdm.email}" />
+						</p:column>
+						<p:column sortBy="#{userdm.location.toUpperCase()}">
+							<f:facet name="header">
+								<h:outputText value="#{access['user.list.location']}" />
+							</f:facet>
+							<h:outputText value="#{userdm.location}" />
+						</p:column>
+						<p:column sortBy="#{userdm.activatedString.toUpperCase()}">
+							<f:facet name="header">
+								<h:outputText value="#{access['user.list.activation.label']}" />
+							</f:facet>
+							<h:outputText value="#{access['user.list.activation.on']}"
+								rendered="#{userdm.activated}" />
+							<h:outputText value="#{access['user.list.activation.off']}"
+								rendered="#{!userdm.activated}" />
+
+						</p:column>
+						<p:column sortBy="#{userdm.groupsDisplay.toUpperCase()}">
+							<f:facet name="header">
+								<h:outputText value="#{access['user.groups']}" />
+							</f:facet>
+							<h:outputText value="#{userdm.groupsDisplay}" />
+						</p:column>
+					</p:dataTable>
+
+					<h:panelGrid columns="5">
+						<!-- [RM_MET_003] Trace de la durée d'un export excel de la liste des utilisateurs -->
+						<h:commandLink id="exporter_liste_link"
+							actionListener="#{userListViewController.exportFileWithIndicatorDuration}" immediate="true">
+							<p:graphicImage value="#{resource['images:excel.png']}" styleClass="no-border" />
+						</h:commandLink>
+					</h:panelGrid>
+
+				</p:panel>
+
+		</h:form>
+		<h:form id="dialogForm">
+			<p:dialog header="#{access['admin.access.group.title']}"
+				widgetVar="dlg" modal="true" closable="false">
+				<h:panelGrid id="listgrp" style="margin-left:auto;margin-right:auto"
+						dynamic="true">
+					<h:panelGrid id="infoUser" style="margin-left:0" columns="2">
+						<h:outputLabel value="#{site.nni}" />
+						<h:outputText value="#{userListViewBean.selectedUser.login}" />
+						<h:outputLabel value="#{access['user.list.first_name']}" />
+						<h:outputText value="#{userListViewBean.selectedUser.firstName}" />
+						<h:outputLabel value=" #{access['user.list.last_name']}" />
+						<h:outputText
+							value="#{userListViewBean.selectedUser.lastName}" />
+					</h:panelGrid>
+					<p:dataTable id="groupTable" var="groupf" rowKey="#{groupf.name}"
+						value="#{userListViewBean.groupsListDataModel}"
+						selection="#{userListViewBean.selectedGroups}"
+						selectionMode="multiple"
+						emptyMessage="#{primefaces.datatableEmptyMessage}">
+						<p:column>
+							<f:facet name="header">
+						  		<h:outputText value="#{access['group.selection']}" />
+							</f:facet>
+							<h:outputText value="#{groupf.name}" />
+				 		</p:column>
+					</p:dataTable>
+					<div style="margin-left: auto; margin-right: auto">
+						<h:panelGroup>
+							<p:commandButton type="button" value="#{site.cancel}" onclick="dlg.hide()" />
+							<!-- [RM_MET_004] Trace du nombre de modifications d'utilisateurs -->
+							<p:commandButton value="#{site.apply}"
+								actionListener="#{userListViewController.updateGroupUser}"
+								oncomplete="countClicksNumber('#{security.userLogin}','update_user',null);dlg.hide();userListTable.unselectAllRows();" update=":userListForm:userListTable" />
+						</h:panelGroup>
+					</div>
+				</h:panelGrid>
+			</p:dialog>
+		</h:form>
+	</ui:define>
+
+</ui:composition>
+
+</html>

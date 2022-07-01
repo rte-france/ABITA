@@ -1,0 +1,68 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+<ui:composition>
+    <p:messages autoUpdate="true"> </p:messages>
+
+    <!-- Search form -->
+    <p:panel header="#{access['admin.acces.search']}">
+
+        <h:panelGrid columns="2" styleClass="searchUserPanel">
+            <h:panelGrid id="userSearchPanelGrid" columns="6" styleClass="searchUserPanel">
+
+                <!-- NNI -->
+                <h:outputLabel for="nni" value="#{site.nni}" styleClass="label_search"/>
+                <p:inputText id="nni" value="#{userListViewController.userListViewBean.usersSearch.nni}"/>
+
+                <!-- FirstName -->
+                <h:outputLabel for="firstName" value="#{access['user.list.first_name']}" styleClass="label_search"/>
+                <p:inputText id="firstName" value="#{userListViewController.userListViewBean.usersSearch.firstName}"/>
+
+                <!-- Name -->
+                <h:outputLabel for="name" value="#{access['user.list.last_name']}" styleClass="label_search"/>
+                <p:inputText id="name" value="#{userListViewController.userListViewBean.usersSearch.name}"/>
+
+                <!-- Email -->
+                <h:outputLabel for="email" value="#{access['user.list.email']}" styleClass="label_search"/>
+                <p:inputText id="email" value="#{userListViewController.userListViewBean.usersSearch.email}"/>
+
+                <!-- State -->
+                <h:outputLabel for="activatedString" value="#{access['user.list.activation.label']}"
+                               styleClass="label_search"/>
+                <p:selectOneMenu id="activatedString" value="#{userListViewController.userListViewBean.usersSearch.activatedSelected}"
+                                 converter="fwk.converter.stringselectitem">
+                    <f:attribute name="converter-values" value="#{userListViewController.userListViewBean.activatedList}"/>
+                    <f:selectItems value="#{userListViewController.userListViewBean.activatedList}"/>
+                </p:selectOneMenu>
+
+                <!-- Location -->
+                <h:outputLabel for="location" value="#{access['user.list.location']}" styleClass="label_search"/>
+                <p:inputText id="location" value="#{userListViewController.userListViewBean.usersSearch.location}"/>
+
+            </h:panelGrid>
+            <h:panelGrid columns="2" styleClass="searchUserPanel">
+                <!-- Groups -->
+                <h:outputLabel for="groups" value="#{access['user.groups']}" styleClass="label_search"/>
+                <p:selectManyMenu id="groups" value="#{userListViewController.userListViewBean.usersSearch.groupsSelected}"
+                                  style="height:50px; width:150px;">
+                    <f:selectItem itemLabel="#{access['user.groups.all']}" itemValue="-1"/>
+                    <f:selectItems value="#{userListViewController.userListViewBean.groups}"/>
+                </p:selectManyMenu>
+
+            </h:panelGrid>
+        </h:panelGrid>
+
+        <!-- Search -->
+        <!-- [RM_MET_002] Trace de la durée de la liste des utilisateurs -->
+        <p:commandButton id="searchButton" value="#{access['user.button.search']}"
+                         actionListener="#{userListViewController.search}" update=":userListForm:userListTable"/>
+        &#160;&#160;<h:outputText value="#{access['user.search.hint']}"/>
+    </p:panel>
+
+</ui:composition>
+
+</html>

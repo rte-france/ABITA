@@ -1,0 +1,133 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:abita="http://abita.com/facelets">
+
+	<ui:composition template="/templates/site/site.xhtml">
+		<ui:define name="title"><h:outputText value="#{siteViewController.siteName}" />:&#160;#{mails['mail.title']}</ui:define>
+		<ui:define name="body-site">
+			<ui:param name="controller" value="#{mailViewController}" />
+			<ui:param name="bean" value="#{controller.bean}" />
+
+			<h:outputStylesheet name="mails.css" library="css" />
+
+			<h:form id="mailsForm">
+				<p:panel id="filters" header="#{mails['mail.filter.panel.title']}" >
+					<p:messages id="filtersMsg" />
+					<p:panelGrid styleClass="no-border">
+						<p:row>
+							<p:column>
+								<h:outputLabel value="#{mails['mail.filter.status']}" />
+							</p:column>
+							<p:column>
+								<p:selectOneButton value="#{mailViewController.bean.mailSearchFilter.status}">
+									<f:selectItems value="#{bean.statusList}" />
+									<!-- Activation / Désactivation de l'élément -->
+									<p:ajax event="change" listener="#{controller.updateErrorMessage}" update="errorCode" />
+								</p:selectOneButton>
+							</p:column>
+							<p:column>
+								<h:outputLabel for="errorCode" value="#{mails['mail.filter.code']}" />
+							</p:column>
+							<p:column>
+								<p:selectOneMenu id="errorCode" value="#{mailViewBean.mailSearchFilter.errorMessage}" disabled="#{mailViewBean.mailSearchFilter.status != 'ERROR'}">
+									<f:selectItems value="#{mailViewBean.errorMessages}" />
+								</p:selectOneMenu>
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column>
+								<h:outputLabel for="dateAfter" value="#{mails['mail.filter.dateAfter']}" />
+							</p:column>
+							<p:column>
+								<p:calendar id="dateAfter" label="Date de début" value="#{mailViewBean.mailSearchFilter.sentAfter}" pattern="#{mails['mail.calendar.pattern']}">
+									<abita:beforeDateValidator boundComponentId="dateBefore" summaryMessage="#{mails['mail.validator.BeforeDateValidator.summary']}" />
+								</p:calendar>
+							</p:column>
+							<p:column>
+								<h:outputLabel for="dateBefore" value="#{mails['mail.filter.dateBefore']}" />
+							</p:column>
+							<p:column>
+								<p:calendar id="dateBefore" label="Date de fin" value="#{mailViewBean.mailSearchFilter.sentBefore}" pattern="#{mails['mail.calendar.pattern']}" />
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column>
+								<h:outputLabel for="sender" value="#{mails['mail.filter.sender']}" />
+							</p:column>
+							<p:column>
+								<p:inputText id="sender" value="#{mailViewBean.mailSearchFilter.sender}" />
+							</p:column>
+							<p:column>
+								<h:outputLabel for="subject" value="#{mails['mail.filter.subject']}" />
+							</p:column>
+							<p:column>
+								<p:inputText id="subject" value="#{mailViewBean.mailSearchFilter.subject}" />
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column>
+								<h:outputLabel for="recipients" value="#{mails['mail.filter.recipients']}" />
+							</p:column>
+							<p:column>
+								<p:inputText id="recipients" value="#{mailViewBean.mailSearchFilter.recipients}" />
+							</p:column>
+							<p:column>
+								<h:outputLabel for="recipients_cc" value="#{mails['mail.filter.otherRecipients']}" />
+							</p:column>
+							<p:column>
+								<p:inputText id="recipients_cc" value="#{mailViewBean.mailSearchFilter.otherRecipients}" />
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column>
+								<h:outputLabel for="attachments" value="#{mails['mail.filter.withAttachment']}" />
+							</p:column>
+							<p:column>
+								<p:selectBooleanCheckbox id="attachments" value="#{mailViewBean.mailSearchFilter.attachments}" />
+							</p:column>
+							<p:column colspan="2">
+								<p:commandButton value="#{mails['mail.filters.submit']}"
+									actionListener="#{mailViewController.search}" update=":mailsForm:filtersMsg,:mailsForm:list" />
+							</p:column>
+						</p:row>
+					</p:panelGrid>
+				</p:panel>
+
+				<h:panelGroup id="list">
+					<p:panel header="#{mails['mail.list.panel.title']}" rendered="#{mailViewBean.mails != null}">
+						<p:dataTable value="#{mailViewBean.mails}" var="mail" rowKey="#{mail.id}"
+							emptyMessage="#{mails['mail.list.empty']}" rowStyleClass="#{mailViewController.getRowCssClass(mail)}"
+							paginatorAlwaysVisible="false" paginator="true" rows="50">
+							<p:column headerText="#{mails['mails.list.column.send_date']}" styleClass="standardTable_ColumnCentered">
+								<h:outputText value="#{mail.dateSent}">
+									<f:convertDateTime pattern="#{mails['mails.list.column.date.pattern']}" />
+								</h:outputText>
+							</p:column>
+							<p:column headerText="#{mails['mails.list.column.status']}" styleClass="standardTable_ColumnCentered">
+								#{mailViewController.getStatus(mail)}
+							</p:column>
+							<p:column headerText="#{mails['mails.list.column.error_message']}" styleClass="standardTable_ColumnCentered">
+								#{mail.errorMessage}
+							</p:column>
+							<p:column headerText="#{mails['mails.list.column.subject']}">
+								#{mail.subject}
+							</p:column>
+							<p:column headerText="#{mails['mails.list.column.sender']}" styleClass="standardTable_ColumnCentered">
+								#{mail.sender}
+							</p:column>
+							<p:column headerText="#{mails['mails.list.column.recipients']}">
+								#{mail.recipients}
+							</p:column>
+							<p:column headerText="#{mails['mails.list.column.other_recipients']}">
+								#{mail.allCopyRecipients}
+							</p:column>
+						</p:dataTable>
+					</p:panel>
+				</h:panelGroup>
+			</h:form>
+		</ui:define>
+	</ui:composition>
+</html>

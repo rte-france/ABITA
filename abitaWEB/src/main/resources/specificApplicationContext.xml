@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.springframework.org/schema/beans" xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx" xmlns:context="http://www.springframework.org/schema/context" xmlns:task="http://www.springframework.org/schema/task" xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+      					http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+      					http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+      					http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+
+  <!-- Config DAO et Service -->
+  <import resource="classpath:dao-config.xml" />
+  <import resource="classpath:service-config.xml" />
+  <import resource="classpath:job-config.xml" />
+  <import resource="classpath:batch-config.xml" />
+
+  <!-- Authenticator Service -->
+  <bean id="authenticatorService" class="com.services.authenticatorservice.impl.DBAuthenticatorService">
+    <property name="userService" ref="userService" />
+  </bean>
+
+  <!-- Pour activer cette configuration, décommenter le tag aop;config Configuration de l'aspect de logs du framework : - on le branche sur l'ensemble des méthodes de l'ensemble des services développés dans l'application - after-returning s'exécute si un service a été exécuté sans problème - after-throwing s'exécute si un service a été exécuté et a levé une exception <aop:config> <aop:pointcut id="servicePointcut" expression="execution(* com.abita.services..*.*(..))" /> <aop:aspect id="loggingAspect" ref="logAspect"> <aop:after-returning method="methodAfterReturning" pointcut-ref="servicePointcut" /> <aop:after-throwing method="methodAfterThrowing" pointcut-ref="servicePointcut" /> </aop:aspect> </aop:config> -->
+
+</beans>

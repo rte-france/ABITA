@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+<hibernate-mapping package="com.abita.dao.fieldofactivity.entity">
+  <class name="com.abita.dao.fieldofactivity.entity.FieldOfActivityEntity" table="FIELD_OF_ACTIVITY">
+    <id name="id" type="java.lang.Long" column="FOA_ID">
+      <generator class="sequence">
+        <param name="sequence">SEQ_FIELD_OF_ACTIVITY</param>
+      </generator>
+    </id>
+    <property name="label" column="FOA_LABEL" type="java.lang.String" />
+    <property name="gmr" column="FOA_GMR" type="java.lang.String" />
+    <many-to-one name="agency" class="com.abita.dao.agency.entity.AgencyEntity" column="AGC_ID" />
+  </class>
+
+  <sql-query name="findAllFieldOfActivity">
+    <return alias="CON" class="com.abita.dao.fieldofactivity.entity.FieldOfActivityEntity" />
+    <return-scalar column="NBTC" type="integer" />
+    <return-scalar column="NBCON" type="integer" />
+    SELECT FOA.*, COUNT(TC.FOA_ID) as NBTC, COUNT(CON.FOA_ID) as NBCON
+    FROM FIELD_OF_ACTIVITY FOA
+    LEFT OUTER JOIN THIRD_PARTY_CONTRACT TC
+    ON FOA.FOA_ID = TC.FOA_ID
+    LEFT OUTER JOIN CONTRACT CON
+    ON FOA.FOA_ID = CON.FOA_ID
+    GROUP BY FOA.FOA_ID, FOA.FOA_LABEL, FOA.FOA_GMR, FOA.AGC_ID
+    ORDER BY FOA.FOA_LABEL
+  </sql-query>
+
+    <query name="findFieldOfActivityByAgency">
+      <![CDATA[ select foa from FieldOfActivityEntity foa where foa.agency = :idAgency ]]>
+  </query>
+
+  <sql-query name="updateHousingAgencyForContract">
+    <![CDATA[
+    UPDATE HOUSING hou
+    SET hou.AGC_ID = :idAgency
+    WHERE hou.HOU_ID IN (SELECT con.HOU_ID
+                        FROM (SELECT *
+                              FROM CONTRACT
+                              WHERE CON_ID IN (SELECT MAX(CON_ID)
+                                               FROM CONTRACT
+                                               GROUP BY HOU_ID
+                                               HAVING COUNT(HOU_ID) > 1)
+                                    OR CON_ID IN (SELECT MAX(CON_ID)
+                                                  FROM CONTRACT
+                                                  GROUP BY HOU_ID
+                                                  HAVING COUNT(HOU_ID) = 1)) con
+                        INNER JOIN FIELD_OF_ACTIVITY foa ON foa.FOA_ID = con.FOA_ID
+                        WHERE foa.FOA_ID = :idFieldOfActivity)]]>
+  </sql-query>
+
+  <sql-query name="updateHousingAgencyForThirdPartyContract">
+    <![CDATA[UPDATE HOUSING hou SET hou.AGC_ID = :idAgency WHERE hou.HOU_ID IN (SELECT tpc.HOU_ID FROM THIRD_PARTY_CONTRACT tpc INNER JOIN FIELD_OF_ACTIVITY foa ON foa.FOA_ID = tpc.FOA_ID WHERE foa.FOA_ID = :idFieldOfActivity) AND hou.HOU_ID NOT IN (SELECT con.HOU_ID FROM CONTRACT con)]]>
+  </sql-query>
+
+</hibernate-mapping>

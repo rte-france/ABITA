@@ -1,0 +1,28 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+	<!-- RM_LOG_002 - Tableau des résultats -->
+	<ui:composition>
+		<h:form id="logsList">
+			<h:panelGroup id="list">
+				<!-- Table cachée qu'à l'affiche de la page -->
+				<p:dataTable id="table" emptyMessage="#{logs['fwk.logs.table.empty']}" rendered="#{bean.logs != null}" widgetVar="wdgLogsList"
+					value="#{bean.logs}" var="log" rowStyleClass="#{controller.getRowCssClass(log.status)}"
+					selectionMode="single" rowKey="#{log.id}" sortBy="#{log.date}" styleClass="padded"
+					paginator="true" paginatorAlwaysVisible="true" paginatorPosition="bottom"
+					rowsPerPageTemplate="#{logs['fwk.logs.table.rowsPerPage']}">
+				    <f:facet name="header">
+			      		#{logs['fwk.logs.table.caption']}
+					</f:facet>
+
+					<ui:include src="columns.xhtml" />
+
+					<ui:include src="events.xhtml" />
+				</p:dataTable>
+			</h:panelGroup>
+		</h:form>
+	</ui:composition>
+</html>

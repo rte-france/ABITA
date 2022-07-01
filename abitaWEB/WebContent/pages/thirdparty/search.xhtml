@@ -1,0 +1,156 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:fn="http://java.sun.com/jsp/jstl/functions" xmlns:p="http://primefaces.org/ui">
+<ui:composition template="/templates/site/site.xhtml">
+  <ui:define name="title">
+    <h:outputText value="#{customProperties['page.title.prefix']}#{customProperties['thirdparty.search.title']}" />
+  </ui:define>
+  <ui:define name="body-site">
+    <h2 class="center">#{customProperties['thirdparty.search.title']}</h2>
+    <h:form id="frmSearchThirdParty" prependId="false">
+      <p:fieldset legend="#{customProperties['thirdparty.search.fieldset']}">
+        <p>
+          <!-- Référence -->
+          <h:outputLabel for="ref" value="#{customProperties['thirdparty.field.ref']}" styleClass="label" />
+          <p:inputText id="ref" value="#{thirdPartySearchController.thirdPartySearchBean.thirdPartyCriteria.id}" label="#{customProperties['thirdparty.field.ref']}" maxlength="19" />
+        </p>
+        <p>
+          <!-- Référence GCP -->
+          <h:outputLabel for="refGCP" value="#{customProperties['thirdparty.field.refgcp']}" styleClass="label" />
+          <p:inputText id="refGCP" value="#{thirdPartySearchController.thirdPartySearchBean.thirdPartyCriteria.gcpReference}" maxlength="50" />
+        </p>
+        <p>
+          <!-- Nom -->
+          <h:outputLabel for="name" value="#{customProperties['thirdparty.field.name']}" styleClass="label" />
+          <p:inputText id="name" value="#{thirdPartySearchController.thirdPartySearchBean.thirdPartyCriteria.name}" maxlength="50" />
+        </p>
+        <p>
+          <!-- Adresse -->
+          <h:outputLabel for="adress" value="#{customProperties['thirdparty.field.adress']}" styleClass="label txtarea" />
+          <p:inputTextarea id="adress" value="#{thirdPartySearchController.thirdPartySearchBean.thirdPartyCriteria.address}" rows="4" cols="74" maxlength="250" />
+        </p>
+        <p>
+          <!-- Code postal -->
+          <h:outputLabel for="cp" value="#{customProperties['thirdparty.field.cp']}" styleClass="label" maxlength="10" />
+          <p:inputText id="cp" value="#{thirdPartySearchController.thirdPartySearchBean.thirdPartyCriteria.postalCode}" maxlength="10" />
+        </p>
+        <p>
+          <!-- Ville -->
+          <h:outputLabel for="city" value="#{customProperties['thirdparty.field.city']}" styleClass="label" />
+          <p:inputText id="city" value="#{thirdPartySearchController.thirdPartySearchBean.thirdPartyCriteria.city}" maxlength="50" />
+        </p>
+        <p>
+          <!-- Téléphone -->
+          <h:outputLabel for="phone" value="#{customProperties['thirdparty.field.phone']}" styleClass="label" />
+          <p:inputText id="phone" value="#{thirdPartySearchController.thirdPartySearchBean.thirdPartyCriteria.phone}" maxlength="20" />
+        </p>
+        <p>
+          <!-- Email -->
+          <h:outputLabel for="email" value="#{customProperties['thirdparty.field.email']}" styleClass="label" />
+          <p:inputText id="email" value="#{thirdPartySearchController.thirdPartySearchBean.thirdPartyCriteria.mailAddress}" maxlength="255" />
+        </p>
+        <p>
+          <!-- Nom du bénéficiaire -->
+          <h:outputLabel for="beneficiaryName" value="#{customProperties['thirdparty.field.beneficiary.name']}" styleClass="label" />
+          <p:inputText id="beneficiaryName" value="#{thirdPartySearchController.thirdPartySearchBean.thirdPartyCriteria.beneficiaryName}" maxlength="50" />
+        </p>
+        <p>
+          <!-- Adresse du bénéficiaire -->
+          <h:outputLabel for="beneficiaryAddress" value="#{customProperties['thirdparty.field.beneficiary.address']}" styleClass="label txtarea" />
+          <p:inputTextarea id="beneficiaryAddress" value="#{thirdPartySearchController.thirdPartySearchBean.thirdPartyCriteria.beneficiaryAddress}" rows="4" cols="74" maxlength="250" />
+        </p>
+      </p:fieldset>
+      <p:outputPanel layout="block" styleClass="action">
+        <p:commandButton id="btnValidate" value="#{customProperties['thirdparty.action.search']}" actionListener="#{thirdPartySearchController.searchData}" update=":messages :frmSearchThirdParty:result" oncomplete="cleanResultAndShowErrors();" />
+        <p:commandButton id="btnCancel" value="#{customProperties['thirdparty.action.cancel']}" action="#{thirdPartySearchController.cancel}" immediate="true" />
+      </p:outputPanel>
+      <p:outputPanel id="result" layout="block">
+        <p:dataTable id="resultTab" value="#{thirdPartySearchController.thirdPartySearchBean.thirdPartyList}" var="thirdParty" emptyMessage="#{customProperties['no.data']}" rendered="#{thirdPartySearchController.thirdPartySearchBean.thirdPartyList != null}" paginator="true" rows="100" sortBy="#{thirdParty.id}" paginatorPosition="bottom" pageLinks="5" rowsPerPageTemplate="#{thirdPartySearchController.paginationTemplate}" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" currentPageReportTemplate="(Enregistrements : {startRecord} - {endRecord} sur {totalRecords}, Page: {currentPage}/{totalPages})">
+          <!-- 						selection="#{thirdPartySearchController.thirdPartySearchBean.thirdpartySelected}" selectionMode="single" rowKey="#{thirdParty.id}"> -->
+          <!-- 						<p:ajax event="rowSelect" listener="#{thirdPartySearchController.onRowSelect}" /> -->
+          <!-- Référence -->
+          <p:column sortBy="#{thirdParty.id}">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['thirdparty.field.ref']}" />
+            </f:facet>
+            <p:commandLink value="#{thirdParty.id}" actionListener="#{thirdPartySearchController.redirectConsult}">
+              <f:attribute name="data_id" value="#{thirdParty.id}" />
+            </p:commandLink>
+          </p:column>
+          <!-- Référence GCP -->
+          <p:column sortBy="#{thirdParty.gcpReference}" styleClass="multi_line long_label">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['thirdparty.field.refgcp']}" />
+            </f:facet>
+            <!-- 							<h:outputText value="#{thirdParty.gcpReference}" /> -->
+            <p:commandLink value="#{thirdParty.gcpReference}" actionListener="#{thirdPartySearchController.redirectConsult}">
+              <f:attribute name="data_id" value="#{thirdParty.id}" />
+            </p:commandLink>
+          </p:column>
+          <!-- Nom -->
+          <p:column sortBy="#{thirdParty.name}">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['thirdparty.field.name']}" />
+            </f:facet>
+            <h:outputText value="#{thirdParty.name}" />
+          </p:column>
+          <!-- Adresse -->
+          <p:column sortBy="#{thirdParty.address}">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['thirdparty.field.adress']}" />
+            </f:facet>
+            <h:outputText value="#{thirdParty.address}" />
+          </p:column>
+          <!-- Code postal -->
+          <p:column sortBy="#{thirdParty.postalCode}">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['thirdparty.field.cp']}" />
+            </f:facet>
+            <h:outputText value="#{thirdParty.postalCode}" />
+          </p:column>
+          <!-- Ville -->
+          <p:column sortBy="#{thirdParty.city}">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['thirdparty.field.city']}" />
+            </f:facet>
+            <h:outputText value="#{thirdParty.city}" />
+          </p:column>
+          <!-- Téléphone -->
+          <p:column sortBy="#{thirdParty.sortedPhone}">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['thirdparty.field.phone']}" />
+            </f:facet>
+            <h:outputText value="#{thirdParty.phone}" />
+          </p:column>
+          <!-- Email -->
+          <p:column sortBy="#{thirdParty.sortedMailAddress}">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['thirdparty.field.email']}" />
+            </f:facet>
+            <h:outputText value="#{thirdParty.mailAddress}" />
+          </p:column>
+          <!-- Nom du bénéficiaire -->
+          <p:column sortBy="#{thirdParty.sortedBeneficiaryName}">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['thirdparty.field.beneficiary.name']}" />
+            </f:facet>
+            <h:outputText value="#{thirdParty.beneficiaryName}" />
+          </p:column>
+          <!-- Adresse du bénéficiaire -->
+          <p:column sortBy="#{thirdParty.sortedBeneficiaryAddress}">
+            <f:facet name="header">
+              <h:outputText value="#{customProperties['thirdparty.field.beneficiary.address']}" />
+            </f:facet>
+            <h:outputText value="#{thirdParty.beneficiaryAddress}" />
+          </p:column>
+        </p:dataTable>
+        <div id="btn_actions">
+          <p:commandButton id="exportbtn" value="#{customProperties['thirdparty.action.export']}" immediate="true" ajax="false" rendered="#{thirdPartySearchController.thirdPartySearchBean.thirdPartyList.size() > 0}">
+            <p:dataExporter type="xls" target="resultTab" fileName="export_tiers" postProcessor="#{thirdPartySearchController.postProcessXLS}" />
+          </p:commandButton>
+        </div>
+      </p:outputPanel>
+    </h:form>
+  </ui:define>
+</ui:composition>
+</html>

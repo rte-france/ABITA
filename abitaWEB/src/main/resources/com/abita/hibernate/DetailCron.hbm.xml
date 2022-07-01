@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+<hibernate-mapping package="com.abita.dao.detailcron.entity">
+  <class name="com.abita.dao.detailcron.entity.DetailCronEntity" table="DETAIL_CRON">
+    <id name="id" column="DET_ID">
+      <generator class="assigned" />
+    </id>
+    <property name="yl" column="DET_YL" type="java.lang.String" />
+    <property name="zn" column="DET_ZN" type="java.lang.String" />
+    <property name="nc" column="DET_NC" type="java.lang.String" />
+    <property name="nt" column="DET_NT" type="java.lang.String" />
+    <property name="nni" column="DET_NNI" type="java.lang.String" />
+    <property name="userData" column="DET_USER_DATA" type="java.lang.String" />
+    <property name="salaryRetained" column="DET_SALARY_RETAINED" type="java.lang.String" />
+    <property name="fringeBenefits" column="DET_FRINGE_BENEFITS" type="java.lang.String" />
+  </class>
+</hibernate-mapping>

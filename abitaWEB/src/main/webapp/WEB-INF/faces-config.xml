@@ -1,0 +1,66 @@
+<?xml version="1.0"?>
+<faces-config xmlns="http://java.sun.com/xml/ns/javaee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
+      http://java.sun.com/xml/ns/javaee/web-facesconfig_2_0.xsd"
+	version="2.0">
+	<application>
+		<el-resolver>org.springframework.web.jsf.el.SpringBeanFacesELResolver</el-resolver>
+		<locale-config>
+			<default-locale>fr</default-locale>
+			<supported-locale>fr</supported-locale>
+		</locale-config>
+		<resource-bundle>
+			<description>Primefaces components traduction</description>
+			<base-name>com.primefaces.resource.primefaces</base-name>
+			<var>primefaces</var>
+		</resource-bundle>
+		<resource-bundle>
+			<description>site.xhtml bundle</description>
+			<base-name>com.site.resource.site</base-name>
+			<var>site</var>
+		</resource-bundle>
+		<resource-bundle>
+			<description>access Module bundle</description>
+			<base-name>com.access.resource.access</base-name>
+			<var>access</var>
+		</resource-bundle>
+		<resource-bundle>
+			<description>parameter Module bundle</description>
+			<base-name>com.param.resource.param</base-name>
+			<var>parame</var>
+		</resource-bundle>
+		<resource-bundle>
+			<description>email Module bundle</description>
+			<base-name>com.mail.mails</base-name>
+			<var>mails</var>
+		</resource-bundle>
+		<resource-bundle>
+			<description>Application logs bundle</description>
+			<base-name>com.web.logs.resource.logs</base-name>
+			<var>logs</var>
+		</resource-bundle>
+	</application>
+	<managed-bean>
+		<managed-bean-name>security</managed-bean-name>
+		<managed-bean-class>com.web.login.impl.SecurityController</managed-bean-class>
+		<managed-bean-scope>request</managed-bean-scope>
+        <managed-property>
+            <property-name>accessConfigService</property-name>
+            <property-class>com.services.accessconfig.IAccessConfigService</property-class>
+            <value>#{accessConfigService}</value>
+        </managed-property>
+	</managed-bean>
+
+
+	<validator>
+		<validator-id>beforeDateValidator</validator-id>
+		<validator-class>com.web.common.validators.BeforeDateValidator</validator-class>
+	</validator>
+
+	<factory>
+		<exception-handler-factory>com.web.common.exception.ManageExceptionHandlerFactory</exception-handler-factory>
+	</factory>
+</faces-config>
+
+

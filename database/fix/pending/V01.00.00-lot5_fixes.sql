@@ -1,0 +1,1 @@
+alter table HOUSING drop column HOU_HOUSING_STATUS;

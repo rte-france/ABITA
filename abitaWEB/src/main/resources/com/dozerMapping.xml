@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mappings xmlns="http://dozer.sourceforge.net" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://dozer.sourceforge.net http://dozer.sourceforge.net/schema/beanmapping.xsd">
+	<!-- mapping entités => DTOs -->
+	<mapping>
+		<class-a>com.dto.ActionLogDTO</class-a>
+		<class-b>com.dao.actionlogs.entity.ActionLog</class-b>
+		<field-exclude>
+			<a>user.theme</a>
+			<b>user.theme</b>
+		</field-exclude>
+	</mapping>
+	<mapping map-id="light">
+		<class-a>com.dto.ActionLogDTO</class-a>
+		<class-b>com.dao.actionlogs.entity.ActionLog</class-b>
+		<field-exclude>
+			<a>messages</a>
+			<b>messages</b>
+		</field-exclude>
+		<field-exclude>
+			<a>user.theme</a>
+			<b>user.theme</b>
+		</field-exclude>
+	</mapping>
+	<mapping>
+		<class-a>com.dto.ActionLogMessageDTO</class-a>
+		<class-b>com.dao.actionlogs.entity.ActionLogMessage</class-b>
+	</mapping>
+	<mapping>
+		<class-a>com.dto.mail.MailReportingDTO</class-a>
+		<class-b>com.dao.mailreporting.entity.MailReporting</class-b>
+	</mapping>
+
+	<!-- Exclusion totale des groupes -->
+	<mapping map-id="user-synchronisation">
+		<class-a>com.dto.UserDTO</class-a>
+		<class-b>com.dao.user.entity.User</class-b>
+		<field-exclude>
+			<a>groups</a>
+            <b>groupsAsList</b>
+		</field-exclude>
+	</mapping>
+	<mapping>
+		<class-a>com.dto.UserDTO</class-a>
+		<class-b>com.dao.user.entity.User</class-b>
+        <field>
+            <a>groups</a>
+            <b>groupsAsList</b>
+        </field>
+	</mapping>
+	<mapping map-id="user-light" map-null="false">
+		<!--
+			Mapping uniquement des propriétés directes de l'utilisateur et la liste des groupes (mais non récursive)
+		 -->
+		<class-a>com.dto.UserDTO</class-a>
+		<class-b>com.dao.user.entity.User</class-b>
+        <field>
+            <a>groups</a>
+            <b>groupsaslist</b>
+        </field>
+		<!--field-exclude>
+			<a>groups.groups</a>
+			<b>groups.groups</b>
+		</field-exclude-->
+		<field-exclude>
+			<a>theme</a>
+			<b>theme</b>
+		</field-exclude>
+	</mapping>
+
+
+	<mapping>
+		<class-a>com.dto.parameter.DomainDTO</class-a>
+		<class-b>com.dao.domain.entity.Domain</class-b>
+		<field>
+			<a>parameters</a>
+			<b>parameters</b>
+			<a-hint>com.dto.parameter.ParameterDTO</a-hint>
+			<b-hint>com.dao.domain.entity.Parameter</b-hint>
+		</field>
+	</mapping>
+	<mapping>
+		<class-a>com.dto.parameter.ParameterDTO</class-a>
+		<class-b>com.dao.domain.entity.Parameter</class-b>
+	</mapping>
+</mappings>
