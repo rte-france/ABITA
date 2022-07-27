@@ -1,3 +1,8 @@
+/**
+Copyright (C) 2020, RTE (http://www.rte-france.com)
+SPDX-License-Identifier: Apache-2.0
+*/
+
 package com.abita.services.tenant.exceptions;
 
 import com.services.common.exception.GenericServiceException;

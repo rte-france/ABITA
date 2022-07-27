@@ -1,3 +1,8 @@
+/**
+Copyright (C) 2020, RTE (http://www.rte-france.com)
+SPDX-License-Identifier: Apache-2.0
+*/
+
 package com.dao.audit.impl;
 
 import static com.services.auditservice.constants.ConstantsActivityTracker.INITIAL_NUMBER_PARAMETER_TRACK_AUTHORIZED;
