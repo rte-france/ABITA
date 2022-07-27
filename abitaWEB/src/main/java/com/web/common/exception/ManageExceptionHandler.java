@@ -95,12 +95,6 @@ public class ManageExceptionHandler extends ExceptionHandlerWrapper {
 		ExternalContext ec = fc.getExternalContext();
 
 		try {
-			// workaround for PrimeFaces
-			new DefaultRequestContext();
-			if (ec.getRequestParameterMap().containsKey(Constants.PARTIAL_PROCESS_PARAM)
-					&& !"@all".equals(ec.getRequestParameterMap().get(Constants.PARTIAL_PROCESS_PARAM))) {
-				fc.setViewRoot(new UIViewRoot());
-			}
 
 			// fix for renderer kit (Mojarra's and PrimeFaces's ajax redirect)
 			if ((((DefaultRequestContext) RequestContext.getCurrentInstance()).isAjaxRequest() || fc

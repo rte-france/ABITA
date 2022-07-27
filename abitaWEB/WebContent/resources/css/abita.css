@@ -424,3 +424,7 @@ form[id=frmCron] .ui-spinner-button {
   width: auto !important;
   margin: 0 2%;
 }
+
+.ui-selectonemenu-label {
+  text-align: left !important;
+}

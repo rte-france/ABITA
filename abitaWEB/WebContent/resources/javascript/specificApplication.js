@@ -18,7 +18,7 @@ function cleanResultAndShowErrors() {
  * Met à jour la borne inférieure lors de la validation d’un barème pour avantages en nature
  */
 $(document).ready(function() {
-	$('.ui-icon-check').live('click', function() {
+	$('.ui-icon-check').on('click', function() {
 		// Borne de l’avantage en nature précédent
 		var min = $(this).parents('tr').prev().find('.lowLimit').text();
 		var max = $(this).parents('tr').next().find('.lowLimit').text();

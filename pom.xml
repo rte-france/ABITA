@@ -15,7 +15,7 @@
 
   <properties>
     <strWeb.version>04.05.00.02</strWeb.version>
-    <primefaces.version>3.2</primefaces.version>
+    <primefaces.version>4.0</primefaces.version>
     <antlr.version>2.7.6</antlr.version>
 
     <spring.version>5.2.7.RELEASE</spring.version>
@@ -37,6 +37,22 @@
     <maven-surefire-plugin.timeout>600</maven-surefire-plugin.timeout>
     <maven-failsafe-plugin.timeout>3600</maven-failsafe-plugin.timeout>
   </properties>
+
+  <repositories>
+    <repository>
+      <id>maven</id>
+      <name>maven central</name>
+      <url>https://repo1.maven.org/maven2</url>
+    </repository>
+    <repository>
+      <id>primefaces</id>
+      <name>primefaces</name>
+      <url>https://repository.primefaces.org/</url>
+    </repository>
+
+
+
+  </repositories>
 
   <build>
     <pluginManagement>

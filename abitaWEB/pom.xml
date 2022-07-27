@@ -125,7 +125,7 @@
     <dependency>
       <groupId>org.glassfish.jaxb</groupId>
       <artifactId>jaxb-runtime</artifactId>
-      <version>2.4.0-b180725.0644</version>
+      <version>2.4.0-b180830.0438</version>
     </dependency>
 
     <dependency>
@@ -153,15 +153,9 @@
     </dependency>
 
     <dependency>
-      <groupId>org.aopalliance</groupId>
-      <artifactId>com.springsource.org.aopalliance</artifactId>
-      <version>1.0.0</version>
-    </dependency>
-
-    <dependency>
-      <groupId>org.apache.commons</groupId>
-      <artifactId>com.springsource.org.apache.commons.logging</artifactId>
-      <version>1.1.1</version>
+      <groupId>aopalliance</groupId>
+      <artifactId>aopalliance</artifactId>
+      <version>1.0</version>
     </dependency>
 
     <dependency>
@@ -373,9 +367,9 @@
     </dependency>
 
     <dependency>
-      <groupId>jcommon</groupId>
+      <groupId>org.jfree</groupId>
       <artifactId>jcommon</artifactId>
-      <version>1.0.11</version>
+      <version>1.0.17</version>
     </dependency>
 
     <dependency>
@@ -385,9 +379,9 @@
     </dependency>
 
     <dependency>
-      <groupId>jfreechart</groupId>
+      <groupId>jfree</groupId>
       <artifactId>jfreechart</artifactId>
-      <version>1.0.6</version>
+      <version>1.0.7</version>
     </dependency>
 
     <dependency>
@@ -717,8 +711,8 @@
     </dependency>
 
     <dependency>
-      <groupId>com.jcraft.jsch</groupId>
-      <artifactId>com.springsource.com.jcraft.jsch</artifactId>
+      <groupId>com.jcraft</groupId>
+      <artifactId>jsch</artifactId>
       <version>0.1.41</version>
     </dependency>
 

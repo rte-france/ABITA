@@ -15,7 +15,6 @@ import com.abita.services.termination.ITerminationService;
 import com.abita.util.contract.ContractUtils;
 import com.abita.util.dateutil.DateTimeUtils;
 import com.abita.web.contract.bean.ContractBean;
-import com.abita.dto.*;
 import com.abita.dto.unpersist.ContractInputDTO;
 import com.abita.dto.unpersist.HousingCriteriaDTO;
 import com.abita.dto.unpersist.TenantCriteriaDTO;
@@ -40,7 +39,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.joda.time.*;
 import org.primefaces.component.calendar.Calendar;
-import org.primefaces.event.DateSelectEvent;
 
 import javax.annotation.PostConstruct;
 import javax.faces.component.UIInput;
@@ -538,7 +536,7 @@ public class ContractController extends AbstractGenericController {
       DateTime now = new DateTime();
       DateTime lastCron = detailCronService.getLastCronOfTheMonth(detailCronDTO);
       lastCron = lastCron.plusMinutes(MINUTES_FOR_THE_END_OF_TREATMENT);
-
+/*
       if (detailCronService.getFirstCronOfTheMonth(detailCronDTO).isBefore(now) && lastCron.isAfter(now)) {
         // Détermine le mode : Création ou Modification
         String action = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get(CREATE_PARAMETER);
@@ -549,6 +547,8 @@ public class ContractController extends AbstractGenericController {
           FacesContext.getCurrentInstance().addMessage(null, getErrorMessage(CREATION_UNAVAILABLE_PERIOD_ERROR_MESSAGE));
         }
       }
+
+ */
     } catch (DetailCronServiceException e) {
       LOGGER.error(GET_CRONS_ERROR_MESSAGE, e);
       FacesContext.getCurrentInstance().addMessage(null, getErrorMessage(TECHNICAL_ERROR_CODE));
@@ -708,16 +708,6 @@ public class ContractController extends AbstractGenericController {
       return CONSULTATION_NAVIGATION_CODE;
     }
     return EXIT_NAVIGATION_CODE;
-  }
-
-  /**
-   * Recupere le texte de la balise calendar « endValidityDate » afin de verifier
-   * si elle est remplie. L'evenement en parametre est la selection d'une date.
-   *
-   * @param event Event lorsque l'on selecte une date
-   */
-  public void isEmpty(DateSelectEvent event) {
-    setTerminationMandatory((Calendar) event.getComponent());
   }
 
   /**

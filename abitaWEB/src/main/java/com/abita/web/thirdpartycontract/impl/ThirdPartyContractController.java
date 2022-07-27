@@ -11,7 +11,6 @@ import com.abita.services.thirdpartycontract.IThirdPartyContractServiceFacade;
 import com.abita.services.thirdpartytermination.IThirdPartyTerminationService;
 import com.abita.util.dateutil.DateTimeUtils;
 import com.abita.web.thirdpartycontract.bean.ThirdPartyContractBean;
-import com.abita.dto.*;
 import com.abita.services.costcenter.exceptions.CostCenterServiceException;
 import com.abita.services.extendeduser.exception.ExtendedUserServiceException;
 import com.abita.services.fieldofactivity.exceptions.FieldOfActivityServiceException;
@@ -31,7 +30,6 @@ import org.slf4j.LoggerFactory;
 import org.joda.time.LocalDate;
 import org.primefaces.component.calendar.Calendar;
 import org.primefaces.component.selectonemenu.SelectOneMenu;
-import org.primefaces.event.DateSelectEvent;
 
 import javax.annotation.PostConstruct;
 import javax.faces.component.UIInput;
@@ -380,16 +378,6 @@ public class ThirdPartyContractController extends AbstractGenericController {
     }
   }
 
-
-  /**
-   * Recupere le texte de la balise calendar "Date d'effet" des révisions des loyers mensuels afin de verifier
-   * si elle est remplie. L'evenement en parametre est la selection d'une date.
-   * @param event Event lorsque l'on selecte une date
-   */
-  public void isRevisedRentDateEmpty(DateSelectEvent event) {
-    setRevisedRentAmountMandatory((Calendar) event.getComponent());
-  }
-
   /**
    * Recupere le texte de la balise calendar "Date d'effet" des révisions des loyers mensuels afin de verifier
    * si elle est remplie. L'evenement en parametre est la selection d'une date.
@@ -423,15 +411,6 @@ public class ThirdPartyContractController extends AbstractGenericController {
       thirdPartyContractBean.setRevisedRentAmountMandatoryCheck(thirdPartyContractBean.isRevisedRentAmountMandatory());
     }
     return thirdPartyContractBean.getRevisedRentAmountMandatoryCheck();
-  }
-
-  /**
-   * Recupere le texte de la balise calendar "Date d'effet" des révisions des charges prévisionnelles afin de verifier
-   * si elle est remplie. L'evenement en parametre est la selection d'une date.
-   * @param event Event lorsque l'on selecte une date
-   */
-  public void isRevisedExpectedChargeCostDateEmpty(DateSelectEvent event) {
-    setRevisedExpectedChargeCostAmountMandatory((Calendar) event.getComponent());
   }
 
   /**
