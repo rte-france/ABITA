@@ -5,8 +5,6 @@ SPDX-License-Identifier: Apache-2.0
 
 package com.abita.services.jobs.quittancement.constants;
 
-import com.itextpdf.text.Font;
-import com.itextpdf.text.FontFactory;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
@@ -67,12 +65,6 @@ public final class QuittancementConstants {
 
   /** Formatteur de date dd.MM.yyyy */
   public static final DateTimeFormatter DATE_FORMAT_SHORT = DateTimeFormat.forPattern("dd.MM.yyyy");
-
-  /** Police de base des éléments */
-  public static final Font ITEM_FONT = FontFactory.getFont(FontFactory.HELVETICA, 11);
-
-  /** Police de base des éléments mis en valeur  */
-  public static final Font ITEM_FONT_STRONG = FontFactory.getFont(FontFactory.HELVETICA, 11, Font.BOLD);
 
   /** Espace entre les différents éléments du document */
   public static final int SPACING_BETWEEN_ELEMENTS = 25;

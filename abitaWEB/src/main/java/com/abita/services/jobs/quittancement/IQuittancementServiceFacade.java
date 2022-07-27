@@ -21,20 +21,6 @@ public interface IQuittancementServiceFacade {
   void generate();
 
   /**
-   * Permet d'envoyer un fichier pdf vers le dossier de sortie après l'avoir zippé
-   * @param file Le fichier a zipper
-   * @return fichier compressé
-   */
-  File zipAndSend(File file);
-
-  /**
-   * Permet d'envoyer un fichier pdf vers le dossier de sortie après l'avoir zippé
-   * en le recherchant a partir d'un mois de l'année
-   * @param date La date pour laquelle rechercher le fichier a zipper
-   */
-  void zipAndSend(YearMonth date);
-
-  /**
    * Permet de définir les paramètres des quittancements
    * @param parameterService paramètres
    */
